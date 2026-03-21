@@ -18,3 +18,9 @@ CREATE TABLE IF NOT EXISTS notes (
 );
 
 CREATE INDEX IF NOT EXISTS idx_entries_day_id ON entries(day_id);
+
+CREATE TABLE IF NOT EXISTS checklists (
+  id         TEXT    PRIMARY KEY,
+  state      INTEGER NOT NULL DEFAULT 0,
+  updated_at INTEGER NOT NULL DEFAULT (unixepoch())
+);
