@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLR→LEH Budget Calculator 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0f13;
+  --surface: #16181f;
+  --surface2: #1e2028;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8e6e1;
+  --muted: #6b7280;
+  --ss-color: #f97316;
+  --ss-dim: rgba(249,115,22,0.12);
+  --fr-color: #38bdf8;
+  --fr-dim: rgba(56,189,248,0.12);
+  --shared-color: #a78bfa;
+  --shared-dim: rgba(167,139,250,0.12);
+  --green: #4ade80;
+  --green-dim: rgba(74,222,128,0.1);
+  --red: #f87171;
+  --yellow: #fbbf24;
+  --mono: 'DM Mono', monospace;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+.header {
+  padding: 3rem 2rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-bottom: 1px solid var(--border);
+}
+.header-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.header-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+.header-title .accent { color: var(--ss-color); }
+.header-subtitle {
+  font-size: 0.9rem;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+/* LEGEND PILLS */
+.legend {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  padding: 1.2rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-bottom: 1px solid var(--border);
+}
+.legend-pill {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 0.8rem;
+  border-radius: 100px;
+}
+.pill-ss   { background: var(--ss-dim);     color: var(--ss-color);     border: 1px solid rgba(249,115,22,0.25); }
+.pill-fr   { background: var(--fr-dim);     color: var(--fr-color);     border: 1px solid rgba(56,189,248,0.25); }
+.pill-sh   { background: var(--shared-dim); color: var(--shared-color); border: 1px solid rgba(167,139,250,0.25); }
+.pill-prep { background: var(--green-dim);  color: var(--green);        border: 1px solid rgba(74,222,128,0.2); }
+
+/* STICKY TOTALS BAR */
+.totals-bar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(14,15,19,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border2);
+  padding: 0.8rem 2rem;
+}
+.totals-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; gap: 1rem; align-items: center;
+  flex-wrap: wrap;
+}
+.total-chip {
+  display: flex; flex-direction: column;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  min-width: 130px;
+  flex: 1;
+}
+.total-chip-label {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+.total-chip-amount {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.chip-ss   { background: var(--ss-dim);     border: 1px solid rgba(249,115,22,0.2); }
+.chip-fr   { background: var(--fr-dim);     border: 1px solid rgba(56,189,248,0.2); }
+.chip-prep { background: var(--green-dim);  border: 1px solid rgba(74,222,128,0.15); }
+.chip-grand{ background: var(--surface2);   border: 1px solid var(--border2); }
+.chip-ss .total-chip-label, .chip-ss .total-chip-amount { color: var(--ss-color); }
+.chip-fr .total-chip-label, .chip-fr .total-chip-amount { color: var(--fr-color); }
+.chip-prep .total-chip-label, .chip-prep .total-chip-amount { color: var(--green); }
+.chip-grand .total-chip-label { color: var(--muted); }
+.chip-grand .total-chip-amount { color: var(--text); }
+
+.savings-chip {
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  background: var(--green-dim);
+  border: 1px solid rgba(74,222,128,0.2);
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--green);
+}
+
+/* MAIN LAYOUT */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* SECTION */
+.section { margin-bottom: 2.5rem; }
+.section-header {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+.section-header:hover .section-title-text { color: var(--text); }
+.section-icon {
+  font-size: 1.1rem;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface2);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.section-title-text {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: color 0.2s;
+}
+.section-subtotal {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+  display: flex; gap: 1rem;
+}
+.section-subtotal span { font-weight: 500; }
+.section-chevron {
+  font-size: 0.7rem;
+  color: var(--muted);
+  transition: transform 0.3s;
+  flex-shrink: 0;
+}
+.section.collapsed .section-chevron { transform: rotate(-90deg); }
+.section.collapsed .section-body { display: none; }
+
+/* TABLE */
+.budget-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.83rem;
+}
+.budget-table thead tr {
+  background: var(--surface2);
+}
+.budget-table th {
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 400;
+  border-bottom: 1px solid var(--border);
+}
+.budget-table th.right, .budget-table td.right { text-align: right; }
+.budget-table th.center, .budget-table td.center { text-align: center; }
+
+.budget-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.budget-table tbody tr:last-child { border-bottom: none; }
+.budget-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+.budget-table td {
+  padding: 0.65rem 0.8rem;
+  vertical-align: middle;
+}
+
+.row-label {
+  color: var(--text);
+  font-weight: 400;
+  line-height: 1.3;
+}
+.row-note {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+  font-family: var(--mono);
+}
+.row-km {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.row-amount {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.amt-ss   { color: var(--ss-color); }
+.amt-fr   { color: var(--fr-color); }
+.amt-sh   { color: var(--shared-color); }
+.amt-zero { color: var(--muted); }
+
+/* who badge */
+.who-badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.badge-ss   { background: var(--ss-dim);     color: var(--ss-color); }
+.badge-fr   { background: var(--fr-dim);     color: var(--fr-color); }
+.badge-50   { background: var(--shared-dim); color: var(--shared-color); }
+.badge-prep { background: var(--green-dim);  color: var(--green); }
+.badge-own  { background: rgba(251,191,36,0.12); color: var(--yellow); }
+
+/* SUBTOTAL ROW */
+.subtotal-row td {
+  background: var(--surface2);
+  border-top: 1px solid var(--border2) !important;
+  padding: 0.55rem 0.8rem;
+}
+.subtotal-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* TOLL BANNER */
+.toll-banner {
+  background: var(--green-dim);
+  border: 1px solid rgba(74,222,128,0.2);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.toll-banner-icon { font-size: 1.5rem; flex-shrink:0; }
+.toll-banner-text { font-size: 0.83rem; line-height: 1.6; }
+.toll-banner-text strong { color: var(--green); font-family: var(--mono); }
+
+/* GRAND SUMMARY CARD */
+.grand-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+.grand-card-header {
+  padding: 1rem 1.5rem;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.grand-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.grand-table td {
+  padding: 0.9rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+}
+.grand-table tr:last-child td { border-bottom: none; }
+.grand-table .cat-name {
+  font-weight: 500;
+  color: var(--text);
+}
+.grand-table .cat-note {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  margin-top: 0.15rem;
+}
+.grand-amt {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-align: right;
+}
+.grand-total-row td {
+  background: var(--surface2);
+  padding: 1.2rem 1.5rem;
+  border-top: 2px solid var(--border2);
+}
+.grand-total-label {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.grand-total-amt {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.8rem;
+  text-align: right;
+}
+
+/* COMPARISON SECTION */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+@media (max-width: 600px) { .compare-grid { grid-template-columns: 1fr; } }
+
+.compare-card {
+  border-radius: 10px;
+  padding: 1.5rem;
+  border: 1px solid;
+}
+.compare-card.ss-card {
+  background: rgba(249,115,22,0.06);
+  border-color: rgba(249,115,22,0.2);
+}
+.compare-card.fr-card {
+  background: rgba(56,189,248,0.06);
+  border-color: rgba(56,189,248,0.2);
+}
+.compare-who {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.ss-card .compare-who { color: var(--ss-color); }
+.fr-card .compare-who { color: var(--fr-color); }
+.compare-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.compare-total {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.ss-card .compare-total { color: var(--ss-color); }
+.fr-card .compare-total { color: var(--fr-color); }
+.compare-days {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 1.2rem;
+}
+.compare-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.cmp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.cmp-row:last-child { border-bottom: none; }
+.cmp-cat { color: var(--muted); }
+.cmp-amt { font-family: var(--mono); font-weight: 500; color: var(--text); }
+.per-day-badge {
+  margin-top: 1rem;
+  padding: 0.6rem;
+  border-radius: 6px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+.ss-card .per-day-badge { background: rgba(249,115,22,0.1); color: var(--ss-color); }
+.fr-card .per-day-badge { background: rgba(56,189,248,0.1); color: var(--fr-color); }
+
+/* FRIENDS OWN */
+.friends-own-card {
+  background: rgba(251,191,36,0.05);
+  border: 1px solid rgba(251,191,36,0.2);
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 2rem;
+}
+.friends-own-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--yellow);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+.fown-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+}
+.fown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 0.78rem;
+  padding: 0.5rem 0.7rem;
+  background: rgba(255,255,255,0.03);
+  border-radius: 5px;
+}
+.fown-label { color: var(--muted); flex:1; line-height: 1.3; }
+.fown-amt { font-family: var(--mono); color: var(--yellow); flex-shrink:0; margin-left:0.5rem; }
+.fown-total-line {
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(251,191,36,0.2);
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+}
+.fown-total-line span { color: var(--muted); }
+.fown-total-line strong { font-family: var(--mono); color: var(--yellow); }
+
+/* INSIGHTS */
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.insight-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+.insight-icon { font-size: 1.4rem; margin-bottom: 0.5rem; }
+.insight-label { font-size: 0.7rem; color: var(--muted); font-family: var(--mono); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.3rem; }
+.insight-value { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.3rem; color: var(--text); line-height: 1; }
+.insight-sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; }
+
+/* SPLITWISE BANNER */
+.splitwise-banner {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.sw-icon { font-size: 1.8rem; flex-shrink:0; }
+.sw-text h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+.sw-text p { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+.sw-text strong { color: var(--text); }
+
+/* FOOTER */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-left { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--ss-color); }
+.footer-right { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); text-align: right; }
+
+/* BAR CHART */
+.bar-chart { margin: 0.5rem 0 1.5rem; }
+.bar-row { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem; }
+.bar-cat { font-size: 0.72rem; color: var(--muted); width: 100px; flex-shrink:0; text-align: right; font-family: var(--mono); }
+.bar-track { flex:1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow:hidden; }
+.bar-fill { height: 100%; border-radius: 3px; transition: width 1s cubic-bezier(.4,0,.2,1); }
+.bar-amt { font-family: var(--mono); font-size: 0.72rem; color: var(--text); width: 65px; flex-shrink:0; }
+
+/* PHASE BADGE */
+.phase-badge {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  padding: 0.12rem 0.4rem;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.06);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ANIM */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in { animation: countUp 0.5s ease forwards; }
+
+/* MOBILE */
+@media (max-width: 700px) {
+  .budget-table th:nth-child(3),
+  .budget-table td:nth-child(3),
+  .budget-table th:nth-child(4),
+  .budget-table td:nth-child(4) { display: none; }
+  .header-title { font-size: 2rem; }
+  .totals-inner { gap: 0.5rem; }
+  .total-chip { min-width: 100px; }
+  .total-chip-amount { font-size: 1.1rem; }
+  .compare-total { font-size: 1.8rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="index.html" style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--muted); text-decoration: none; font-family: var(--mono); font-size: 0.75rem; margin-bottom: 1.5rem; transition: color 0.2s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">
+    <span style="font-size: 1.2em; line-height: 1;">&larr;</span> Back to Main Itinerary
+  </a>
+  <div class="header-eyebrow">// budget_v2.precise · diesel ₹92 · 12.5kmpl hwy · 9.5kmpl mtn</div>
+  <h1 class="header-title">BLR <span class="accent">→</span> LEH <span class="accent">→</span> BLR<br>Budget Calculator</h1>
+  <div class="header-subtitle">Shrinandan & Shubhashree + Friends · May–June 2025 · Thar Roxx Diesel 4×4 · FASTag yearly pass active</div>
+</div>
+
+<div class="legend">
+  <div class="legend-pill pill-ss">🔶 S&S Only</div>
+  <div class="legend-pill pill-fr">🔷 Friends Only</div>
+  <div class="legend-pill pill-sh">🟣 50-50 Split</div>
+  <div class="legend-pill pill-prep">🟢 Prep / One-time</div>
+</div>
+
+<div class="totals-bar">
+  <div class="totals-inner">
+    <div class="total-chip chip-ss">
+      <div class="total-chip-label">S&S Total</div>
+      <div class="total-chip-amount">₹1,67,584</div>
+    </div>
+    <div class="total-chip chip-fr">
+      <div class="total-chip-label">Friends Share</div>
+      <div class="total-chip-amount">₹49,584</div>
+    </div>
+    <div class="total-chip chip-prep">
+      <div class="total-chip-label">FASTag Saved</div>
+      <div class="total-chip-amount">₹8,500</div>
+    </div>
+    <div class="total-chip chip-grand">
+      <div class="total-chip-label">Grand Total</div>
+      <div class="total-chip-amount">₹2,17,168</div>
+    </div>
+    <div class="savings-chip">✦ 185+ tolls remaining</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- COMPARE CARDS -->
+  <div class="compare-grid">
+    <div class="compare-card ss-card">
+      <div class="compare-who">Couple 1</div>
+      <div class="compare-name">Shrinandan & Shubhashree</div>
+      <div class="compare-total">₹1,67,584</div>
+      <div class="compare-days">30 days · Full trip · BLR↔LEH</div>
+      <div class="compare-breakdown">
+        <div class="cmp-row"><span class="cmp-cat">⛽ Fuel (solo + 50% group)</span><span class="cmp-amt">₹55,034</span></div>
+        <div class="cmp-row"><span class="cmp-cat">🏨 Stay (solo + 50% group)</span><span class="cmp-amt">₹69,100</span></div>
+        <div class="cmp-row"><span class="cmp-cat">🥗 Food (solo + 50% group)</span><span class="cmp-amt">₹18,100</span></div>
+        <div class="cmp-row"><span class="cmp-cat">🎟️ Activities (solo + 50%)</span><span class="cmp-amt">₹8,050</span></div>
+        <div class="cmp-row"><span class="cmp-cat">🛣️ Toll (extra only)</span><span class="cmp-amt">₹400</span></div>
+        <div class="cmp-row"><span class="cmp-cat">🔧 Prep & one-time</span><span class="cmp-amt">₹16,900</span></div>
+      </div>
+      <div class="per-day-badge">₹5,586/day · ₹2,793/person/day</div>
+    </div>
+    <div class="compare-card fr-card">
+      <div class="compare-who">Couple 2</div>
+      <div class="compare-name">Friends (CHD → Manali)</div>
+      <div class="compare-total">₹49,584</div>
+      <div class="compare-days">8 days · Group phase only · 50-50 split</div>
+      <div class="compare-breakdown">
+        <div class="cmp-row"><span class="cmp-cat">⛽ Fuel (50% group)</span><span class="cmp-amt">₹8,334</span></div>
+        <div class="cmp-row"><span class="cmp-cat">🏨 Stay (50% group)</span><span class="cmp-amt">₹28,500</span></div>
+        <div class="cmp-row"><span class="cmp-cat">🥗 Food (50% group)</span><span class="cmp-amt">₹5,300</span></div>
+        <div class="cmp-row"><span class="cmp-cat">🎟️ Activities (50%)</span><span class="cmp-amt">₹7,050</span></div>
+        <div class="cmp-row"><span class="cmp-cat">🛣️ Toll (extra, 50%)</span><span class="cmp-amt">₹400</span></div>
+        <div class="cmp-row"><span class="cmp-cat">🔧 Prep</span><span class="cmp-amt">—</span></div>
+      </div>
+      <div class="per-day-badge">₹6,198/day · ₹3,099/person/day</div>
+    </div>
+  </div>
+
+  <!-- SPLITWISE BANNER -->
+  <div class="splitwise-banner">
+    <div class="sw-icon">📱</div>
+    <div class="sw-text">
+      <h3>Splitwise Setup — Create group before May 30th</h3>
+      <p>Add 4 people. Set base currency INR. Every fuel stop → Shrinandan pays & splits 50-50 with other couple. Every hotel → each couple books their own room (same hotel), no splitting needed. Food at restaurants → one person pays, split equally. <strong>Settle in Manali on June 7th night before friends leave.</strong></p>
+    </div>
+  </div>
+
+  <!-- =================== FUEL =================== -->
+  <div class="section" id="sec-fuel">
+    <div class="section-header" onclick="toggleSection('sec-fuel')">
+      <div class="section-icon">⛽</div>
+      <div class="section-title-text">Fuel Breakdown</div>
+      <div class="section-subtotal">
+        <span>S&S <span style="color:var(--ss-color)">₹55,034</span></span>
+        <span>Friends <span style="color:var(--fr-color)">₹8,334</span></span>
+      </div>
+      <div class="section-chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div style="background:rgba(249,115,22,0.06);border:1px solid rgba(249,115,22,0.15);border-radius:8px;padding:0.8rem 1rem;margin-bottom:1rem;font-size:0.78rem;color:var(--muted);line-height:1.6;">
+        <strong style="color:var(--ss-color)">Parameters:</strong> Diesel ₹92/L · Highway 12.5 kmpl · Mountain (passes/Ladakh) 9.5 kmpl · Total: 7,830 km · 689 litres consumed
+      </div>
+      <table class="budget-table">
+        <thead>
+          <tr>
+            <th>Segment</th>
+            <th class="center">KM</th>
+            <th class="center">Litres</th>
+            <th class="right">Cost</th>
+            <th class="center">Who Pays</th>
+            <th class="right">S&S Pays</th>
+            <th class="right">Friends Pay</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- SOLO PHASE 1 -->
+          <tr><td><div class="row-label">BLR → Nagpur</div><div class="row-note">Day 1 · NH44 · Full highway</div></td><td class="center row-km">890</td><td class="center row-km">71.2</td><td class="right row-amount amt-ss">₹6,550</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹6,550</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Nagpur → Chandigarh</div><div class="row-note">Day 2 · DM Expressway NE-4 + Trans-Haryana</div></td><td class="center row-km">1,040</td><td class="center row-km">83.2</td><td class="right row-amount amt-ss">₹7,654</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹7,654</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Amritsar weekend trip</div><div class="row-note">Return trip from Chandigarh</div></td><td class="center row-km">500</td><td class="center row-km">40.0</td><td class="right row-amount amt-ss">₹3,680</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹3,680</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Chandigarh local driving</div><div class="row-note">8 WFH days city use</div></td><td class="center row-km">80</td><td class="center row-km">6.4</td><td class="right row-amount amt-ss">₹589</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹589</td><td class="right row-amount amt-zero">—</td></tr>
+          <!-- GROUP PHASE -->
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Chandigarh → Jammu</div><div class="row-note">Group Day 2 · NH44 highway</div></td><td class="center row-km">290</td><td class="center row-km">23.2</td><td class="right row-amount amt-sh">₹2,134</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹1,067</td><td class="right row-amount amt-fr">₹1,067</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Jammu → Srinagar</div><div class="row-note">Group Day 3 · via Banihal Tunnel</div></td><td class="center row-km">270</td><td class="center row-km">21.6</td><td class="right row-amount amt-sh">₹1,987</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹994</td><td class="right row-amount amt-fr">₹994</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Srinagar local + Gulmarg</div><div class="row-note">Group Days 4-5 · Gulmarg 55km each way</div></td><td class="center row-km">60</td><td class="center row-km">4.8</td><td class="right row-amount amt-sh">₹442</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹221</td><td class="right row-amount amt-fr">₹221</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Srinagar → Kargil</div><div class="row-note">Group Day 5 · Mountain · via Zojila Pass</div></td><td class="center row-km">200</td><td class="center row-km">21.1</td><td class="right row-amount amt-sh">₹1,937</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹969</td><td class="right row-amount amt-fr">₹969</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Kargil → Leh</div><div class="row-note">Group Day 6 · Mountain · via Lamayuru, Fotu La</div></td><td class="center row-km">230</td><td class="center row-km">24.2</td><td class="right row-amount amt-sh">₹2,227</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹1,114</td><td class="right row-amount amt-fr">₹1,114</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Leh local sightseeing</div><div class="row-note">Group Days 7-8 · Palace, Shanti Stupa, market</div></td><td class="center row-km">30</td><td class="center row-km">3.2</td><td class="right row-amount amt-sh">₹291</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹146</td><td class="right row-amount amt-fr">₹146</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Leh → Pangong → Leh</div><div class="row-note">Group Day 8 · Mountain · via Chang La 5,360m</div></td><td class="center row-km">300</td><td class="center row-km">31.6</td><td class="right row-amount amt-sh">₹2,905</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹1,453</td><td class="right row-amount amt-fr">₹1,453</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Leh → Manali (drop-off)</div><div class="row-note">Group Day 9 · Mountain · Tanglang La, Sarchu, Rohtang</div></td><td class="center row-km">490</td><td class="center row-km">51.6</td><td class="right row-amount amt-sh">₹4,745</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹2,373</td><td class="right row-amount amt-fr">₹2,373</td></tr>
+          <!-- SOLO RETURN -->
+          <tr><td><div class="row-label">Manali → Leh (return for Nubra)</div><div class="row-note">Solo · Mountain · Rohtang, Sarchu, Tanglang La</div></td><td class="center row-km">490</td><td class="center row-km">51.6</td><td class="right row-amount amt-ss">₹4,745</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹4,745</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Leh → Nubra Valley → Leh</div><div class="row-note">Solo · Mountain · via Khardung La 5,359m</div></td><td class="center row-km">240</td><td class="center row-km">25.3</td><td class="right row-amount amt-ss">₹2,324</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹2,324</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Leh → Manali (final return)</div><div class="row-note">Solo · Mountain</div></td><td class="center row-km">490</td><td class="center row-km">51.6</td><td class="right row-amount amt-ss">₹4,745</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹4,745</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Manali → Chandigarh</div><div class="row-note">Solo · Highway · along Beas river</div></td><td class="center row-km">310</td><td class="center row-km">24.8</td><td class="right row-amount amt-ss">₹2,282</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹2,282</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Chandigarh → Nagpur</div><div class="row-note">Return Day 1 · Highway</div></td><td class="center row-km">1,040</td><td class="center row-km">83.2</td><td class="right row-amount amt-ss">₹7,654</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹7,654</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Nagpur → Bangalore</div><div class="row-note">Return Day 2 · NH44 highway</div></td><td class="center row-km">880</td><td class="center row-km">70.4</td><td class="right row-amount amt-ss">₹6,477</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹6,477</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr class="subtotal-row"><td colspan="3"><span class="subtotal-label">Total · 7,830 km · 689 litres</span></td><td class="right row-amount" style="color:var(--text)">₹63,368</td><td></td><td class="right row-amount amt-ss">₹55,034</td><td class="right row-amount amt-fr">₹8,334</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- =================== TOLL =================== -->
+  <div class="section" id="sec-toll">
+    <div class="section-header" onclick="toggleSection('sec-toll')">
+      <div class="section-icon">🛣️</div>
+      <div class="section-title-text">Toll</div>
+      <div class="section-subtotal">
+        <span>S&S <span style="color:var(--ss-color)">₹400</span></span>
+        <span>Friends <span style="color:var(--fr-color)">₹400</span></span>
+        <span style="color:var(--green)">Saved ₹8,500</span>
+      </div>
+      <div class="section-chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="toll-banner">
+        <div class="toll-banner-icon">🎉</div>
+        <div class="toll-banner-text">
+          <strong>FASTag Yearly Pass Active — 185+ toll entries remaining</strong><br>
+          Your ₹3,000 annual pass covers essentially all national highway tolls both ways. Estimated savings on this trip: <strong>₹8,500</strong> compared to paying per toll. The only extra toll cost is ~₹800 total for J&K state highways and a few manual booths near passes that don't accept FASTag. Split 50-50 with friends during group phase.
+        </div>
+      </div>
+      <table class="budget-table">
+        <thead><tr><th>Item</th><th class="right">Total</th><th class="center">Who</th><th class="right">S&S</th><th class="right">Friends</th></tr></thead>
+        <tbody>
+          <tr><td><div class="row-label">NH44 / NH expressways (BLR↔CHD, Manali↔BLR)</div><div class="row-note">Covered by FASTag yearly pass ✓</div></td><td class="right row-amount amt-zero">₹0</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-zero">₹0</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">J&K state roads & manual booths</div><div class="row-note">Jammu-Srinagar area, ~3-4 manual booths not on FASTag</div></td><td class="right row-amount amt-sh">₹400</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹200</td><td class="right row-amount amt-fr">₹200</td></tr>
+          <tr><td><div class="row-label">Rohtang Green Tax (Manali side)</div><div class="row-note">Himachal eco-tax for non-HP vehicles</div></td><td class="right row-amount amt-sh">₹400</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹200</td><td class="right row-amount amt-fr">₹200</td></tr>
+          <tr class="subtotal-row"><td colspan="1"><span class="subtotal-label">Total extra toll (FASTag pass covers rest)</span></td><td class="right row-amount" style="color:var(--text)">₹800</td><td></td><td class="right row-amount amt-ss">₹400</td><td class="right row-amount amt-fr">₹400</td></tr>
+          <tr style="background:var(--green-dim)"><td colspan="5" style="padding:0.6rem 0.8rem;"><span style="font-family:var(--mono);font-size:0.72rem;color:var(--green)">💡 WITHOUT FASTag pass, tolls would have been ~₹9,300. Your pass saved ≈ ₹8,500 on this trip alone.</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- =================== ACCOMMODATION =================== -->
+  <div class="section" id="sec-stay">
+    <div class="section-header" onclick="toggleSection('sec-stay')">
+      <div class="section-icon">🏨</div>
+      <div class="section-title-text">Accommodation</div>
+      <div class="section-subtotal">
+        <span>S&S <span style="color:var(--ss-color)">₹69,100</span></span>
+        <span>Friends <span style="color:var(--fr-color)">₹28,500</span></span>
+      </div>
+      <div class="section-chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <table class="budget-table">
+        <thead><tr><th>Location</th><th class="center">Nights</th><th class="center">Rooms</th><th class="right">Per Room</th><th class="right">Total</th><th class="center">Split</th><th class="right">S&S</th><th class="right">Friends</th></tr></thead>
+        <tbody>
+          <!-- SOLO PRE-GROUP -->
+          <tr><td><div class="row-label">Nagpur — Budget highway hotel</div><div class="row-note">Day 1 · BLR→CHD drive</div></td><td class="center row-km">1</td><td class="center row-km">1</td><td class="right row-km">₹2,000</td><td class="right row-amount amt-ss">₹2,000</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹2,000</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Chandigarh — Serviced apartment/Airbnb</div><div class="row-note">8 nights WFH · Sector 22/35 · fast WiFi essential</div></td><td class="center row-km">8</td><td class="center row-km">1</td><td class="right row-km">₹2,200</td><td class="right row-amount amt-ss">₹17,600</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹17,600</td><td class="right row-amount amt-zero">—</td></tr>
+          <!-- GROUP PHASE -->
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Jammu — Fortune/Vivanta 3-star</div><div class="row-note">Group Day 2 · 2 rooms for 4 people</div></td><td class="center row-km">1</td><td class="center row-km">2</td><td class="right row-km">₹3,500</td><td class="right row-amount amt-sh">₹7,000</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹3,500</td><td class="right row-amount amt-fr">₹3,500</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Srinagar — Dal Lake houseboat</div><div class="row-note">Group Days 3-4 · Full houseboat, 4 pax · unique experience</div></td><td class="center row-km">2</td><td class="center row-km">1</td><td class="right row-km">₹5,000</td><td class="right row-amount amt-sh">₹10,000</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹5,000</td><td class="right row-amount amt-fr">₹5,000</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Kargil — Hotel Siachen / Greenland</div><div class="row-note">Group Day 5 · 2 rooms · basic but clean</div></td><td class="center row-km">1</td><td class="center row-km">2</td><td class="right row-km">₹2,500</td><td class="right row-amount amt-sh">₹5,000</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹2,500</td><td class="right row-amount amt-fr">₹2,500</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Leh — Comfortable 3-star, 2 rooms</div><div class="row-note">Group Days 6-8 · 3 nights · Changspa area · book early!</div></td><td class="center row-km">3</td><td class="center row-km">2</td><td class="right row-km">₹4,000</td><td class="right row-amount amt-sh">₹24,000</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹12,000</td><td class="right row-amount amt-fr">₹12,000</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Pangong Tso — Overnight camp</div><div class="row-note">Group Day 8-9 · 1 tent (you own) · camp fee for 4 pax</div></td><td class="center row-km">1</td><td class="center row-km">1</td><td class="right row-km">₹5,000</td><td class="right row-amount amt-sh">₹5,000</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹2,500</td><td class="right row-amount amt-fr">₹2,500</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Manali — Hotel, 2 rooms (friends' last night)</div><div class="row-note">Group Day 9 · Friends depart next morning by Volvo</div></td><td class="center row-km">1</td><td class="center row-km">2</td><td class="right row-km">₹3,000</td><td class="right row-amount amt-sh">₹6,000</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹3,000</td><td class="right row-amount amt-fr">₹3,000</td></tr>
+          <!-- SOLO RETURN -->
+          <tr><td><div class="row-label">Manali — Solo rest + WFH</div><div class="row-note">2 nights post-drop · Old Manali area</div></td><td class="center row-km">2</td><td class="center row-km">1</td><td class="right row-km">₹2,500</td><td class="right row-amount amt-ss">₹5,000</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹5,000</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Leh — Solo (back for Nubra)</div><div class="row-note">2 nights after Manali return</div></td><td class="center row-km">2</td><td class="center row-km">1</td><td class="right row-km">₹3,500</td><td class="right row-amount amt-ss">₹7,000</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹7,000</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Nubra Valley — Overnight camp (Hunder)</div><div class="row-note">Solo · meals included · stargazing · Bactrian camels</div></td><td class="center row-km">1</td><td class="center row-km">1</td><td class="right row-km">₹4,500</td><td class="right row-amount amt-ss">₹4,500</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹4,500</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Chandigarh — One night return</div><div class="row-note">Before highway sprint back to BLR</div></td><td class="center row-km">1</td><td class="center row-km">1</td><td class="right row-km">₹2,500</td><td class="right row-amount amt-ss">₹2,500</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹2,500</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Nagpur — Budget highway hotel</div><div class="row-note">Return drive Day 1</div></td><td class="center row-km">1</td><td class="center row-km">1</td><td class="right row-km">₹2,000</td><td class="right row-amount amt-ss">₹2,000</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹2,000</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr class="subtotal-row"><td colspan="4"><span class="subtotal-label">Total accommodation · 25 nights</span></td><td class="right row-amount" style="color:var(--text)">₹97,600</td><td></td><td class="right row-amount amt-ss">₹69,100</td><td class="right row-amount amt-fr">₹28,500</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- =================== FOOD =================== -->
+  <div class="section" id="sec-food">
+    <div class="section-header" onclick="toggleSection('sec-food')">
+      <div class="section-icon">🥗</div>
+      <div class="section-title-text">Food</div>
+      <div class="section-subtotal">
+        <span>S&S <span style="color:var(--ss-color)">₹18,100</span></span>
+        <span>Friends <span style="color:var(--fr-color)">₹5,300</span></span>
+      </div>
+      <div class="section-chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div style="background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.15);border-radius:8px;padding:0.7rem 1rem;margin-bottom:1rem;font-size:0.78rem;color:var(--muted);">
+        <strong style="color:var(--green)">Strategy:</strong> Packed food (MTR pouches, Maggi, dry fruits) for breakfast & snacks. One proper restaurant meal/day. Langar at Golden Temple = free lunch! Camp stays include dinner + breakfast.
+      </div>
+      <table class="budget-table">
+        <thead><tr><th>Phase</th><th class="center">Days</th><th class="right">Per Day (2 pax)</th><th class="right">Total</th><th class="center">Split</th><th class="right">S&S</th><th class="right">Friends</th></tr></thead>
+        <tbody>
+          <tr><td><div class="row-label">Phase 1: BLR → Chandigarh drive</div><div class="row-note">Highway dhabas, packed food heavy</div></td><td class="center row-km">2</td><td class="right row-km">₹600</td><td class="right row-amount amt-ss">₹1,200</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹1,200</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Phase 2: Chandigarh WFH (8 days)</div><div class="row-note">Cooking at apt + Sector 35 pure veg restaurants</div></td><td class="center row-km">8</td><td class="right row-km">₹600</td><td class="right row-amount amt-ss">₹4,800</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹4,800</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Amritsar day trip</div><div class="row-note">Langar = FREE. ₹800 = snacks + travel chai</div></td><td class="center row-km">1</td><td class="right row-km">₹800</td><td class="right row-amount amt-ss">₹800</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹800</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Group kick-off dinner — Chandigarh</div><div class="row-note">4 people · Pal Dhaba celebration</div></td><td class="center row-km">1</td><td class="right row-km">₹1,000</td><td class="right row-amount amt-sh">₹1,000</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹500</td><td class="right row-amount amt-fr">₹500</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Drive days — Jammu + Srinagar entry</div><div class="row-note">Packed food heavy, 1 dhaba meal</div></td><td class="center row-km">2</td><td class="right row-km">₹800</td><td class="right row-amount amt-sh">₹1,600</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹800</td><td class="right row-amount amt-fr">₹800</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Srinagar sightseeing (2 days)</div><div class="row-note">Krishna Vaishno, Pincer Veg — proper sit-down meals</div></td><td class="center row-km">2</td><td class="right row-km">₹1,200</td><td class="right row-amount amt-sh">₹2,400</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹1,200</td><td class="right row-amount amt-fr">₹1,200</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Kargil + Leh drive days</div><div class="row-note">Packed food critical days (Zojila, Kargil, passes)</div></td><td class="center row-km">2</td><td class="right row-km">₹700</td><td class="right row-amount amt-sh">₹1,400</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹700</td><td class="right row-amount amt-fr">₹700</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Leh (3 days)</div><div class="row-note">Tibetan Kitchen, Bon Appetit, Gesmo — best veg food of trip</div></td><td class="center row-km">3</td><td class="right row-km">₹1,200</td><td class="right row-amount amt-sh">₹3,600</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹1,800</td><td class="right row-amount amt-fr">₹1,800</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Leh→Manali drive (drop-off day)</div><div class="row-note">Packed food + Sarchu camp dhaba lunch</div></td><td class="center row-km">1</td><td class="right row-km">₹600</td><td class="right row-amount amt-sh">₹600</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹300</td><td class="right row-amount amt-fr">₹300</td></tr>
+          <tr><td><div class="row-label">Solo: Manali (2 days)</div><div class="row-note">Best food in weeks! South Indian cafes + Old Manali</div></td><td class="center row-km">2</td><td class="right row-km">₹700</td><td class="right row-amount amt-ss">₹1,400</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹1,400</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Solo: Leh + Nubra (4 days)</div><div class="row-note">Camp meals incl. in stay. 1 restaurant/day</div></td><td class="center row-km">4</td><td class="right row-km">₹700</td><td class="right row-amount amt-ss">₹2,800</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹2,800</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Solo: Return drive (3 days)</div><div class="row-note">Highway dhabas, packed food</div></td><td class="center row-km">3</td><td class="right row-km">₹600</td><td class="right row-amount amt-ss">₹1,800</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹1,800</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr class="subtotal-row"><td colspan="3"><span class="subtotal-label">Total food</span></td><td class="right row-amount" style="color:var(--text)">₹23,400</td><td></td><td class="right row-amount amt-ss">₹18,100</td><td class="right row-amount amt-fr">₹5,300</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- =================== ACTIVITIES =================== -->
+  <div class="section" id="sec-act">
+    <div class="section-header" onclick="toggleSection('sec-act')">
+      <div class="section-icon">🎟️</div>
+      <div class="section-title-text">Activities & Experiences</div>
+      <div class="section-subtotal">
+        <span>S&S <span style="color:var(--ss-color)">₹8,050</span></span>
+        <span>Friends <span style="color:var(--fr-color)">₹7,050</span></span>
+      </div>
+      <div class="section-chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <table class="budget-table">
+        <thead><tr><th>Activity</th><th class="right">Total Cost</th><th class="center">Split</th><th class="right">S&S</th><th class="right">Friends</th></tr></thead>
+        <tbody>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Dal Lake Shikara ride</div><div class="row-note">1 boat · ~1 hour · Group · evening sunset</div></td><td class="right row-amount amt-sh">₹700</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹350</td><td class="right row-amount amt-fr">₹350</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Gulmarg Gondola Phase 1 (×4 persons)</div><div class="row-note">₹1,200/person · Group · World's 2nd highest gondola</div></td><td class="right row-amount amt-sh">₹4,800</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹2,400</td><td class="right row-amount amt-fr">₹2,400</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Bactrian camel ride — Nubra (×4)</div><div class="row-note">₹400/person · Group · Hunder Sand Dunes · unmissable</div></td><td class="right row-amount amt-sh">₹1,600</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹800</td><td class="right row-amount amt-fr">₹800</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Leh Palace entry (×4)</div><div class="row-note">₹100/person</div></td><td class="right row-amount amt-sh">₹400</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹200</td><td class="right row-amount amt-fr">₹200</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Shanti Stupa entry (×4)</div><div class="row-note">₹50/person</div></td><td class="right row-amount amt-sh">₹200</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹100</td><td class="right row-amount amt-fr">₹100</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Hall of Fame Museum (×4)</div><div class="row-note">₹150/person · Kargil War memorial</div></td><td class="right row-amount amt-sh">₹600</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹300</td><td class="right row-amount amt-fr">₹300</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Alchi Monastery (×4)</div><div class="row-note">₹100/person · 10th century murals</div></td><td class="right row-amount amt-sh">₹400</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹200</td><td class="right row-amount amt-fr">₹200</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Lamayuru Monastery (×4)</div><div class="row-note">₹100/person · Moonland · oldest in Ladakh</div></td><td class="right row-amount amt-sh">₹400</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹200</td><td class="right row-amount amt-fr">₹200</td></tr>
+          <tr style="background:rgba(167,139,250,0.03)"><td><div class="row-label">Pangong camp fee (4 pax, own tent)</div><div class="row-note">You carry your tent — saves ₹3,000+ on second tent</div></td><td class="right row-amount amt-sh">₹5,000</td><td class="center"><span class="who-badge badge-50">50-50</span></td><td class="right row-amount amt-ss">₹2,500</td><td class="right row-amount amt-fr">₹2,500</td></tr>
+          <!-- SOLO -->
+          <tr><td><div class="row-label">Hadimba Temple, Manali (×2)</div><div class="row-note">₹100/person · Solo phase</div></td><td class="right row-amount amt-ss">₹200</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹200</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Bactrian camel solo Nubra (×2)</div><div class="row-note">₹400/person · Solo Nubra phase</div></td><td class="right row-amount amt-ss">₹800</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-ss">₹800</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr><td><div class="row-label">Golden Temple, Amritsar</div><div class="row-note">Free entry. Langar free. Pure joy.</div></td><td class="right row-amount amt-zero">₹0</td><td class="center"><span class="who-badge badge-ss">S&S</span></td><td class="right row-amount amt-zero">₹0</td><td class="right row-amount amt-zero">—</td></tr>
+          <tr class="subtotal-row"><td><span class="subtotal-label">Total activities</span></td><td class="right row-amount" style="color:var(--text)">₹15,100</td><td></td><td class="right row-amount amt-ss">₹8,050</td><td class="right row-amount amt-fr">₹7,050</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- =================== PREP COSTS =================== -->
+  <div class="section" id="sec-prep">
+    <div class="section-header" onclick="toggleSection('sec-prep')">
+      <div class="section-icon">🔧</div>
+      <div class="section-title-text">Prep & One-Time Costs (S&S)</div>
+      <div class="section-subtotal">
+        <span style="color:var(--green)">₹16,900 total</span>
+      </div>
+      <div class="section-chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <table class="budget-table">
+        <thead><tr><th>Item</th><th class="right">Cost</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><div class="row-label">Car full service — Chandigarh Mahindra</div></td><td class="right row-amount" style="color:var(--green)">₹6,000</td><td class="row-note">Engine oil, brake pads, tyres, all fluids, filter</td></tr>
+          <tr><td><div class="row-label">Travel insurance × 2 persons</div></td><td class="right row-amount" style="color:var(--green)">₹1,200</td><td class="row-note">₹600/person · Must include helicopter evacuation cover</td></tr>
+          <tr><td><div class="row-label">10L diesel jerry can</div></td><td class="right row-amount" style="color:var(--green)">₹1,500</td><td class="row-note">Critical for Leh→Manali (300km no pump)</td></tr>
+          <tr><td><div class="row-label">Tow rope + jumper cables</div></td><td class="right row-amount" style="color:var(--green)">₹1,200</td><td class="row-note">Emergency essentials</td></tr>
+          <tr><td><div class="row-label">Puncture repair kit + tyre inflator</div></td><td class="right row-amount" style="color:var(--green)">₹800</td><td class="row-note">12V inflator useful at cold altitude too</td></tr>
+          <tr><td><div class="row-label">Ladakh EDF online — 2 persons</div></td><td class="right row-amount" style="color:var(--green)">₹800</td><td class="row-note">₹400/person at lahdclehpermit.in</td></tr>
+          <tr><td><div class="row-label">Document photocopies × 6 sets</div></td><td class="right row-amount" style="color:var(--green)">₹200</td><td class="row-note">RC, insurance, DL, all 4 Aadhars</td></tr>
+          <tr><td><div class="row-label">Pulse oximeter</div></td><td class="right row-amount" style="color:var(--green)">₹900</td><td class="row-note">SpO2 monitor — AMS early detection, reusable</td></tr>
+          <tr><td><div class="row-label">Medicines: Diamox, ORS, kit</div></td><td class="right row-amount" style="color:var(--green)">₹1,500</td><td class="row-note">Doctor consult + Diamox prescription + full kit</td></tr>
+          <tr><td><div class="row-label">Snack stash (Bangalore + Chandigarh)</div></td><td class="right row-amount" style="color:var(--green)">₹2,000</td><td class="row-note">MTR pouches, Maggi × 20, dry fruits, energy bars</td></tr>
+          <tr><td><div class="row-label">Steel thermos × 2</div></td><td class="right row-amount" style="color:var(--green)">₹800</td><td class="row-note">Hot chai at passes is a non-negotiable</td></tr>
+          <tr class="subtotal-row"><td><span class="subtotal-label">Total prep (S&S pays, not split)</span></td><td class="right row-amount" style="color:var(--green)">₹16,900</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FRIENDS OWN COSTS -->
+  <div class="friends-own-card">
+    <div class="friends-own-title">⚠️ Friends Pay Separately — NOT in the 50-50 split</div>
+    <div class="fown-grid">
+      <div class="fown-item"><span class="fown-label">Volvo bus Manali → Chandigarh (×2)</span><span class="fown-amt">₹1,600</span></div>
+      <div class="fown-item"><span class="fown-label">Chandigarh → Bangalore flights (×2)</span><span class="fown-amt">~₹8,000</span></div>
+      <div class="fown-item"><span class="fown-label">Ladakh EDF (×2 persons)</span><span class="fown-amt">₹800</span></div>
+      <div class="fown-item"><span class="fown-label">Travel insurance (×2)</span><span class="fown-amt">₹1,200</span></div>
+      <div class="fown-item"><span class="fown-label">Medicines: Diamox + kit (×2)</span><span class="fown-amt">₹1,000</span></div>
+      <div class="fown-item"><span class="fown-label">Soft travel bags (if needed)</span><span class="fown-amt">~₹1,500</span></div>
+    </div>
+    <div class="fown-total-line">
+      <span>Friends' own additional costs (outside the ₹49,584 split)</span>
+      <strong>~₹14,100</strong>
+    </div>
+  </div>
+
+  <!-- GRAND SUMMARY -->
+  <div class="grand-card">
+    <div class="grand-card-header">Grand Total Summary</div>
+    <table class="grand-table">
+      <tr>
+        <td style="width:40%"><div class="cat-name">⛽ Fuel</div><div class="cat-note">7,830 km · 689L · ₹92/L</div></td>
+        <td class="grand-amt amt-ss">₹55,034</td>
+        <td class="grand-amt amt-fr">₹8,334</td>
+        <td class="grand-amt" style="color:var(--text)">₹63,368</td>
+      </tr>
+      <tr>
+        <td><div class="cat-name">🏨 Accommodation</div><div class="cat-note">25 nights total for S&S · 8 nights group</div></td>
+        <td class="grand-amt amt-ss">₹69,100</td>
+        <td class="grand-amt amt-fr">₹28,500</td>
+        <td class="grand-amt" style="color:var(--text)">₹97,600</td>
+      </tr>
+      <tr>
+        <td><div class="cat-name">🥗 Food</div><div class="cat-note">Packed food + 1 restaurant/day</div></td>
+        <td class="grand-amt amt-ss">₹18,100</td>
+        <td class="grand-amt amt-fr">₹5,300</td>
+        <td class="grand-amt" style="color:var(--text)">₹23,400</td>
+      </tr>
+      <tr>
+        <td><div class="cat-name">🎟️ Activities & Experiences</div><div class="cat-note">Gondola, camel, shikara, monasteries, camps</div></td>
+        <td class="grand-amt amt-ss">₹8,050</td>
+        <td class="grand-amt amt-fr">₹7,050</td>
+        <td class="grand-amt" style="color:var(--text)">₹15,100</td>
+      </tr>
+      <tr>
+        <td><div class="cat-name">🛣️ Toll (extra only)</div><div class="cat-note">FASTag pass covers ~₹8,500 worth. Only state/manual remaining</div></td>
+        <td class="grand-amt amt-ss">₹400</td>
+        <td class="grand-amt amt-fr">₹400</td>
+        <td class="grand-amt" style="color:var(--text)">₹800</td>
+      </tr>
+      <tr>
+        <td><div class="cat-name">🔧 Prep & One-time (S&S only)</div><div class="cat-note">Car service, insurance, kit, medicines</div></td>
+        <td class="grand-amt" style="color:var(--green)">₹16,900</td>
+        <td class="grand-amt amt-zero">—</td>
+        <td class="grand-amt" style="color:var(--green)">₹16,900</td>
+      </tr>
+      <tr class="grand-total-row">
+        <td style="width:25%"><div class="grand-total-label" style="color:var(--ss-color)">Shrinandan & Shubhashree</div><div style="font-size:0.72rem;color:var(--muted);margin-top:0.3rem;font-family:var(--mono)">₹5,586/day · ₹2,793/person/day</div></td>
+        <td colspan="2" class="grand-total-amt amt-ss">₹1,67,584</td>
+        <td></td>
+      </tr>
+      <tr class="grand-total-row" style="background:rgba(56,189,248,0.06)">
+        <td><div class="grand-total-label" style="color:var(--fr-color)">Friends (8 days, 50-50 share)</div><div style="font-size:0.72rem;color:var(--muted);margin-top:0.3rem;font-family:var(--mono)">₹6,198/day · ₹3,099/person/day</div></td>
+        <td colspan="2" class="grand-total-amt amt-fr">₹49,584</td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- BAR CHART -->
+  <div class="section" id="sec-chart">
+    <div class="section-header" onclick="toggleSection('sec-chart')">
+      <div class="section-icon">📊</div>
+      <div class="section-title-text">S&S Spend Distribution</div>
+      <div class="section-chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="bar-chart" id="barChart">
+        <div class="bar-row"><div class="bar-cat">Accommodation</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:#f97316" data-w="41.2"></div></div><div class="bar-amt amt-ss">₹69,100</div></div>
+        <div class="bar-row"><div class="bar-cat">Fuel</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:#fb923c" data-w="32.8"></div></div><div class="bar-amt amt-ss">₹55,034</div></div>
+        <div class="bar-row"><div class="bar-cat">Prep/One-time</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:#4ade80" data-w="10.1"></div></div><div class="bar-amt" style="color:var(--green)">₹16,900</div></div>
+        <div class="bar-row"><div class="bar-cat">Food</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:#38bdf8" data-w="10.8"></div></div><div class="bar-amt amt-ss">₹18,100</div></div>
+        <div class="bar-row"><div class="bar-cat">Activities</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:#a78bfa" data-w="4.8"></div></div><div class="bar-amt amt-ss">₹8,050</div></div>
+        <div class="bar-row"><div class="bar-cat">Toll</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:#6b7280" data-w="0.2"></div></div><div class="bar-amt" style="color:var(--muted)">₹400</div></div>
+      </div>
+      <div style="margin-top:1.5rem;padding:1rem;background:var(--surface2);border-radius:8px;border:1px solid var(--border);">
+        <div style="font-family:var(--mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem;">Key Insights</div>
+        <div class="insights-grid" style="margin-bottom:0">
+          <div class="insight-card"><div class="insight-icon">🏨</div><div class="insight-label">Biggest spend</div><div class="insight-value">Accommodation</div><div class="insight-sub">41% of S&S total · 25 nights</div></div>
+          <div class="insight-card"><div class="insight-icon">⛽</div><div class="insight-label">Fuel efficiency win</div><div class="insight-value">₹55,034</div><div class="insight-sub">33% of budget for 7,830 km</div></div>
+          <div class="insight-card"><div class="insight-icon">🛣️</div><div class="insight-label">FASTag saved</div><div class="insight-value">₹8,500</div><div class="insight-sub">185+ tolls remaining after trip</div></div>
+          <div class="insight-card"><div class="insight-icon">👫</div><div class="insight-label">Friends offset</div><div class="insight-value">₹49,584</div><div class="insight-sub">Reduces S&S group-phase cost by 50%</div></div>
+          <div class="insight-card"><div class="insight-icon">🥗</div><div class="insight-label">Food per person/day</div><div class="insight-value">₹302</div><div class="insight-sub">Packed food strategy pays off</div></div>
+          <div class="insight-card"><div class="insight-icon">💡</div><div class="insight-label">Effective daily cost</div><div class="insight-value">₹2,793</div><div class="insight-sub">Per person · Full 30-day trip</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div class="footer">
+  <div class="footer-left">BLR → LEH → BLR · 2025</div>
+  <div class="footer-right">
+    Diesel ₹92/L · Highway 12.5 kmpl · Mountain 9.5 kmpl<br>
+    FASTag yearly pass active · 185+ trips remaining<br>
+    All figures in INR · Estimates ± 10%
+  </div>
+</div>
+
+<script>
+// Section toggle
+function toggleSection(id) {
+  const sec = document.getElementById(id);
+  sec.classList.toggle('collapsed');
+}
+
+// Bar chart animate on scroll
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.bar-fill').forEach((bar, i) => {
+        setTimeout(() => {
+          bar.style.width = bar.dataset.w + '%';
+        }, i * 100);
+      });
+      barObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+const bc = document.getElementById('barChart');
+if (bc) barObserver.observe(bc);
+
+// Animate totals bar on load
+document.querySelectorAll('.total-chip-amount').forEach((el, i) => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(6px)';
+  setTimeout(() => {
+    el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+    el.style.opacity = '1';
+    el.style.transform = 'translateY(0)';
+  }, 200 + i * 100);
+});
+</script>
+</body>
+</html>

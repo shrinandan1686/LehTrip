@@ -1,0 +1,2441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLR → LEH → BLR | Epic Road Trip 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0a0f;
+  --paper: #f2ede4;
+  --snow: #ffffff;
+  --mountain: #1a2744;
+  --glacier: #4a90d9;
+  --dawn: #e8633a;
+  --gold: #c9941a;
+  --sage: #5a7a5c;
+  --mist: #8fa4b8;
+  --danger: #c0392b;
+  --accent: #e8633a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  background: var(--mountain);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 2rem;
+}
+
+.hero-mountains {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 45%;
+}
+
+.hero-mountains svg { width: 100%; height: 100%; }
+
+.hero-stars {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 8%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 20%, rgba(255,255,255,0.9) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 5%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 12%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 18%, rgba(255,255,255,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 35%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 30%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 32% 42%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 78% 38%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 5% 28%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 48% 10%, rgba(255,255,255,0.4) 0%, transparent 100%);
+}
+
+.hero-content { position: relative; z-index: 10; text-align: center; }
+
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  color: var(--glacier);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  animation: fadeUp 0.8s ease forwards;
+  opacity: 0;
+}
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(5rem, 15vw, 12rem);
+  line-height: 0.85;
+  color: var(--snow);
+  letter-spacing: 0.02em;
+  animation: fadeUp 0.8s 0.2s ease forwards;
+  opacity: 0;
+}
+
+.hero-title span { color: var(--dawn); }
+
+.hero-subtitle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  color: var(--mist);
+  letter-spacing: 0.15em;
+  margin-top: 0.5rem;
+  animation: fadeUp 0.8s 0.4s ease forwards;
+  opacity: 0;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  margin-top: 3rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeUp 0.8s 0.6s ease forwards;
+  opacity: 0;
+}
+
+.hero-stat { text-align: center; }
+.hero-stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  color: var(--dawn);
+  line-height: 1;
+}
+.hero-stat-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--mist);
+  text-transform: uppercase;
+}
+
+.hero-names {
+  margin-top: 2rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  animation: fadeUp 0.8s 0.8s ease forwards;
+  opacity: 0;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--mist);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  animation: bounce 2s infinite;
+  z-index: 10;
+}
+
+/* ===== NAV ===== */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--mountain);
+  padding: 0.75rem 2rem;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 2px solid var(--dawn);
+}
+.sticky-nav::-webkit-scrollbar { display: none; }
+
+.nav-btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent;
+  color: var(--mist);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  border-radius: 2px;
+}
+.nav-btn:hover, .nav-btn.active {
+  background: var(--dawn);
+  color: var(--snow);
+  border-color: var(--dawn);
+}
+
+/* ===== SECTIONS ===== */
+section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--dawn);
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 0.9;
+  color: var(--mountain);
+  margin-bottom: 2rem;
+}
+
+/* ===== TIMELINE ===== */
+.timeline-section { background: var(--paper); }
+
+.phase-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.phase-tab {
+  padding: 0.5rem 1.2rem;
+  background: transparent;
+  border: 2px solid var(--mountain);
+  color: var(--mountain);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 2px;
+}
+.phase-tab.active, .phase-tab:hover {
+  background: var(--mountain);
+  color: var(--snow);
+}
+
+.phase-content { display: none; }
+.phase-content.active { display: block; }
+
+.day-card {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 0;
+  margin-bottom: 0;
+  position: relative;
+}
+
+.day-card::before {
+  content: '';
+  position: absolute;
+  left: 40px;
+  top: 50px;
+  bottom: -20px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--dawn), transparent);
+}
+.day-card:last-child::before { display: none; }
+
+.day-num {
+  padding-top: 1rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.day-num-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--mountain);
+  color: var(--snow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  margin: 0 auto;
+  border: 2px solid var(--dawn);
+}
+
+.day-body {
+  padding: 1rem 1rem 2rem 1.5rem;
+  border-left: none;
+}
+
+.day-date {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dawn);
+  margin-bottom: 0.2rem;
+}
+
+.day-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--mountain);
+  margin-bottom: 0.3rem;
+}
+
+.day-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.day-tag {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+.tag-km { background: #e8f4f8; color: var(--glacier); }
+.tag-leave { background: #fef3e2; color: var(--gold); }
+.tag-wfh { background: #e8f5e9; color: var(--sage); }
+.tag-drive { background: #fde8e8; color: var(--danger); }
+.tag-explore { background: #f0e8ff; color: #7c3aed; }
+
+.day-stops {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+.day-stops li {
+  font-size: 0.78rem;
+  padding: 0.2rem 0.5rem;
+  background: rgba(26,39,68,0.08);
+  border-radius: 2px;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.05em;
+}
+.day-stops li::before { content: "◆ "; color: var(--dawn); font-size: 0.5rem; }
+
+.day-tip {
+  font-size: 0.82rem;
+  color: #555;
+  line-height: 1.5;
+  border-left: 3px solid var(--glacier);
+  padding-left: 0.8rem;
+  font-style: italic;
+}
+
+.day-alt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.05em;
+  color: var(--danger);
+}
+
+/* Group phase highlight */
+.day-card.group-day .day-num-circle {
+  background: var(--dawn);
+  border-color: var(--gold);
+}
+.day-card.group-day .day-body {
+  background: linear-gradient(to right, rgba(232,99,58,0.05), transparent);
+  border-radius: 0 8px 8px 0;
+}
+
+/* ===== MAP SECTION ===== */
+.map-section-wrapper {
+  background: var(--mountain);
+  padding: 5rem 2rem;
+}
+.map-section {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.map-section .section-title { color: var(--snow); }
+.map-section .section-label { color: var(--glacier); }
+
+.route-map {
+  background: #0d1b2a;
+  border-radius: 8px;
+  padding: 2rem;
+  position: relative;
+  overflow-x: auto;
+  border: 1px solid rgba(74,144,217,0.3);
+}
+
+.map-legend {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: var(--mist);
+}
+.legend-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+}
+
+/* SVG Route Map */
+.route-svg { width: 100%; height: auto; min-width: 600px; }
+
+/* ===== CHECKLIST ===== */
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.checklist-card {
+  border: 2px solid var(--mountain);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.checklist-header {
+  background: var(--mountain);
+  color: var(--snow);
+  padding: 0.8rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.checklist-header .icon { font-size: 1.2rem; }
+
+.checklist-body { padding: 1rem; }
+
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 3px;
+  padding-left: 0.3rem;
+}
+.check-item:hover { background: rgba(232,99,58,0.06); }
+.check-item:last-child { border-bottom: none; }
+
+.check-item input[type="checkbox"] {
+  width: 16px; height: 16px;
+  accent-color: var(--dawn);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.check-label {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.check-label.checked { text-decoration: line-through; color: #aaa; }
+
+.check-urgent {
+  font-size: 0.65rem;
+  background: var(--danger);
+  color: white;
+  padding: 0.1rem 0.3rem;
+  border-radius: 2px;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.checklist-progress {
+  margin-top: 1rem;
+  height: 4px;
+  background: rgba(0,0,0,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.checklist-progress-bar {
+  height: 100%;
+  background: var(--dawn);
+  width: 0%;
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+.checklist-count {
+  font-size: 0.7rem;
+  color: #888;
+  margin-top: 0.4rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.05em;
+}
+
+/* ===== BUDGET ===== */
+.budget-section-wrapper {
+  background: var(--ink);
+  padding: 5rem 2rem;
+}
+.budget-section { max-width: 1200px; margin: 0 auto; }
+.budget-section .section-title { color: var(--snow); }
+.budget-section .section-label { color: var(--gold); }
+
+.budget-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.budget-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  padding: 1.2rem;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.budget-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold);
+}
+
+.budget-card-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+.budget-card-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 0.3rem;
+}
+.budget-card-amount {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--gold);
+  line-height: 1;
+}
+.budget-card-detail {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.3rem;
+  line-height: 1.4;
+}
+
+.budget-total {
+  background: var(--dawn);
+  border-radius: 4px;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.budget-total-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.8);
+}
+.budget-total-amount {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  color: var(--snow);
+  line-height: 1;
+}
+.budget-split-note {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.7);
+  margin-top: 0.3rem;
+}
+
+/* ===== WEATHER TABLE ===== */
+.weather-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.weather-card {
+  background: var(--mountain);
+  color: var(--snow);
+  border-radius: 4px;
+  padding: 1rem;
+  text-align: center;
+}
+.weather-city {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mist);
+  margin-bottom: 0.3rem;
+}
+.weather-alt {
+  font-size: 0.65rem;
+  color: var(--glacier);
+  margin-bottom: 0.5rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.05em;
+}
+.weather-temp {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--snow);
+  line-height: 1;
+}
+.weather-icon { font-size: 1.5rem; margin: 0.3rem 0; }
+.weather-desc { font-size: 0.72rem; color: #aaa; }
+
+/* ===== PITCH SECTION ===== */
+.pitch-wrapper {
+  background: linear-gradient(135deg, #1a2744 0%, #0d1520 100%);
+  padding: 5rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.pitch-wrapper::before {
+  content: 'JOIN US';
+  position: absolute;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 25vw;
+  color: rgba(255,255,255,0.02);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.pitch-section { max-width: 1200px; margin: 0 auto; position: relative; }
+.pitch-section .section-title { color: var(--snow); }
+.pitch-section .section-label { color: var(--dawn); }
+
+.pitch-subtitle {
+  font-size: 1.1rem;
+  color: var(--mist);
+  margin-bottom: 3rem;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.pitch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.pitch-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.pitch-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--dawn);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+.pitch-card:hover::before { transform: scaleX(1); }
+.pitch-card:hover { border-color: rgba(232,99,58,0.3); transform: translateY(-4px); }
+
+.pitch-card-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+.pitch-card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--snow);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+.pitch-card-text { font-size: 0.85rem; color: #aaa; line-height: 1.6; }
+.pitch-highlight { color: var(--gold); font-weight: 600; }
+
+.pitch-timeline {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+.pitch-timeline-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--dawn);
+  margin-bottom: 1.5rem;
+}
+.pitch-days {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dawn) transparent;
+}
+.pitch-day {
+  flex: 0 0 auto;
+  text-align: center;
+  padding: 0 0.8rem;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  min-width: 110px;
+}
+.pitch-day:last-child { border-right: none; }
+.pitch-day-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.85rem;
+  color: var(--dawn);
+  margin-bottom: 0.3rem;
+}
+.pitch-day-name {
+  font-size: 0.8rem;
+  color: var(--snow);
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+.pitch-day-sub { font-size: 0.65rem; color: #666; line-height: 1.3; }
+
+.pitch-cta {
+  background: var(--dawn);
+  border-radius: 4px;
+  padding: 2rem;
+  text-align: center;
+}
+.pitch-cta-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  color: var(--snow);
+  margin-bottom: 0.5rem;
+}
+.pitch-cta-sub { font-size: 0.9rem; color: rgba(255,255,255,0.8); margin-bottom: 1.5rem; }
+.pitch-cta-items {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.pitch-cta-item {
+  text-align: center;
+}
+.pitch-cta-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--snow);
+}
+.pitch-cta-label { font-size: 0.7rem; color: rgba(255,255,255,0.7); letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Barlow Condensed', sans-serif; }
+
+/* ===== ALTITUDE PROFILE ===== */
+.altitude-section-wrapper {
+  background: #f8f4ed;
+  padding: 5rem 2rem;
+}
+.altitude-section { max-width: 1200px; margin: 0 auto; }
+
+.altitude-chart {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+
+/* ===== PACKING ===== */
+.packing-accordion { margin-top: 1.5rem; }
+.accordion-item {
+  border: 2px solid var(--mountain);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  background: var(--mountain);
+  color: var(--snow);
+  cursor: pointer;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  user-select: none;
+}
+.accordion-arrow { transition: transform 0.3s; font-style: normal; }
+.accordion-item.open .accordion-arrow { transform: rotate(180deg); }
+.accordion-body {
+  display: none;
+  padding: 1rem 1.2rem;
+  background: white;
+}
+.accordion-item.open .accordion-body { display: block; }
+
+.packing-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.3rem;
+}
+.packing-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.packing-item input { accent-color: var(--dawn); cursor: pointer; }
+.packing-item label { cursor: pointer; }
+.packing-item.checked label { text-decoration: line-through; color: #aaa; }
+
+/* ===== TIPS ===== */
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.tip-card {
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+.tip-card-header {
+  padding: 0.8rem 1rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tip-card-body {
+  padding: 1rem;
+  background: white;
+}
+.tip-card-body ul { list-style: none; }
+.tip-card-body li {
+  font-size: 0.83rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  line-height: 1.4;
+  color: #333;
+}
+.tip-card-body li::before { content: "→ "; color: var(--dawn); font-weight: 700; }
+.tip-card-body li:last-child { border-bottom: none; }
+
+.tip-safety .tip-card-header { background: #fde8e8; color: var(--danger); }
+.tip-veg .tip-card-header { background: #e8f5e9; color: var(--sage); }
+.tip-hindi .tip-card-header { background: #e8f4f8; color: var(--glacier); }
+.tip-altitude .tip-card-header { background: #fef3e2; color: var(--gold); }
+.tip-car .tip-card-header { background: #f0e8ff; color: #7c3aed; }
+.tip-money .tip-card-header { background: #fff3e0; color: #e65100; }
+
+/* ===== PERMITS ===== */
+.permit-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.permit-card {
+  border-radius: 4px;
+  padding: 1.2rem;
+  border: 2px solid;
+}
+.permit-card.required { border-color: var(--danger); background: #fff5f5; }
+.permit-card.not-required { border-color: var(--sage); background: #f5fff5; }
+.permit-card.fee-only { border-color: var(--gold); background: #fffbf0; }
+
+.permit-status {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.permit-card.required .permit-status { color: var(--danger); }
+.permit-card.not-required .permit-status { color: var(--sage); }
+.permit-card.fee-only .permit-status { color: var(--gold); }
+
+.permit-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--mountain);
+  margin-bottom: 0.4rem;
+}
+.permit-desc { font-size: 0.8rem; color: #555; line-height: 1.5; }
+
+/* ===== EMERGENCY ===== */
+.emergency-wrapper {
+  background: var(--danger);
+  padding: 3rem 2rem;
+}
+.emergency-section { max-width: 1200px; margin: 0 auto; }
+.emergency-section .section-title { color: var(--snow); font-size: 2.5rem; }
+.emergency-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.emergency-card {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  padding: 1rem;
+  color: white;
+}
+.emergency-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 0.2rem;
+}
+.emergency-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  color: white;
+}
+.emergency-desc { font-size: 0.72rem; color: rgba(255,255,255,0.7); margin-top: 0.2rem; }
+
+/* ===== FOOTER ===== */
+.footer {
+  background: var(--mountain);
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--mist);
+}
+.footer-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  color: var(--snow);
+  margin-bottom: 0.5rem;
+}
+.footer-sub { font-size: 0.85rem; letter-spacing: 0.1em; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-8px); }
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .hero-stats { gap: 1.5rem; }
+  .day-card { grid-template-columns: 60px 1fr; }
+}
+
+/* Print specific */
+@media print {
+  .sticky-nav, .hero { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-stars"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">The Ultimate Indian Road Trip</div>
+    <div class="hero-title">BLR →<br><span>LEH</span> →<br>BLR</div>
+    <div class="hero-subtitle">Mahindra Thar Roxx · Diesel 4×4 · May–June 2025</div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">~9,000</div>
+        <div class="hero-stat-label">Total KMs</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">30</div>
+        <div class="hero-stat-label">Days</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">5,359m</div>
+        <div class="hero-stat-label">Max Altitude</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">4</div>
+        <div class="hero-stat-label">Passes</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">₹2.4L</div>
+        <div class="hero-stat-label">Est. Budget</div>
+      </div>
+    </div>
+    <div class="hero-names">✦ Shrinandan & Shubhashree ✦ + Friends from Chandigarh ✦</div>
+  </div>
+  <div class="hero-mountains">
+    <svg viewBox="0 0 1440 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,300 0,200 120,120 240,180 360,80 480,150 600,40 720,120 840,60 960,140 1080,50 1200,130 1320,70 1440,100 1440,300" fill="#0d1520" opacity="0.9"/>
+      <polygon points="0,300 0,250 160,200 280,240 400,170 520,220 640,160 760,200 880,150 1000,190 1120,160 1240,195 1360,175 1440,190 1440,300" fill="#0a1018" opacity="0.8"/>
+      <polygon points="0,300 0,280 200,260 400,275 600,255 800,270 1000,258 1200,268 1440,260 1440,300" fill="#070c12"/>
+      <!-- Snow caps -->
+      <polygon points="360,80 340,90 380,90" fill="white" opacity="0.6"/>
+      <polygon points="600,40 580,55 620,55" fill="white" opacity="0.7"/>
+      <polygon points="840,60 820,72 860,72" fill="white" opacity="0.5"/>
+      <polygon points="1080,50 1060,63 1100,63" fill="white" opacity="0.65"/>
+    </svg>
+  </div>
+  <div class="scroll-hint">▼ scroll to explore</div>
+</div>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+  <button class="nav-btn active" onclick="scrollToSection('itinerary')">📅 Itinerary</button>
+  <button class="nav-btn" onclick="scrollToSection('route')">🗺️ Route Map</button>
+  <button class="nav-btn" onclick="scrollToSection('altitude')">⛰️ Altitude</button>
+  <button class="nav-btn" onclick="scrollToSection('pitch')">👫 Pitch Friends</button>
+  <button class="nav-btn" onclick="scrollToSection('checklist')">✅ Checklists</button>
+  <button class="nav-btn" onclick="scrollToSection('packing')">🎒 Packing</button>
+  <button class="nav-btn" onclick="scrollToSection('budget')">💰 Budget</button>
+  <button class="nav-btn" onclick="window.location.href='leh-budget.html'">📊 Detailed Budget</button>
+  <button class="nav-btn" onclick="scrollToSection('weather')">🌡️ Weather</button>
+  <button class="nav-btn" onclick="scrollToSection('permits')">📋 Permits</button>
+  <button class="nav-btn" onclick="scrollToSection('tips')">💡 Tips</button>
+  <button class="nav-btn" onclick="scrollToSection('emergency')">🆘 Emergency</button>
+</nav>
+
+<!-- ITINERARY -->
+<section id="itinerary" class="fade-in">
+  <div class="section-label">Day by Day</div>
+  <div class="section-title">THE ITINERARY</div>
+
+  <div class="phase-tabs">
+    <button class="phase-tab active" onclick="showPhase('phase1')">🚗 Phase 1: BLR→CHD</button>
+    <button class="phase-tab" onclick="showPhase('phase2')">💻 Phase 2: WFH CHD</button>
+    <button class="phase-tab" onclick="showPhase('phase3')">👫 Phase 3: Group (CHD→Manali)</button>
+    <button class="phase-tab" onclick="showPhase('phase4')">🏠 Phase 4: Return</button>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div id="phase1" class="phase-content active">
+    <div class="day-card">
+      <div class="day-num"><div class="day-num-circle">1</div></div>
+      <div class="day-body">
+        <div class="day-date">Friday, May 16th</div>
+        <div class="day-title">Bangalore → Nagpur</div>
+        <div class="day-meta">
+          <span class="day-tag tag-km">📍 ~890 km</span>
+          <span class="day-tag tag-drive">🚗 12–13 hrs</span>
+          <span class="day-tag" style="background:#e8f4f8;color:var(--glacier)">⏰ Depart 4:00 AM</span>
+        </div>
+        <ul class="day-stops">
+          <li>Bangalore → NH44 North</li>
+          <li>Hyderabad bypass (7:30 AM breakfast)</li>
+          <li>Adilabad tea break</li>
+          <li>Nagpur — check in by 6–7 PM</li>
+        </ul>
+        <div class="day-tip">Shubha drives 100 km on the flat NH44 stretch near Adilabad. Fill fuel at Hyderabad before the bypass. Lots of pure veg Udupi/Andhra dhabas on this stretch.</div>
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-num"><div class="day-num-circle">2</div></div>
+      <div class="day-body">
+        <div class="day-date">Saturday, May 17th</div>
+        <div class="day-title">Nagpur → Chandigarh</div>
+        <div class="day-meta">
+          <span class="day-tag tag-km">📍 ~1,040 km</span>
+          <span class="day-tag tag-drive">🚗 13–14 hrs</span>
+          <span class="day-tag" style="background:#e8f4f8;color:var(--glacier)">⏰ Depart 3:30 AM</span>
+        </div>
+        <ul class="day-stops">
+          <li>Nagpur → Bhopal bypass</li>
+          <li>Delhi-Mumbai Expressway NE-4</li>
+          <li>Kota lunch stop (pure veg Rajasthani thali)</li>
+          <li>Jaipur Trans-Haryana Expressway</li>
+          <li>Chandigarh by 8–9 PM</li>
+        </ul>
+        <div class="day-tip">This day is purely about distance. Bhopal bypass breakfast, Kota lunch (amazing Rajasthani veg thali — dal baati!), Jaipur quick chai. No sightseeing. Book Chandigarh hotel before leaving Nagpur.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div id="phase2" class="phase-content">
+    <div class="day-card">
+      <div class="day-num"><div class="day-num-circle">3–10</div></div>
+      <div class="day-body">
+        <div class="day-date">May 18–25</div>
+        <div class="day-title">WFH Base: Chandigarh</div>
+        <div class="day-meta">
+          <span class="day-tag tag-wfh">💻 8 WFH Days</span>
+          <span class="day-tag tag-explore">🌆 Explore Punjab</span>
+        </div>
+        <ul class="day-stops">
+          <li>Chandigarh: Rose Garden, Rock Garden, Sukhna Lake</li>
+          <li>Sector 17 market — shopping</li>
+          <li>Weekend trip to Amritsar (250 km each way)</li>
+          <li>Golden Temple darshan + langar (pure veg!)</li>
+          <li>Wagah Border ceremony</li>
+          <li>Car full service at Mahindra service center</li>
+        </ul>
+        <div class="day-tip">Chandigarh is India's most organized city — zero scam/language issues. English spoken everywhere. Find a serviced apartment with fast WiFi in Sector 22/35. Pure veg food is exceptionally easy here.</div>
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-num"><div class="day-num-circle">WFH</div></div>
+      <div class="day-body">
+        <div class="day-date">May 26–29</div>
+        <div class="day-title">Pre-Trip Prep Days</div>
+        <div class="day-meta">
+          <span class="day-tag tag-wfh">💻 WFH</span>
+          <span class="day-tag" style="background:#fde8e8;color:var(--danger)">⚠️ Critical Prep</span>
+        </div>
+        <ul class="day-stops">
+          <li>Get all documents photocopied ×6 sets</li>
+          <li>Pay Ladakh Environment Fee online</li>
+          <li>Pack & repack car for 4 people</li>
+          <li>Buy jerry can, emergency kit, snack stash</li>
+          <li>Confirm all hotel bookings (Srinagar, Kargil, Leh)</li>
+        </ul>
+        <div class="day-tip">These 4 days are critical admin days. Sort finances with the second couple — agree on Splitwise for fuel/toll/food splits. Brief them on altitude sickness protocol. Diamox prescription from doctor.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3: GROUP -->
+  <div id="phase3" class="phase-content">
+    <div class="day-card group-day">
+      <div class="day-num"><div class="day-num-circle">G1</div></div>
+      <div class="day-body">
+        <div class="day-date">Friday, May 30th</div>
+        <div class="day-title">Group Meetup — Chandigarh</div>
+        <div class="day-meta">
+          <span class="day-tag tag-explore">🤝 Friends Arrive</span>
+          <span class="day-tag" style="background:#fef3e2;color:var(--gold)">🎉 Pre-Trip Night</span>
+        </div>
+        <ul class="day-stops">
+          <li>Friends arrive at Chandigarh by afternoon</li>
+          <li>Group dinner — Pal Dhaba, Sector 28</li>
+          <li>Car packing — 1 soft bag per person max</li>
+          <li>Document distribution to all 4</li>
+          <li>Early bed by 9:30 PM</li>
+        </ul>
+        <div class="day-tip">One rule for friends: NO hard suitcases. 40L backpack or soft duffle only. The Thar Roxx boot needs to hold 4 bags + jerry can + toolkit + snacks.</div>
+      </div>
+    </div>
+    <div class="day-card group-day">
+      <div class="day-num"><div class="day-num-circle">G2</div></div>
+      <div class="day-body">
+        <div class="day-date">Saturday, May 31st</div>
+        <div class="day-title">Chandigarh → Jammu</div>
+        <div class="day-meta">
+          <span class="day-tag tag-km">📍 290 km</span>
+          <span class="day-tag tag-drive">🚗 5–6 hrs</span>
+          <span class="day-tag" style="background:#e8f4f8;color:var(--glacier)">⏰ 6:30 AM</span>
+        </div>
+        <ul class="day-stops">
+          <li>Pathankot breakfast — stuffed parathas & lassi</li>
+          <li>Jammu — check in by noon</li>
+          <li>Raghunath Temple visit</li>
+          <li>Bahu Fort (optional)</li>
+          <li>Document copies distributed to all</li>
+        </ul>
+        <div class="day-tip">Jammu has a huge Dogra Hindu vegetarian culture — extremely easy for vegetarians. Hotel with AC is important — it's hot in Jammu in May/June. Sleep early, big mountain drive tomorrow.</div>
+      </div>
+    </div>
+    <div class="day-card group-day">
+      <div class="day-num"><div class="day-num-circle">G3</div></div>
+      <div class="day-body">
+        <div class="day-date">Sunday, June 1st</div>
+        <div class="day-title">Jammu → Srinagar</div>
+        <div class="day-meta">
+          <span class="day-tag tag-km">📍 270 km</span>
+          <span class="day-tag tag-drive">🚗 5–6 hrs</span>
+          <span class="day-tag" style="background:#e8f4f8;color:var(--glacier)">⏰ 6:00 AM</span>
+        </div>
+        <ul class="day-stops">
+          <li>Banihal Tunnel crossing (awe moment)</li>
+          <li>Kashmir Valley opens up after tunnel</li>
+          <li>Srinagar — check in / houseboat</li>
+          <li>Evening shikara ride on Dal Lake</li>
+          <li>Dinner: Krishna Vaishno Bhojnalaya</li>
+        </ul>
+        <div class="day-tip">The moment you exit the Banihal Tunnel — Kashmir Valley appears. Green meadows, cold air, snow peaks. Every first-timer goes completely silent. Worth the whole trip.</div>
+        <div class="day-alt">🏨 Stay: Dal Lake Houseboat (all 4) — unique Kashmiri experience</div>
+      </div>
+    </div>
+    <div class="day-card group-day">
+      <div class="day-num"><div class="day-num-circle">G4</div></div>
+      <div class="day-body">
+        <div class="day-date">Monday, June 2nd — Leave Day 1</div>
+        <div class="day-title">Srinagar Sightseeing</div>
+        <div class="day-meta">
+          <span class="day-tag tag-leave">🌿 Leave Day 1</span>
+          <span class="day-tag tag-explore">🕌 Kashmir</span>
+        </div>
+        <ul class="day-stops">
+          <li>Mughal Gardens: Shalimar Bagh, Nishat Bagh</li>
+          <li>Shankaracharya Temple (panoramic views)</li>
+          <li>Lal Chowk market — Kashmiri walnuts & almonds</li>
+          <li>Optional: Gulmarg gondola day trip</li>
+          <li>Pure veg dinner at Pincer Vegetarian Foods</li>
+        </ul>
+        <div class="day-tip">Buy 2 kg of Kashmiri walnuts and almonds here — they're the best in India and perfect altitude snacks. Pashmina shawls make for incredible gifts.</div>
+      </div>
+    </div>
+    <div class="day-card group-day">
+      <div class="day-num"><div class="day-num-circle">G5</div></div>
+      <div class="day-body">
+        <div class="day-date">Tuesday, June 3rd — Leave Day 2</div>
+        <div class="day-title">Srinagar → Kargil</div>
+        <div class="day-meta">
+          <span class="day-tag tag-km">📍 200 km</span>
+          <span class="day-tag tag-drive">🚗 6–7 hrs</span>
+          <span class="day-tag tag-leave">🌿 Leave Day 2</span>
+        </div>
+        <ul class="day-stops">
+          <li>Sonmarg breakfast + Thajiwas Glacier walk</li>
+          <li>Zojila Pass 4WD engaged — 20 km rough</li>
+          <li>Drass — Kargil War Memorial (very moving)</li>
+          <li>Kargil — check in, light dinner, sleep early</li>
+        </ul>
+        <div class="day-tip">Engage 4WD at Zojila. This is where the Thar earns its stripes. Take it slow — 20–30 kmph. Everyone gets out for a photo at Zojila top. From here on, landscapes are from another planet.</div>
+        <div class="day-alt">⛰️ Altitude: 2,676m at Kargil. Mild headaches normal. Drink water.</div>
+      </div>
+    </div>
+    <div class="day-card group-day">
+      <div class="day-num"><div class="day-num-circle">G6</div></div>
+      <div class="day-body">
+        <div class="day-date">Wednesday, June 4th — Leave Day 3</div>
+        <div class="day-title">Kargil → Leh</div>
+        <div class="day-meta">
+          <span class="day-tag tag-km">📍 230 km</span>
+          <span class="day-tag tag-drive">🚗 7–8 hrs</span>
+          <span class="day-tag tag-leave">🌿 Leave Day 3</span>
+        </div>
+        <ul class="day-stops">
+          <li>Mulbekh — 9m Maitreya Buddha in rock</li>
+          <li>Namika La (3,720m) — photo stop</li>
+          <li>Fotu La (4,108m) — highest on Srinagar-Leh hwy</li>
+          <li>Lamayuru Moonland + Monastery (1.5 hrs)</li>
+          <li>Alchi Monastery (10th century murals)</li>
+          <li>Magnetic Hill + Sangam confluence</li>
+          <li>Gurudwara Patthar Sahib</li>
+          <li>Leh — REST immediately on arrival</li>
+        </ul>
+        <div class="day-tip">Lamayuru is non-negotiable — the Moonland landscape looks like Mars. Best stop on the highway. Don't skip Alchi either (10 km detour, 10th century murals are priceless).</div>
+        <div class="day-alt">⛰️ Altitude: 3,500m at Leh. ABSOLUTE REST on arrival. No exertion.</div>
+      </div>
+    </div>
+    <div class="day-card group-day">
+      <div class="day-num"><div class="day-num-circle">G7</div></div>
+      <div class="day-body">
+        <div class="day-date">Thursday, June 5th — Leave Day 4</div>
+        <div class="day-title">Leh Acclimatization Day</div>
+        <div class="day-meta">
+          <span class="day-tag tag-leave">🌿 Leave Day 4</span>
+          <span class="day-tag tag-explore">🏯 Local Leh</span>
+          <span class="day-tag" style="background:#fde8e8;color:var(--danger)">❗ No high passes</span>
+        </div>
+        <ul class="day-stops">
+          <li>Morning: Leh Palace (easy walk)</li>
+          <li>Leh Market — handicrafts, Tibetan jewelry</li>
+          <li>Hall of Fame Museum — Kargil War</li>
+          <li>Spituk Monastery</li>
+          <li>Sunset at Shanti Stupa (360° golden hour view)</li>
+          <li>Dinner: Tibetan Kitchen — veg thukpa & momos</li>
+        </ul>
+        <div class="day-tip">Everyone does a health check tonight. Ask: headache? Chest tight? Breathing normal? 36 hours in Leh is the window — if anyone still has symptoms tomorrow, they stay in Leh while others go to Pangong.</div>
+      </div>
+    </div>
+    <div class="day-card group-day">
+      <div class="day-num"><div class="day-num-circle">G8</div></div>
+      <div class="day-body">
+        <div class="day-date">Friday, June 6th — Leave Day 5</div>
+        <div class="day-title">Pangong Tso Lake</div>
+        <div class="day-meta">
+          <span class="day-tag tag-km">📍 150 km each way</span>
+          <span class="day-tag tag-leave">🌿 Leave Day 5</span>
+          <span class="day-tag" style="background:#e8f4f8;color:var(--glacier)">⏰ 5:30 AM sharp</span>
+        </div>
+        <ul class="day-stops">
+          <li>Chang La Pass (5,360m) — 2nd highest motorable</li>
+          <li>Pangong Tso — 3 hours at the lake (10 AM–1 PM)</li>
+          <li>Spangmik village walk</li>
+          <li>Return to Leh by 5 PM</li>
+          <li>PACK BAGS — big drive tomorrow</li>
+          <li>Farewell group dinner in Leh</li>
+        </ul>
+        <div class="day-tip">The turquoise-blue lake stretching to Tibet is so impossibly beautiful that everyone cries. No joke. Also: this is the "3 Idiots" lake — but infinitely more stunning in real life.</div>
+        <div class="day-alt" style="color:var(--gold)">★ Pack tonight for tomorrow's 4 AM departure</div>
+      </div>
+    </div>
+    <div class="day-card group-day">
+      <div class="day-num"><div class="day-num-circle">G9</div></div>
+      <div class="day-body">
+        <div class="day-date">Saturday, June 7th — Leave Day 6</div>
+        <div class="day-title">Leh → Manali (Drop-off Day)</div>
+        <div class="day-meta">
+          <span class="day-tag tag-km">📍 ~490 km</span>
+          <span class="day-tag tag-drive">🚗 14–16 hrs</span>
+          <span class="day-tag" style="background:#fde8e8;color:var(--danger)">⏰ 4:00 AM STRICT</span>
+          <span class="day-tag tag-leave">🌿 Leave Day 6</span>
+        </div>
+        <ul class="day-stops">
+          <li>Upshi checkpoint — submit permits</li>
+          <li>Tanglang La (5,328m) — brief stop</li>
+          <li>Pang plateau (4,600m) — chai break</li>
+          <li>Sarchu — lunch at camp dhaba</li>
+          <li>Baralacha La (4,890m) + Suraj Tal</li>
+          <li>Keylong — fuel pump (critical!)</li>
+          <li>Rohtang Pass — 4WD</li>
+          <li>Manali by 9:30–10 PM</li>
+        </ul>
+        <div class="day-tip">This is the hardest day of the trip — 490 km, 3 major passes, 16 hours. Start at 4 AM SHARP. Carry thermos of hot chai, all snacks, warm layers. Friends: book their Volvo bus to Chandigarh immediately on arrival in Manali (departs 6–8 AM, redBus).</div>
+        <div class="day-alt">⛽ CARRY 10L JERRY CAN — no fuel pump between Leh and Keylong (~300 km)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div id="phase4" class="phase-content">
+    <div class="day-card">
+      <div class="day-num"><div class="day-num-circle">P4-1</div></div>
+      <div class="day-body">
+        <div class="day-date">Sunday June 8th</div>
+        <div class="day-title">Manali Rest Day</div>
+        <div class="day-meta">
+          <span class="day-tag tag-wfh">💻 WFH</span>
+          <span class="day-tag tag-explore">🌲 Manali</span>
+        </div>
+        <ul class="day-stops">
+          <li>Old Manali cafes (great coffee, bakeries)</li>
+          <li>Hadimba Devi Temple</li>
+          <li>Solang Valley (short drive)</li>
+          <li>WFH in afternoon</li>
+          <li>Best pure veg food in weeks!</li>
+        </ul>
+        <div class="day-tip">Manali is the re-entry into civilization. Celebrate with a proper South Indian meal (Manali has several options). Friends leave early morning by Volvo bus — see them off.</div>
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-num"><div class="day-num-circle">P4-2</div></div>
+      <div class="day-body">
+        <div class="day-date">Monday June 9th</div>
+        <div class="day-title">Manali — WFH + Nubra Decision</div>
+        <div class="day-meta">
+          <span class="day-tag tag-wfh">💻 WFH</span>
+        </div>
+        <ul class="day-stops">
+          <li>Option A: WFH in Manali — use as buffer day</li>
+          <li>Option B: Quick Spiti detour (Kaza)</li>
+          <li>Book hotels for return drive</li>
+        </ul>
+        <div class="day-tip">You skipped Nubra during the group phase (Pangong was the group pick). If energy levels are good, consider going back up to Leh + Nubra — but only if Shrinandan feels fresh enough for another mountain push. Otherwise, Manali WFH and start return.</div>
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-num"><div class="day-num-circle">P4-3</div></div>
+      <div class="day-body">
+        <div class="day-date">Tuesday June 10th</div>
+        <div class="day-title">Manali → Chandigarh</div>
+        <div class="day-meta">
+          <span class="day-tag tag-km">📍 310 km</span>
+          <span class="day-tag tag-drive">🚗 7–8 hrs</span>
+        </div>
+        <ul class="day-stops">
+          <li>Kullu valley drive (along Beas river)</li>
+          <li>Mandi — town worth a quick stop</li>
+          <li>Bilaspur lake views</li>
+          <li>Chandigarh — one last night</li>
+          <li>Dinner at Pal Dhaba (a tradition now)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-num"><div class="day-num-circle">P4-4</div></div>
+      <div class="day-body">
+        <div class="day-date">Wednesday June 11th</div>
+        <div class="day-title">Chandigarh → Nagpur</div>
+        <div class="day-meta">
+          <span class="day-tag tag-km">📍 1,040 km</span>
+          <span class="day-tag tag-drive">🚗 13–14 hrs</span>
+          <span class="day-tag" style="background:#e8f4f8;color:var(--glacier)">⏰ 3:30 AM</span>
+        </div>
+        <ul class="day-stops">
+          <li>Trans-Haryana Expressway south</li>
+          <li>Jaipur → Kota → Bhopal</li>
+          <li>Nagpur overnight stay</li>
+        </ul>
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-num"><div class="day-num-circle">P4-5</div></div>
+      <div class="day-body">
+        <div class="day-date">Thursday June 12th</div>
+        <div class="day-title">Nagpur → Bangalore 🏁</div>
+        <div class="day-meta">
+          <span class="day-tag tag-km">📍 ~880 km</span>
+          <span class="day-tag tag-drive">🚗 12 hrs</span>
+          <span class="day-tag" style="background:#e8f4f8;color:var(--glacier)">⏰ 4:00 AM</span>
+        </div>
+        <ul class="day-stops">
+          <li>Nagpur → Hyderabad → Bangalore</li>
+          <li>Home by 7–8 PM</li>
+          <li>🎉 MISSION ACCOMPLISHED</li>
+        </ul>
+        <div class="day-tip">You've driven ~9,000 km, crossed 4 major high-altitude passes, reached the world's highest motorable road, and seen two of India's most beautiful lakes. This is life.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROUTE MAP -->
+<div class="map-section-wrapper" id="route">
+  <div class="map-section fade-in">
+    <div class="section-label">Visual Overview</div>
+    <div class="section-title" style="color:white">ROUTE MAP</div>
+    <div class="route-map">
+      <svg class="route-svg" viewBox="150 10 700 500" xmlns="http://www.w3.org/2000/svg">
+        <!-- India outline (simplified) -->
+        <path d="M494.3,89.2 L526.4,101.5 L557.4,110.0 L604.2,121.8 L601.4,132.1 L567.6,135.0 L535.6,133.5 L553.9,140.3 L558.0,145.4 L566.3,150.9 L592.8,151.6 L608.7,155.2 L638.1,157.0 L654.9,160.2 L692.6,164.2 L701.2,167.8 L667.6,174.2 L661.6,177.7 L659.2,182.3 L647.3,187.2 L671.2,190.1 L689.6,190.8 L711.4,193.5 L736.7,196.8 L769.5,201.5 L826.5,204.1 L871.7,208.3 L906.2,208.3 L928.2,207.6 L968.3,213.8 L993.8,216.2 L1031.0,217.5 L1058.2,219.7 L1074.1,220.1 L1106.4,222.2 L1133.4,222.7 L1165.9,222.5 L1184.7,223.3 L1193.0,214.6 L1187.6,208.3 L1197.0,201.5 L1222.4,198.4 L1244.3,201.6 L1245.8,209.9 L1249.3,214.7 L1272.1,216.4 L1305.8,218.4 L1316.1,218.1 L1390.8,217.1 L1422.8,216.1 L1450.7,216.1 L1458.2,211.4 L1437.8,207.1 L1448.7,203.2 L1483.3,201.9 L1501.1,198.2 L1534.5,194.5 L1588.6,189.3 L1618.8,181.7 L1660.7,182.3 L1698.7,181.5 L1740.5,180.1 L1746.1,185.4 L1754.3,193.7 L1816.5,195.8 L1813.5,200.6 L1794.2,203.9 L1804.0,211.5 L1797.3,212.3 L1771.5,208.9 L1714.2,214.0 L1679.1,219.1 L1664.2,221.7 L1670.7,227.4 L1651.7,234.7 L1632.7,240.8 L1628.6,247.7 L1613.6,253.1 L1599.3,260.1 L1563.4,258.5 L1546.6,258.4 L1551.7,268.1 L1535.4,273.0 L1536.1,281.1 L1527.3,284.6 L1521.4,287.2 L1502.3,286.3 L1497.0,284.9 L1480.4,269.4 L1475.0,263.8 L1453.5,262.1 L1443.7,271.5 L1431.8,273.0 L1421.4,270.0 L1411.2,271.2 L1402.0,264.7 L1404.4,259.8 L1430.4,256.5 L1445.2,255.3 L1465.4,251.6 L1474.9,244.8 L1488.3,244.1 L1480.1,242.6 L1460.1,240.7 L1428.9,241.1 L1376.0,241.2 L1313.3,239.0 L1308.0,229.4 L1305.1,227.4 L1295.9,226.2 L1291.7,228.9 L1277.0,228.7 L1261.2,223.8 L1246.9,223.2 L1243.4,225.2 L1230.5,222.8 L1213.4,220.5 L1217.7,222.0 L1203.4,225.9 L1192.0,229.9 L1216.1,234.8 L1238.8,236.0 L1253.1,239.0 L1231.5,240.6 L1209.5,244.7 L1193.7,246.3 L1193.1,250.4 L1236.3,255.1 L1234.9,258.5 L1223.0,263.2 L1237.7,265.4 L1251.5,269.7 L1250.0,275.9 L1253.5,281.6 L1257.9,286.8 L1251.0,288.7 L1255.6,293.2 L1240.5,292.7 L1235.4,293.1 L1235.7,285.6 L1230.3,287.4 L1228.4,285.8 L1228.0,291.8 L1220.9,293.4 L1218.6,289.0 L1213.1,293.3 L1207.4,293.1 L1205.3,293.9 L1196.4,288.0 L1184.0,282.7 L1198.2,285.7 L1179.3,290.6 L1122.9,295.1 L1117.8,306.4 L1103.2,309.2 L1098.3,312.6 L1074.3,316.6 L1070.0,316.4 L1053.3,319.0 L1013.3,321.7 L1021.3,320.4 L996.6,321.1 L991.6,324.3 L995.9,322.9 L1009.9,321.5 L1002.4,322.6 L965.9,329.4 L957.8,332.7 L935.2,338.6 L886.2,346.0 L868.8,350.5 L865.3,351.3 L839.2,354.6 L797.4,362.8 L802.2,365.5 L781.8,368.9 L753.5,370.5 L735.8,370.0 L714.3,377.1 L705.3,376.0 L695.1,377.1 L675.4,377.9 L649.8,385.8 L653.2,396.5 L647.3,401.6 L663.1,411.8 L649.7,409.9 L663.4,413.3 L664.4,417.4 L651.5,428.4 L634.2,434.6 L629.5,442.3 L629.8,443.7 L628.6,459.3 L613.2,459.2 L595.1,459.9 L581.0,466.8 L592.8,474.1 L595.5,474.6 L565.1,474.7 L519.9,480.3 L516.5,485.8 L460.9,491.1 L409.3,479.4 L416.7,478.4 L408.6,479.2 L403.5,476.1 L391.9,465.0 L395.1,468.0 L397.4,469.1 L399.4,467.9 L390.7,463.1 L384.2,461.3 L382.5,460.4 L368.1,451.9 L346.1,442.0 L330.4,434.9 L320.5,434.1 L311.5,430.8 L293.7,422.4 L288.2,417.8 L284.0,412.8 L284.0,409.7 L268.9,403.5 L263.0,398.7 L260.7,396.9 L255.9,396.0 L242.9,393.2 L250.7,391.8 L236.1,390.0 L226.9,384.2 L225.6,383.6 L218.5,381.8 L215.1,379.8 L200.6,375.0 L198.1,372.3 L190.2,368.0 L191.4,367.2 L190.3,365.7 L185.8,360.7 L182.3,356.4 L179.6,352.5 L174.3,348.9 L167.7,345.2 L166.1,342.4 L167.0,341.8 L161.5,338.7 L158.7,336.1 L167.7,334.0 L167.0,332.2 L166.3,329.1 L155.2,332.1 L155.8,329.4 L153.1,327.6 L168.7,327.2 L156.0,323.7 L148.9,322.8 L146.7,320.5 L150.7,314.1 L157.0,310.3 L163.1,305.2 L161.0,302.3 L152.0,300.5 L145.9,300.6 L141.8,298.2 L151.4,295.4 L157.3,292.6 L165.2,292.0 L138.9,289.8 L147.7,287.8 L138.5,284.8 L162.8,284.1 L141.1,283.2 L128.4,282.2 L110.8,283.3 L118.2,287.2 L109.4,287.6 L111.5,288.8 L107.8,289.8 L111.9,290.4 L120.9,292.8 L106.8,298.4 L79.2,301.9 L37.7,305.8 L3.1,305.0 L-49.4,295.2 L-89.4,287.7 L-99.7,280.6 L-90.1,281.1 L-68.4,281.9 L-60.2,281.8 L-47.5,280.9 L-16.9,277.0 L0.8,272.0 L-8.4,273.6 L-19.2,272.7 L-25.8,273.7 L-69.0,275.9 L-128.5,269.9 L-132.0,267.6 L-136.7,266.5 L-139.9,265.0 L-138.9,263.0 L-117.8,259.9 L-146.9,263.6 L-158.2,263.1 L-157.3,261.6 L-153.2,259.5 L-146.8,258.7 L-110.3,253.3 L-50.7,255.6 L3.6,252.3 L29.8,252.7 L31.3,250.1 L13.2,238.4 L-27.2,230.4 L-31.2,220.0 L-22.2,200.9 L13.2,203.1 L110.9,194.1 L190.8,172.8 L229.6,163.7 L247.9,159.8 L260.4,156.7 L278.3,153.5 L270.3,145.0 L283.8,141.3 L311.2,139.4 L324.5,135.7 L280.9,131.1 L266.2,129.0 L240.9,123.9 L233.7,115.7 L234.8,111.1 L221.1,105.7 L255.8,99.9 L359.6,103.5 L422.6,99.1 L494.3,89.2 Z" fill="#0d2035" stroke="#1a3a5c" stroke-width="1.5"/>
+        <!-- Route lines -->
+        <!-- Bangalore to Chandigarh (going) -->
+        <path d="M480,420 L460,360 L440,300 L430,240 L420,180 L380,140" stroke="#e8633a" stroke-width="2.5" stroke-dasharray="6,3" fill="none" opacity="0.8"/>
+        <!-- Chandigarh to Srinagar -->
+        <path d="M380,140 L330,120 L290,110" stroke="#4a90d9" stroke-width="2.5" fill="none"/>
+        <!-- Srinagar to Leh -->
+        <path d="M290,110 L310,100 L340,95 L360,90" stroke="#4a90d9" stroke-width="2.5" fill="none"/>
+        <!-- Leh area exploration -->
+        <path d="M360,90 L380,80 L400,85 L420,78" stroke="#c9941a" stroke-width="2" stroke-dasharray="4,2" fill="none"/>
+        <path d="M360,90 L350,75 L340,65" stroke="#c9941a" stroke-width="2" stroke-dasharray="4,2" fill="none"/>
+        <!-- Leh to Manali return -->
+        <path d="M360,90 L370,110 L375,130 L380,140" stroke="#5a7a5c" stroke-width="2.5" fill="none"/>
+        <!-- Manali to Chandigarh -->
+        <path d="M380,140 L390,155 L410,170 L420,180" stroke="#5a7a5c" stroke-width="2" stroke-dasharray="5,3" fill="none"/>
+        <!-- Chandigarh to Bangalore (return) -->
+        <path d="M420,180 L435,240 L450,300 L460,360 L480,420" stroke="#5a7a5c" stroke-width="2.5" stroke-dasharray="6,3" fill="none"/>
+
+        <!-- City dots and labels -->
+        <!-- Bangalore -->
+        <circle cx="480" cy="420" r="8" fill="#e8633a" stroke="white" stroke-width="2"/>
+        <text x="493" y="418" fill="white" font-size="11" font-family="'Barlow Condensed', sans-serif" font-weight="700" letter-spacing="0.5">BANGALORE</text>
+        <text x="493" y="430" fill="#aaa" font-size="8" font-family="'Barlow Condensed', sans-serif">START / END</text>
+
+        <!-- Nagpur -->
+        <circle cx="460" cy="358" r="5" fill="#aaa" stroke="white" stroke-width="1.5"/>
+        <text x="468" y="356" fill="#aaa" font-size="9" font-family="'Barlow Condensed', sans-serif">Nagpur</text>
+        <text x="468" y="366" fill="#666" font-size="7.5" font-family="'Barlow Condensed', sans-serif">OVERNIGHT STOP</text>
+
+        <!-- Chandigarh -->
+        <circle cx="380" cy="140" r="8" fill="#c9941a" stroke="white" stroke-width="2"/>
+        <text x="392" y="138" fill="white" font-size="11" font-family="'Barlow Condensed', sans-serif" font-weight="700">CHANDIGARH</text>
+        <text x="392" y="150" fill="#c9941a" font-size="8" font-family="'Barlow Condensed', sans-serif">8 DAYS WFH BASE</text>
+
+        <!-- Amritsar (weekend) -->
+        <circle cx="340" cy="130" r="4" fill="#c9941a" stroke="white" stroke-width="1.5" stroke-dasharray="2,1"/>
+        <text x="296" y="128" fill="#c9941a" font-size="8" font-family="'Barlow Condensed', sans-serif">Amritsar</text>
+
+        <!-- Jammu -->
+        <circle cx="330" cy="120" r="5" fill="#aaa" stroke="white" stroke-width="1.5"/>
+        <text x="318" y="118" fill="#aaa" font-size="9" font-family="'Barlow Condensed', sans-serif" text-anchor="end">Jammu</text>
+
+        <!-- Srinagar -->
+        <circle cx="290" cy="110" r="7" fill="#4a90d9" stroke="white" stroke-width="2"/>
+        <text x="270" y="104" fill="white" font-size="10" font-family="'Barlow Condensed', sans-serif" font-weight="700" text-anchor="end">SRINAGAR</text>
+        <text x="270" y="116" fill="#4a90d9" font-size="8" font-family="'Barlow Condensed', sans-serif" text-anchor="end">2 NIGHTS</text>
+
+        <!-- Kargil -->
+        <circle cx="325" cy="98" r="5" fill="#aaa" stroke="white" stroke-width="1.5"/>
+        <text x="316" y="92" fill="#aaa" font-size="9" font-family="'Barlow Condensed', sans-serif" text-anchor="end">Kargil</text>
+
+        <!-- Leh -->
+        <circle cx="360" cy="90" r="10" fill="#4a90d9" stroke="#c9941a" stroke-width="3"/>
+        <text x="373" y="88" fill="white" font-size="12" font-family="'Barlow Condensed', sans-serif" font-weight="700">LEH</text>
+        <text x="373" y="101" fill="#4a90d9" font-size="8" font-family="'Barlow Condensed', sans-serif">3,500m · 3 NIGHTS</text>
+
+        <!-- Khardung La -->
+        <circle cx="350" cy="75" r="4" fill="#c9941a" stroke="white" stroke-width="1.5"/>
+        <text x="342" y="70" fill="#c9941a" font-size="8" font-family="'Barlow Condensed', sans-serif" text-anchor="end">Khardung La</text>
+        <text x="342" y="80" fill="#888" font-size="7" font-family="'Barlow Condensed', sans-serif" text-anchor="end">5,359m</text>
+
+        <!-- Nubra -->
+        <circle cx="340" cy="65" r="4" fill="#5a7a5c" stroke="white" stroke-width="1.5"/>
+        <text x="332" y="58" fill="#5a7a5c" font-size="8" font-family="'Barlow Condensed', sans-serif" text-anchor="end">Nubra Valley</text>
+
+        <!-- Pangong -->
+        <circle cx="420" cy="78" r="5" fill="#4a90d9" stroke="white" stroke-width="2"/>
+        <text x="426" y="76" fill="#4a90d9" font-size="9" font-family="'Barlow Condensed', sans-serif" font-weight="700">Pangong Tso</text>
+        <text x="426" y="86" fill="#888" font-size="7" font-family="'Barlow Condensed', sans-serif">4,350m</text>
+
+        <!-- Manali -->
+        <circle cx="375" cy="135" r="7" fill="#5a7a5c" stroke="white" stroke-width="2"/>
+        <text x="365" y="150" fill="#5a7a5c" font-size="10" font-family="'Barlow Condensed', sans-serif" font-weight="700" text-anchor="middle">MANALI</text>
+        <text x="365" y="162" fill="#5a7a5c" font-size="8" font-family="'Barlow Condensed', sans-serif" text-anchor="middle">FRIENDS DROP</text>
+
+        <!-- Legend box -->
+        <rect x="600" y="60" width="220" height="170" fill="rgba(0,0,0,0.5)" rx="4"/>
+        <text x="615" y="82" fill="#aaa" font-size="9" font-family="'Barlow Condensed', sans-serif" letter-spacing="1">ROUTE LEGEND</text>
+        
+        <line x1="615" y1="97" x2="645" y2="97" stroke="#e8633a" stroke-width="2.5" stroke-dasharray="6,3"/>
+        <text x="652" y="101" fill="white" font-size="9" font-family="'Barlow Condensed', sans-serif">BLR → Chandigarh</text>
+
+        <line x1="615" y1="117" x2="645" y2="117" stroke="#4a90d9" stroke-width="2.5"/>
+        <text x="652" y="121" fill="white" font-size="9" font-family="'Barlow Condensed', sans-serif">Srinagar → Leh Hwy</text>
+
+        <line x1="615" y1="137" x2="645" y2="137" stroke="#c9941a" stroke-width="2" stroke-dasharray="4,2"/>
+        <text x="652" y="141" fill="white" font-size="9" font-family="'Barlow Condensed', sans-serif">Leh Excursions</text>
+
+        <line x1="615" y1="157" x2="645" y2="157" stroke="#5a7a5c" stroke-width="2.5"/>
+        <text x="652" y="161" fill="white" font-size="9" font-family="'Barlow Condensed', sans-serif">Manali-Leh Return</text>
+
+        <line x1="615" y1="177" x2="645" y2="177" stroke="#5a7a5c" stroke-width="2" stroke-dasharray="5,3"/>
+        <text x="652" y="181" fill="white" font-size="9" font-family="'Barlow Condensed', sans-serif">Return to BLR</text>
+
+        <circle cx="622" cy="200" r="5" fill="#e8633a" stroke="white" stroke-width="1.5"/>
+        <text x="632" y="204" fill="white" font-size="9" font-family="'Barlow Condensed', sans-serif">Major stops</text>
+
+        <circle cx="622" cy="218" r="4" fill="#aaa" stroke="white" stroke-width="1"/>
+        <text x="632" y="222" fill="#aaa" font-size="9" font-family="'Barlow Condensed', sans-serif">Overnight stops</text>
+
+        <!-- Total distance badge -->
+        <rect x="600" y="250" width="220" height="60" fill="rgba(232,99,58,0.2)" rx="4" stroke="#e8633a" stroke-width="1"/>
+        <text x="710" y="272" fill="white" font-size="22" font-family="'Bebas Neue', cursive" text-anchor="middle">~9,000 KM</text>
+        <text x="710" y="295" fill="#e8633a" font-size="9" font-family="'Barlow Condensed', sans-serif" text-anchor="middle" letter-spacing="1">TOTAL ROUND TRIP</text>
+
+        <!-- North indicator -->
+        <text x="760" y="380" fill="white" font-size="16" font-family="serif" text-anchor="middle">N</text>
+        <line x1="760" y1="385" x2="760" y2="410" stroke="white" stroke-width="1.5"/>
+        <polygon points="760,360 755,385 765,385" fill="white"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ALTITUDE PROFILE -->
+<div class="altitude-section-wrapper" id="altitude">
+  <section class="altitude-section fade-in">
+    <div class="section-label">Elevation Profile</div>
+    <div class="section-title">ALTITUDE JOURNEY</div>
+    <div class="altitude-chart">
+      <svg viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg" style="min-width:700px">
+        <!-- Grid lines -->
+        <line x1="60" y1="20" x2="860" y2="20" stroke="#ddd" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="60" y1="80" x2="860" y2="80" stroke="#ddd" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="60" y1="140" x2="860" y2="140" stroke="#ddd" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="60" y1="200" x2="860" y2="200" stroke="#ddd" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="60" y1="240" x2="860" y2="240" stroke="#ccc" stroke-width="1"/>
+        
+        <!-- Y axis labels -->
+        <text x="50" y="24" fill="#888" font-size="9" text-anchor="end" font-family="'Barlow Condensed', sans-serif">5500m</text>
+        <text x="50" y="84" fill="#888" font-size="9" text-anchor="end" font-family="'Barlow Condensed', sans-serif">4000m</text>
+        <text x="50" y="144" fill="#888" font-size="9" text-anchor="end" font-family="'Barlow Condensed', sans-serif">2500m</text>
+        <text x="50" y="204" fill="#888" font-size="9" text-anchor="end" font-family="'Barlow Condensed', sans-serif">1000m</text>
+        <text x="50" y="244" fill="#888" font-size="9" text-anchor="end" font-family="'Barlow Condensed', sans-serif">300m</text>
+
+        <!-- Altitude profile path -->
+        <!-- Scale: 300m=240px, 5500m=20px → range 5200m in 220px → 1m = 220/5200 px = 0.0423px -->
+        <!-- y = 240 - (alt-300)*0.0423 -->
+        <!-- BLR(920m)=y212, Nagpur(310m)=y238, Bhopal(523m)=y229, Kota(265m)=y240, CHD(321m)=y238, Jammu(327m)=y238, Srinagar(1585m)=y185, Sonmarg(2800m)=y133, Zojila(3528m)=y102, Drass(3280m)=y113, Kargil(2676m)=y139, Namika(3720m)=y94, FotuLa(4108m)=y77, Lamayuru(3510m)=y104, Leh(3500m)=y104, Khardung(5359m)=y13, Pangong(4350m)=y57, Tanglang(5328m)=y14, Sarchu(4200m)=y63, Baralacha(4890m)=y31, Rohtang(3978m)=y79, Manali(2050m)=y148, CHD(321m)=y238, BLR(920m)=y212 -->
+        <path d="M70,212 L120,238 L170,229 L220,240 L270,238 L310,238 L360,185 L400,133 L430,102 L450,113 L490,139 L530,94 L560,77 L590,104 L620,104 L650,13 L680,57 L700,14 L720,63 L740,31 L760,79 L790,148 L830,238 L860,212" fill="none" stroke="#e8633a" stroke-width="2.5"/>
+        
+        <!-- Fill under curve -->
+        <path d="M70,212 L120,238 L170,229 L220,240 L270,238 L310,238 L360,185 L400,133 L430,102 L450,113 L490,139 L530,94 L560,77 L590,104 L620,104 L650,13 L680,57 L700,14 L720,63 L740,31 L760,79 L790,148 L830,238 L860,212 L860,240 L70,240 Z" fill="url(#altGrad)"/>
+        
+        <defs>
+          <linearGradient id="altGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e8633a" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#e8633a" stop-opacity="0.05"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Key point markers -->
+        <!-- Zojila -->
+        <circle cx="430" cy="102" r="4" fill="#4a90d9"/>
+        <line x1="430" y1="102" x2="430" y2="40" stroke="#4a90d9" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="430" y="36" fill="#4a90d9" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Zojila 3,528m</text>
+
+        <!-- Kargil -->
+        <circle cx="490" cy="139" r="4" fill="#c9941a"/>
+        <text x="490" y="158" fill="#c9941a" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Kargil</text>
+
+        <!-- Fotu La -->
+        <circle cx="560" cy="77" r="4" fill="#4a90d9"/>
+        <line x1="560" y1="77" x2="560" y2="50" stroke="#4a90d9" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="560" y="46" fill="#4a90d9" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Fotu La 4,108m</text>
+
+        <!-- Leh -->
+        <circle cx="620" cy="104" r="6" fill="#1a2744" stroke="#e8633a" stroke-width="2"/>
+        <text x="620" y="120" fill="#e8633a" font-size="9" text-anchor="middle" font-family="'Barlow Condensed', sans-serif" font-weight="700">LEH 3,500m</text>
+
+        <!-- Khardung La -->
+        <circle cx="650" cy="13" r="5" fill="#c9941a" stroke="white" stroke-width="1.5"/>
+        <line x1="650" y1="18" x2="650" y2="50" stroke="#c9941a" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="670" y="28" fill="#c9941a" font-size="8" font-family="'Barlow Condensed', sans-serif">Khardung La</text>
+        <text x="670" y="38" fill="#c9941a" font-size="7" font-family="'Barlow Condensed', sans-serif">5,359m ★</text>
+
+        <!-- Tanglang La -->
+        <circle cx="700" cy="14" r="5" fill="#c9941a" stroke="white" stroke-width="1.5"/>
+        <text x="700" y="55" fill="#888" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Tanglang La</text>
+        <text x="700" y="65" fill="#888" font-size="7" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">5,328m</text>
+
+        <!-- Baralacha -->
+        <circle cx="740" cy="31" r="4" fill="#888"/>
+        <text x="740" y="46" fill="#888" font-size="7" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Baralacha</text>
+
+        <!-- Manali -->
+        <circle cx="790" cy="148" r="5" fill="#5a7a5c" stroke="white" stroke-width="1.5"/>
+        <text x="790" y="165" fill="#5a7a5c" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Manali</text>
+
+        <!-- Bangalore markers -->
+        <circle cx="70" cy="212" r="5" fill="#e8633a" stroke="white" stroke-width="1.5"/>
+        <text x="70" y="258" fill="#e8633a" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">BLR</text>
+
+        <circle cx="860" cy="212" r="5" fill="#e8633a" stroke="white" stroke-width="1.5"/>
+        <text x="860" y="258" fill="#e8633a" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">BLR</text>
+
+        <!-- Altitude sickness zone -->
+        <rect x="60" y="20" width="800" height="100" fill="rgba(255,0,0,0.04)" stroke="none"/>
+        <text x="870" y="75" fill="#f88" font-size="8" text-anchor="end" font-family="'Barlow Condensed', sans-serif">⚠ AMS Risk Zone</text>
+      </svg>
+    </div>
+    
+    <div class="weather-grid">
+      <div class="weather-card">
+        <div class="weather-city">Bangalore</div>
+        <div class="weather-alt">920m</div>
+        <div class="weather-icon">☀️</div>
+        <div class="weather-temp">32°C</div>
+        <div class="weather-desc">Hot & humid May</div>
+      </div>
+      <div class="weather-card">
+        <div class="weather-city">Chandigarh</div>
+        <div class="weather-alt">321m</div>
+        <div class="weather-icon">🌤️</div>
+        <div class="weather-temp">38°C</div>
+        <div class="weather-desc">Hot summers, AC needed</div>
+      </div>
+      <div class="weather-card">
+        <div class="weather-city">Srinagar</div>
+        <div class="weather-alt">1,585m</div>
+        <div class="weather-icon">🌸</div>
+        <div class="weather-temp">22°C</div>
+        <div class="weather-desc">Pleasant early June</div>
+      </div>
+      <div class="weather-card">
+        <div class="weather-city">Kargil</div>
+        <div class="weather-alt">2,676m</div>
+        <div class="weather-icon">🌬️</div>
+        <div class="weather-temp">18°C</div>
+        <div class="weather-desc">Cool days, cold nights</div>
+      </div>
+      <div class="weather-card">
+        <div class="weather-city">Leh</div>
+        <div class="weather-alt">3,500m</div>
+        <div class="weather-icon">❄️</div>
+        <div class="weather-temp">15°C</div>
+        <div class="weather-desc">Days pleasant, nights 5°C</div>
+      </div>
+      <div class="weather-card">
+        <div class="weather-city">Khardung La</div>
+        <div class="weather-alt">5,359m</div>
+        <div class="weather-icon">🌨️</div>
+        <div class="weather-temp">-2°C</div>
+        <div class="weather-desc">Snow possible, wind strong</div>
+      </div>
+      <div class="weather-card">
+        <div class="weather-city">Pangong Tso</div>
+        <div class="weather-alt">4,350m</div>
+        <div class="weather-icon">💙</div>
+        <div class="weather-temp">10°C</div>
+        <div class="weather-desc">Clear skies, UV intense</div>
+      </div>
+      <div class="weather-card">
+        <div class="weather-city">Sarchu</div>
+        <div class="weather-alt">4,200m</div>
+        <div class="weather-icon">🌪️</div>
+        <div class="weather-temp">8°C</div>
+        <div class="weather-desc">Cold, windy plateau</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- PITCH SECTION -->
+<div class="pitch-wrapper" id="pitch">
+  <div class="pitch-section fade-in">
+    <div class="section-label">Forward This Page To Them</div>
+    <div class="section-title">HEY FRIENDS,<br>JOIN US.</div>
+    <div class="pitch-subtitle">We're driving from Chandigarh to Leh Ladakh and back in a Mahindra Thar Roxx 4×4. 8 days. 4 people. One trip you'll talk about for the rest of your life. Here's everything you need to know.</div>
+
+    <div class="pitch-grid">
+      <div class="pitch-card">
+        <div class="pitch-card-icon">🚘</div>
+        <div class="pitch-card-title">The Vehicle</div>
+        <div class="pitch-card-text">Mahindra Thar Roxx — <span class="pitch-highlight">diesel 4×4 with diff lock.</span> Built specifically for Ladakh terrain. You ride in comfort while Shrinandan handles all the mountain driving. No rental cars, no shared cabs. Your own private expedition machine.</div>
+      </div>
+      <div class="pitch-card">
+        <div class="pitch-card-icon">📅</div>
+        <div class="pitch-card-title">Just 8 Days</div>
+        <div class="pitch-card-text">Join us <span class="pitch-highlight">Friday May 30th in Chandigarh.</span> We drop you in Manali on Saturday June 7th — you take a Volvo bus to Chandigarh and fly back to Bangalore. Total: <span class="pitch-highlight">only 6 casual leaves</span> needed (weekend driving covers 2 days).</div>
+      </div>
+      <div class="pitch-card">
+        <div class="pitch-card-icon">🌿</div>
+        <div class="pitch-card-title">100% Vegetarian</div>
+        <div class="pitch-card-text">We've researched every pure veg restaurant from Chandigarh to Leh. <span class="pitch-highlight">You will eat well.</span> Krishna Vaishno Dhaba in Srinagar, Tibetan Kitchen in Leh, and everything in between. No compromises on food.</div>
+      </div>
+      <div class="pitch-card">
+        <div class="pitch-card-icon">💰</div>
+        <div class="pitch-card-title">Split Costs</div>
+        <div class="pitch-card-text">Total trip cost during group phase is fully tracked. <span class="pitch-highlight">Your share: ~₹50K for 8 unforgettable days.</span> That's ~₹3,100/day/person for Leh Ladakh. No luxury trip on earth gives this ROI.</div>
+      </div>
+      <div class="pitch-card">
+        <div class="pitch-card-icon">🗣️</div>
+        <div class="pitch-card-title">No Hindi? No Problem</div>
+        <div class="pitch-card-text">We handle all navigation, communication, checkposts. <span class="pitch-highlight">Tourist industry in Kashmir and Leh is extremely English-friendly.</span> Hotel bookings are all pre-done. You just sit back, look out the window, and be amazed.</div>
+      </div>
+      <div class="pitch-card">
+        <div class="pitch-card-icon">🏥</div>
+        <div class="pitch-card-title">Safety First</div>
+        <div class="pitch-card-text">We enter Ladakh via Srinagar — <span class="pitch-highlight">gradual altitude gain</span> over 4 days. No sudden jumps. Medical kit for 4. Diamox prescribed. Shrinandan has mountain driving experience. We never rush.</div>
+      </div>
+    </div>
+
+    <!-- 8-day timeline for friends -->
+    <div class="pitch-timeline">
+      <div class="pitch-timeline-title">⚡ Your 8 Days — From Chandigarh</div>
+      <div class="pitch-days">
+        <div class="pitch-day">
+          <div class="pitch-day-num">DAY 1 · MAY 30</div>
+          <div class="pitch-day-name">🤝 Meet Up</div>
+          <div class="pitch-day-sub">Chandigarh<br>Group dinner<br>Depart next morning</div>
+        </div>
+        <div class="pitch-day">
+          <div class="pitch-day-num">DAY 2 · MAY 31</div>
+          <div class="pitch-day-name">🚗 Drive</div>
+          <div class="pitch-day-sub">CHD → Jammu<br>290 km<br>Raghunath Temple</div>
+        </div>
+        <div class="pitch-day">
+          <div class="pitch-day-num">DAY 3 · JUN 1</div>
+          <div class="pitch-day-name">🌸 Kashmir</div>
+          <div class="pitch-day-sub">Jammu → Srinagar<br>Dal Lake Shikara<br>Houseboat stay</div>
+        </div>
+        <div class="pitch-day">
+          <div class="pitch-day-num">DAY 4 · JUN 2</div>
+          <div class="pitch-day-name">🕌 Srinagar</div>
+          <div class="pitch-day-sub">Mughal Gardens<br>Gulmarg gondola<br>Kashmir valley</div>
+        </div>
+        <div class="pitch-day">
+          <div class="pitch-day-num">DAY 5 · JUN 3</div>
+          <div class="pitch-day-name">⛰️ Zojila</div>
+          <div class="pitch-day-sub">Srinagar → Kargil<br>Sonmarg glacier<br>War Memorial</div>
+        </div>
+        <div class="pitch-day">
+          <div class="pitch-day-num">DAY 6 · JUN 4</div>
+          <div class="pitch-day-name">🏔️ Leh!</div>
+          <div class="pitch-day-sub">Kargil → Leh<br>Lamayuru Moonland<br>Arrive Leh</div>
+        </div>
+        <div class="pitch-day">
+          <div class="pitch-day-num">DAY 7 · JUN 5–6</div>
+          <div class="pitch-day-name">💙 Ladakh</div>
+          <div class="pitch-day-sub">Shanti Stupa<br>Leh Palace<br>Pangong Tso Lake</div>
+        </div>
+        <div class="pitch-day">
+          <div class="pitch-day-num">DAY 8 · JUN 7</div>
+          <div class="pitch-day-name">🏁 Manali</div>
+          <div class="pitch-day-sub">Leh → Manali<br>Tanglang La 5,328m<br>Volvo back</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bucket list checklist for friends -->
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:2rem;margin-bottom:2rem;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--dawn);margin-bottom:1.2rem;">What You'll Be Able to Say After This Trip</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0.5rem;">
+        <div style="display:flex;align-items:center;gap:0.7rem;font-size:0.85rem;color:#ccc;padding:0.5rem;background:rgba(255,255,255,0.04);border-radius:3px;">✅ <span>Stood at <strong style="color:white">5,359m</strong> — Khardung La, world's highest motorable road</span></div>
+        <div style="display:flex;align-items:center;gap:0.7rem;font-size:0.85rem;color:#ccc;padding:0.5rem;background:rgba(255,255,255,0.04);border-radius:3px;">✅ <span>Saw <strong style="color:white">Pangong Tso</strong> — the lake that turned blue with your own eyes</span></div>
+        <div style="display:flex;align-items:center;gap:0.7rem;font-size:0.85rem;color:#ccc;padding:0.5rem;background:rgba(255,255,255,0.04);border-radius:3px;">✅ <span>Rode a <strong style="color:white">Bactrian camel</strong> in a cold desert surrounded by snow peaks</span></div>
+        <div style="display:flex;align-items:center;gap:0.7rem;font-size:0.85rem;color:#ccc;padding:0.5rem;background:rgba(255,255,255,0.04);border-radius:3px;">✅ <span>Stayed on a <strong style="color:white">Dal Lake houseboat</strong> in Kashmir</span></div>
+        <div style="display:flex;align-items:center;gap:0.7rem;font-size:0.85rem;color:#ccc;padding:0.5rem;background:rgba(255,255,255,0.04);border-radius:3px;">✅ <span>Saw <strong style="color:white">Lamayuru Moonland</strong> — landscape from another planet</span></div>
+        <div style="display:flex;align-items:center;gap:0.7rem;font-size:0.85rem;color:#ccc;padding:0.5rem;background:rgba(255,255,255,0.04);border-radius:3px;">✅ <span>Watched <strong style="color:white">Milky Way</strong> with naked eye from Nubra Valley</span></div>
+        <div style="display:flex;align-items:center;gap:0.7rem;font-size:0.85rem;color:#ccc;padding:0.5rem;background:rgba(255,255,255,0.04);border-radius:3px;">✅ <span>Driven through <strong style="color:white">Zojila Pass</strong> in a real 4×4</span></div>
+        <div style="display:flex;align-items:center;gap:0.7rem;font-size:0.85rem;color:#ccc;padding:0.5rem;background:rgba(255,255,255,0.04);border-radius:3px;">✅ <span>Experienced <strong style="color:white">zero cell signal</strong> and loved it</span></div>
+      </div>
+    </div>
+
+    <div class="pitch-cta">
+      <div class="pitch-cta-title">The Answer Is YES. Pack Light.</div>
+      <div class="pitch-cta-sub">One soft bag. 40L max. See you in Chandigarh on May 30th.</div>
+      <div class="pitch-cta-items">
+        <div class="pitch-cta-item">
+          <div class="pitch-cta-num">6</div>
+          <div class="pitch-cta-label">Leaves Needed</div>
+        </div>
+        <div class="pitch-cta-item">
+          <div class="pitch-cta-num">~₹50K</div>
+          <div class="pitch-cta-label">Your Share</div>
+        </div>
+        <div class="pitch-cta-item">
+          <div class="pitch-cta-num">4</div>
+          <div class="pitch-cta-label">High Passes</div>
+        </div>
+        <div class="pitch-cta-item">
+          <div class="pitch-cta-num">2</div>
+          <div class="pitch-cta-label">Iconic Lakes</div>
+        </div>
+        <div class="pitch-cta-item">
+          <div class="pitch-cta-num">∞</div>
+          <div class="pitch-cta-label">Memories</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKLISTS -->
+<section id="checklist" class="fade-in">
+  <div class="section-label">Before You Leave</div>
+  <div class="section-title">CHECKLISTS</div>
+  <div class="checklist-grid">
+
+    <!-- Documents -->
+    <div class="checklist-card">
+      <div class="checklist-header"><span class="icon">📋</span>Documents (×6 copies each)</div>
+      <div class="checklist-body">
+        <div class="check-item"><input type="checkbox" id="d1" onchange="updateProgress(this)"><label class="check-label" for="d1">Vehicle RC Book</label><span class="check-urgent">CRITICAL</span></div>
+        <div class="check-item"><input type="checkbox" id="d2" onchange="updateProgress(this)"><label class="check-label" for="d2">Vehicle Insurance</label><span class="check-urgent">CRITICAL</span></div>
+        <div class="check-item"><input type="checkbox" id="d3" onchange="updateProgress(this)"><label class="check-label" for="d3">Shrinandan Driving License</label><span class="check-urgent">CRITICAL</span></div>
+        <div class="check-item"><input type="checkbox" id="d4" onchange="updateProgress(this)"><label class="check-label" for="d4">All 4 Aadhar Cards (×6 copies)</label><span class="check-urgent">CRITICAL</span></div>
+        <div class="check-item"><input type="checkbox" id="d5" onchange="updateProgress(this)"><label class="check-label" for="d5">Ladakh Environment Fee paid (lahdclehpermit.in)</label></div>
+        <div class="check-item"><input type="checkbox" id="d6" onchange="updateProgress(this)"><label class="check-label" for="d6">EDF receipt printed ×4</label></div>
+        <div class="check-item"><input type="checkbox" id="d7" onchange="updateProgress(this)"><label class="check-label" for="d7">Travel Insurance for all 4</label></div>
+        <div class="check-item"><input type="checkbox" id="d8" onchange="updateProgress(this)"><label class="check-label" for="d8">All hotel bookings confirmed & printed</label></div>
+        <div class="check-item"><input type="checkbox" id="d9" onchange="updateProgress(this)"><label class="check-label" for="d9">Emergency contacts list (all 4 phones)</label></div>
+        <div class="checklist-progress"><div class="checklist-progress-bar" id="prog-doc"></div></div>
+        <div class="checklist-count" id="count-doc">0 / 9 completed</div>
+      </div>
+    </div>
+
+    <!-- Medical -->
+    <div class="checklist-card">
+      <div class="checklist-header"><span class="icon">💊</span>Medical Kit (4 People)</div>
+      <div class="checklist-body">
+        <div class="check-item"><input type="checkbox" id="m1" onchange="updateProgress(this)"><label class="check-label" for="m1">Diamox (acetazolamide) — doctor prescription</label><span class="check-urgent">ALTITUDE</span></div>
+        <div class="check-item"><input type="checkbox" id="m2" onchange="updateProgress(this)"><label class="check-label" for="m2">ORS sachets (×20 min)</label></div>
+        <div class="check-item"><input type="checkbox" id="m3" onchange="updateProgress(this)"><label class="check-label" for="m3">Ibuprofen / Paracetamol</label></div>
+        <div class="check-item"><input type="checkbox" id="m4" onchange="updateProgress(this)"><label class="check-label" for="m4">Antacids (Digene / Gelusil)</label></div>
+        <div class="check-item"><input type="checkbox" id="m5" onchange="updateProgress(this)"><label class="check-label" for="m5">Antiemetic (Domperidone)</label></div>
+        <div class="check-item"><input type="checkbox" id="m6" onchange="updateProgress(this)"><label class="check-label" for="m6">Antiseptic cream + bandages</label></div>
+        <div class="check-item"><input type="checkbox" id="m7" onchange="updateProgress(this)"><label class="check-label" for="m7">Sunscreen SPF 50+ (UV extreme at altitude)</label></div>
+        <div class="check-item"><input type="checkbox" id="m8" onchange="updateProgress(this)"><label class="check-label" for="m8">Lip balm with SPF</label></div>
+        <div class="check-item"><input type="checkbox" id="m9" onchange="updateProgress(this)"><label class="check-label" for="m9">Eye drops (dry eyes at altitude)</label></div>
+        <div class="check-item"><input type="checkbox" id="m10" onchange="updateProgress(this)"><label class="check-label" for="m10">Pulse oximeter (AMS early detection)</label><span class="check-urgent">USEFUL</span></div>
+        <div class="checklist-progress"><div class="checklist-progress-bar" id="prog-med"></div></div>
+        <div class="checklist-count" id="count-med">0 / 10 completed</div>
+      </div>
+    </div>
+
+    <!-- Car -->
+    <div class="checklist-card">
+      <div class="checklist-header"><span class="icon">🚙</span>Thar Roxx Prep</div>
+      <div class="checklist-body">
+        <div class="check-item"><input type="checkbox" id="c1" onchange="updateProgress(this)"><label class="check-label" for="c1">Full service at Mahindra service center (Chandigarh)</label><span class="check-urgent">CRITICAL</span></div>
+        <div class="check-item"><input type="checkbox" id="c2" onchange="updateProgress(this)"><label class="check-label" for="c2">Engine oil changed</label></div>
+        <div class="check-item"><input type="checkbox" id="c3" onchange="updateProgress(this)"><label class="check-label" for="c3">Brake pads checked</label></div>
+        <div class="check-item"><input type="checkbox" id="c4" onchange="updateProgress(this)"><label class="check-label" for="c4">All tyre pressure checked (incl. spare)</label></div>
+        <div class="check-item"><input type="checkbox" id="c5" onchange="updateProgress(this)"><label class="check-label" for="c5">Coolant level full</label></div>
+        <div class="check-item"><input type="checkbox" id="c6" onchange="updateProgress(this)"><label class="check-label" for="c6">10L diesel jerry can packed</label><span class="check-urgent">MOUNTAIN</span></div>
+        <div class="check-item"><input type="checkbox" id="c7" onchange="updateProgress(this)"><label class="check-label" for="c7">Tow rope</label></div>
+        <div class="check-item"><input type="checkbox" id="c8" onchange="updateProgress(this)"><label class="check-label" for="c8">Jumper cables</label></div>
+        <div class="check-item"><input type="checkbox" id="c9" onchange="updateProgress(this)"><label class="check-label" for="c9">Puncture repair kit</label></div>
+        <div class="check-item"><input type="checkbox" id="c10" onchange="updateProgress(this)"><label class="check-label" for="c10">Windshield washer fluid (mountain dust)</label></div>
+        <div class="check-item"><input type="checkbox" id="c11" onchange="updateProgress(this)"><label class="check-label" for="c11">Phone mount for dashboard</label></div>
+        <div class="check-item"><input type="checkbox" id="c12" onchange="updateProgress(this)"><label class="check-label" for="c12">Power bank (×2 for 4 people)</label></div>
+        <div class="checklist-progress"><div class="checklist-progress-bar" id="prog-car"></div></div>
+        <div class="checklist-count" id="count-car">0 / 12 completed</div>
+      </div>
+    </div>
+
+    <!-- Food supply -->
+    <div class="checklist-card">
+      <div class="checklist-header"><span class="icon">🥗</span>Veg Food Supply (Carry from Bangalore/Chandigarh)</div>
+      <div class="checklist-body">
+        <div class="check-item"><input type="checkbox" id="f1" onchange="updateProgress(this)"><label class="check-label" for="f1">MTR/Haldiram instant food pouches (×20)</label></div>
+        <div class="check-item"><input type="checkbox" id="f2" onchange="updateProgress(this)"><label class="check-label" for="f2">Maggi noodles (×20 packets)</label></div>
+        <div class="check-item"><input type="checkbox" id="f3" onchange="updateProgress(this)"><label class="check-label" for="f3">Mixed dry fruits & nuts (2 kg)</label></div>
+        <div class="check-item"><input type="checkbox" id="f4" onchange="updateProgress(this)"><label class="check-label" for="f4">Energy/protein bars (×30)</label></div>
+        <div class="check-item"><input type="checkbox" id="f5" onchange="updateProgress(this)"><label class="check-label" for="f5">Glucose biscuits / Marie biscuits</label></div>
+        <div class="check-item"><input type="checkbox" id="f6" onchange="updateProgress(this)"><label class="check-label" for="f6">Electrolyte powder / Glucon-D</label></div>
+        <div class="check-item"><input type="checkbox" id="f7" onchange="updateProgress(this)"><label class="check-label" for="f7">Steel thermos flask ×2 (hot tea at altitude)</label></div>
+        <div class="check-item"><input type="checkbox" id="f8" onchange="updateProgress(this)"><label class="check-label" for="f8">2L water bottles per person (minimum)</label></div>
+        <div class="check-item"><input type="checkbox" id="f9" onchange="updateProgress(this)"><label class="check-label" for="f9">Pickle sachets / chutney packets</label></div>
+        <div class="checklist-progress"><div class="checklist-progress-bar" id="prog-food"></div></div>
+        <div class="checklist-count" id="count-food">0 / 9 completed</div>
+      </div>
+    </div>
+
+    <!-- Bookings -->
+    <div class="checklist-card">
+      <div class="checklist-header"><span class="icon">🏨</span>Hotel Bookings (Pre-Book All)</div>
+      <div class="checklist-body">
+        <div class="check-item"><input type="checkbox" id="h1" onchange="updateProgress(this)"><label class="check-label" for="h1">Chandigarh — serviced apt with WiFi (May 17–30)</label><span class="check-urgent">BOOK FIRST</span></div>
+        <div class="check-item"><input type="checkbox" id="h2" onchange="updateProgress(this)"><label class="check-label" for="h2">Jammu — 3 star hotel, 2 rooms (May 31)</label></div>
+        <div class="check-item"><input type="checkbox" id="h3" onchange="updateProgress(this)"><label class="check-label" for="h3">Srinagar — houseboat/hotel, 2 rooms (June 1–2)</label></div>
+        <div class="check-item"><input type="checkbox" id="h4" onchange="updateProgress(this)"><label class="check-label" for="h4">Kargil — hotel, 2 rooms (June 3)</label></div>
+        <div class="check-item"><input type="checkbox" id="h5" onchange="updateProgress(this)"><label class="check-label" for="h5">Leh — hotel, 2 rooms (June 4–6)</label><span class="check-urgent">BOOK EARLY</span></div>
+        <div class="check-item"><input type="checkbox" id="h6" onchange="updateProgress(this)"><label class="check-label" for="h6">Nubra/Hunder — camp (if solo, after group)</label></div>
+        <div class="check-item"><input type="checkbox" id="h7" onchange="updateProgress(this)"><label class="check-label" for="h7">Manali — hotel (June 7–8)</label></div>
+        <div class="check-item"><input type="checkbox" id="h8" onchange="updateProgress(this)"><label class="check-label" for="h8">Friends: Volvo bus Manali→CHD booked (redBus)</label></div>
+        <div class="checklist-progress"><div class="checklist-progress-bar" id="prog-hotel"></div></div>
+        <div class="checklist-count" id="count-hotel">0 / 8 completed</div>
+      </div>
+    </div>
+
+    <!-- Tech & Connectivity -->
+    <div class="checklist-card">
+      <div class="checklist-header"><span class="icon">📱</span>Tech & Connectivity</div>
+      <div class="checklist-body">
+        <div class="check-item"><input type="checkbox" id="t1" onchange="updateProgress(this)"><label class="check-label" for="t1">Download Google Maps offline: Entire route</label></div>
+        <div class="check-item"><input type="checkbox" id="t2" onchange="updateProgress(this)"><label class="check-label" for="t2">Download Maps.me offline (better for remote areas)</label></div>
+        <div class="check-item"><input type="checkbox" id="t3" onchange="updateProgress(this)"><label class="check-label" for="t3">Jio SIM — best coverage in J&K and Ladakh</label></div>
+        <div class="check-item"><input type="checkbox" id="t4" onchange="updateProgress(this)"><label class="check-label" for="t4">BSNL SIM — fallback for remote areas</label></div>
+        <div class="check-item"><input type="checkbox" id="t5" onchange="updateProgress(this)"><label class="check-label" for="t5">Car charger (dual USB + Type C)</label></div>
+        <div class="check-item"><input type="checkbox" id="t6" onchange="updateProgress(this)"><label class="check-label" for="t6">Power banks ×2 (20,000 mAh each)</label></div>
+        <div class="check-item"><input type="checkbox" id="t7" onchange="updateProgress(this)"><label class="check-label" for="t7">WFH laptop + portable WiFi hotspot</label></div>
+        <div class="check-item"><input type="checkbox" id="t8" onchange="updateProgress(this)"><label class="check-label" for="t8">Walkie talkie (optional, useful at passes)</label></div>
+        <div class="checklist-progress"><div class="checklist-progress-bar" id="prog-tech"></div></div>
+        <div class="checklist-count" id="count-tech">0 / 8 completed</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PACKING -->
+<section id="packing" style="background:#fff;padding:5rem 2rem;max-width:100%;">
+  <div style="max-width:1200px;margin:0 auto;" class="fade-in">
+    <div class="section-label">What To Pack</div>
+    <div class="section-title">PACKING LIST</div>
+    <p style="color:#666;margin-bottom:1.5rem;font-size:0.9rem;">Each person: 1 soft bag max, 40L. No hard suitcases.</p>
+    
+    <div class="packing-accordion">
+      <div class="accordion-item open">
+        <div class="accordion-header" onclick="toggleAccordion(this)">🧥 Clothing — Layering is Key <span class="accordion-arrow">▲</span></div>
+        <div class="accordion-body">
+          <div class="packing-list">
+            <div class="packing-item"><input type="checkbox" id="cl1"><label for="cl1">Thermal base layer (top + bottom ×2)</label></div>
+            <div class="packing-item"><input type="checkbox" id="cl2"><label for="cl2">Fleece mid-layer jacket</label></div>
+            <div class="packing-item"><input type="checkbox" id="cl3"><label for="cl3">Windproof/waterproof outer jacket</label></div>
+            <div class="packing-item"><input type="checkbox" id="cl4"><label for="cl4">T-shirts (×4 light)</label></div>
+            <div class="packing-item"><input type="checkbox" id="cl5"><label for="cl5">Trek pants / cargo pants (×2)</label></div>
+            <div class="packing-item"><input type="checkbox" id="cl6"><label for="cl6">Warm socks (×5 pairs, wool preferred)</label></div>
+            <div class="packing-item"><input type="checkbox" id="cl7"><label for="cl7">Gloves (windproof)</label></div>
+            <div class="packing-item"><input type="checkbox" id="cl8"><label for="cl8">Woolen cap / beanie</label></div>
+            <div class="packing-item"><input type="checkbox" id="cl9"><label for="cl9">Neck gaiter / balaclava</label></div>
+            <div class="packing-item"><input type="checkbox" id="cl10"><label for="cl10">UV-protective sunglasses (must!)</label></div>
+            <div class="packing-item"><input type="checkbox" id="cl11"><label for="cl11">Comfortable shoes / trail runners</label></div>
+            <div class="packing-item"><input type="checkbox" id="cl12"><label for="cl12">Flip flops / sandals (for hotels)</label></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAccordion(this)">🎒 Accessories & Gear <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-body">
+          <div class="packing-list">
+            <div class="packing-item"><input type="checkbox" id="ac1"><label for="ac1">Headlamp + spare batteries</label></div>
+            <div class="packing-item"><input type="checkbox" id="ac2"><label for="ac2">Day pack / small backpack</label></div>
+            <div class="packing-item"><input type="checkbox" id="ac3"><label for="ac3">Waterproof stuff sacks</label></div>
+            <div class="packing-item"><input type="checkbox" id="ac4"><label for="ac4">Travel towel (quick dry)</label></div>
+            <div class="packing-item"><input type="checkbox" id="ac5"><label for="ac5">Toilet paper + wet wipes (×lots)</label></div>
+            <div class="packing-item"><input type="checkbox" id="ac6"><label for="ac6">Hand sanitizer ×4</label></div>
+            <div class="packing-item"><input type="checkbox" id="ac7"><label for="ac7">Swiss army knife / multi-tool</label></div>
+            <div class="packing-item"><input type="checkbox" id="ac8"><label for="ac8">Duct tape (fixes everything)</label></div>
+            <div class="packing-item"><input type="checkbox" id="ac9"><label for="ac9">Ziplock bags (various sizes)</label></div>
+            <div class="packing-item"><input type="checkbox" id="ac10"><label for="ac10">Torch / flashlight</label></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAccordion(this)">📸 Photography <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-body">
+          <div class="packing-list">
+            <div class="packing-item"><input type="checkbox" id="ph1"><label for="ph1">Camera + extra batteries</label></div>
+            <div class="packing-item"><input type="checkbox" id="ph2"><label for="ph2">Extra memory cards (×4 min)</label></div>
+            <div class="packing-item"><input type="checkbox" id="ph3"><label for="ph3">Tripod / flexible gorilla pod</label></div>
+            <div class="packing-item"><input type="checkbox" id="ph4"><label for="ph4">UV filter (extreme UV at altitude)</label></div>
+            <div class="packing-item"><input type="checkbox" id="ph5"><label for="ph5">Lens cleaning kit</label></div>
+            <div class="packing-item"><input type="checkbox" id="ph6"><label for="ph6">Phone: full storage cleared</label></div>
+            <div class="packing-item"><input type="checkbox" id="ph7"><label for="ph7">Drone (if experienced pilot — stunning shots)</label></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAccordion(this)">🚿 Toiletries & Hygiene <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-body">
+          <div class="packing-list">
+            <div class="packing-item"><input type="checkbox" id="to1"><label for="to1">Toothbrush + toothpaste</label></div>
+            <div class="packing-item"><input type="checkbox" id="to2"><label for="to2">Soap / body wash (travel size)</label></div>
+            <div class="packing-item"><input type="checkbox" id="to3"><label for="to3">Shampoo (travel size)</label></div>
+            <div class="packing-item"><input type="checkbox" id="to4"><label for="to4">Moisturizer (skin gets very dry at altitude)</label></div>
+            <div class="packing-item"><input type="checkbox" id="to5"><label for="to5">Sunscreen SPF 50+ (large tube)</label></div>
+            <div class="packing-item"><input type="checkbox" id="to6"><label for="to6">Lip balm with SPF (pack ×3)</label></div>
+            <div class="packing-item"><input type="checkbox" id="to7"><label for="to7">Feminine hygiene supplies as needed</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUDGET -->
+<div class="budget-section-wrapper" id="budget">
+  <div class="budget-section fade-in">
+    <div class="section-label">Financial Planning</div>
+    <div class="section-title">BUDGET BREAKDOWN</div>
+    
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <a href="leh-budget.html" style="display: inline-block; background: var(--dawn); color: var(--snow); padding: 0.8rem 2rem; border-radius: 4px; text-decoration: none; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.1em; text-transform: uppercase;">View Detailed Splitwise & Expenses Report</a>
+    </div>
+
+    <div class="budget-grid">
+      <div class="budget-card">
+        <div class="budget-card-icon">⛽</div>
+        <div class="budget-card-label">Fuel (Diesel)</div>
+        <div class="budget-card-amount">₹63,368</div>
+        <div class="budget-card-detail">~7,830 km total<br>(S&S ₹55,034 + Friends ₹8,334)</div>
+      </div>
+      <div class="budget-card">
+        <div class="budget-card-icon">🏨</div>
+        <div class="budget-card-label">Accommodation</div>
+        <div class="budget-card-amount">₹97,600</div>
+        <div class="budget-card-detail">25 nights total<br>(S&S ₹69,100 + Friends ₹28,500)</div>
+      </div>
+      <div class="budget-card">
+        <div class="budget-card-icon">🥗</div>
+        <div class="budget-card-label">Food</div>
+        <div class="budget-card-amount">₹23,400</div>
+        <div class="budget-card-detail">30 days total<br>(S&S ₹18,100 + Friends ₹5,300)</div>
+      </div>
+      <div class="budget-card">
+        <div class="budget-card-icon">🛣️</div>
+        <div class="budget-card-label">Tolls</div>
+        <div class="budget-card-amount">₹800</div>
+        <div class="budget-card-detail">Extra tolls only<br>(₹8,500 saved via FASTag)</div>
+      </div>
+      <div class="budget-card">
+        <div class="budget-card-icon">🎟️</div>
+        <div class="budget-card-label">Sightseeing</div>
+        <div class="budget-card-amount">₹15,100</div>
+        <div class="budget-card-detail">Gondola, camel rides,<br>shikara, etc.</div>
+      </div>
+      <div class="budget-card">
+        <div class="budget-card-icon">📋</div>
+        <div class="budget-card-label">Permits</div>
+        <div class="budget-card-amount">₹2,000</div>
+        <div class="budget-card-detail">Ladakh EDF ×4 persons<br>Various checkpost fees</div>
+      </div>
+      <div class="budget-card">
+        <div class="budget-card-icon">🔧</div>
+        <div class="budget-card-label">Car Service & Prep</div>
+        <div class="budget-card-amount">₹16,900</div>
+        <div class="budget-card-detail">Service, jerry can,<br>toolkit, etc. (S&S)</div>
+      </div>
+      <div class="budget-card">
+        <div class="budget-card-icon">🆘</div>
+        <div class="budget-card-label">Emergency Buffer</div>
+        <div class="budget-card-amount">₹15,000</div>
+        <div class="budget-card-detail">Medical, breakdown,<br>unexpected stays (Not in total)</div>
+      </div>
+    </div>
+
+    <div class="budget-total">
+      <div style="flex: 1; min-width: 200px;">
+        <div class="budget-total-label">Grand Total</div>
+        <div class="budget-total-amount" style="font-size: 2.2rem;">₹2,17,168</div>
+        <div class="budget-split-note">Total expenses (S&S + Friends)</div>
+      </div>
+      <div style="flex: 1; min-width: 200px;">
+        <div class="budget-total-label">S&S Share</div>
+        <div class="budget-total-amount" style="font-size: 2.2rem; color: var(--dawn)">₹1,67,584</div>
+        <div class="budget-split-note">For 2 people · Full 30 days</div>
+      </div>
+      <div style="flex: 1; min-width: 200px; text-align: right;">
+        <div class="budget-total-label">Friends' Share</div>
+        <div class="budget-total-amount" style="font-size: 2.2rem; color: #4a90d9">₹49,584</div>
+        <div class="budget-split-note">50-50 split for group phase (8 days)</div>
+      </div>
+    </div>
+
+    <!-- Per day breakdown -->
+    <div style="margin-top:2rem;padding:1.5rem;background:rgba(255,255,255,0.05);border-radius:4px;border:1px solid rgba(255,255,255,0.1);">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.2em;color:#888;text-transform:uppercase;margin-bottom:1rem;">Per Person Per Day Cost</div>
+      <div style="display:flex;gap:2rem;flex-wrap:wrap;">
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold)">₹2,793</div>
+          <div style="font-size:0.75rem;color:#666;font-family:'Barlow Condensed',sans-serif">Per person/day (Shrinandan + Shubhashree)</div>
+        </div>
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold)">₹3,099</div>
+          <div style="font-size:0.75rem;color:#666;font-family:'Barlow Condensed',sans-serif">Per person/day (Friends, 8 days)</div>
+        </div>
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#5a7a5c">Splitwise</div>
+          <div style="font-size:0.75rem;color:#666;font-family:'Barlow Condensed',sans-serif">Recommended app for splitting expenses</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PERMITS -->
+<section id="permits" class="fade-in">
+  <div class="section-label">Paperwork</div>
+  <div class="section-title">PERMITS & PERMISSIONS</div>
+  <div class="permit-cards">
+    <div class="permit-card fee-only">
+      <div class="permit-status">✅ JUST PAY ONLINE</div>
+      <div class="permit-title">Ladakh Environment Fee (EDF)</div>
+      <div class="permit-desc">Indian tourists no longer need a separate Inner Line Permit. Just pay ₹400/person Environment Fee at lahdclehpermit.in. Valid for Nubra, Pangong, Tso Moriri, Khardung La. Print and carry receipt ×4 copies per person.</div>
+    </div>
+    <div class="permit-card not-required">
+      <div class="permit-status">✅ NOT REQUIRED</div>
+      <div class="permit-title">Leh City Sightseeing</div>
+      <div class="permit-desc">No permit needed for Leh palace, Shanti Stupa, markets, monasteries in and around Leh town, or travel on Srinagar-Leh and Manali-Leh highways.</div>
+    </div>
+    <div class="permit-card required">
+      <div class="permit-status">⚠️ EDF RECEIPT NEEDED</div>
+      <div class="permit-title">Nubra Valley + Khardung La</div>
+      <div class="permit-desc">Show EDF payment receipt at checkpost. Carry Aadhar + printed EDF receipt. Apply and print before leaving Bangalore.</div>
+    </div>
+    <div class="permit-card required">
+      <div class="permit-status">⚠️ EDF RECEIPT NEEDED</div>
+      <div class="permit-title">Pangong Tso Lake</div>
+      <div class="permit-desc">Show EDF at Chang La checkpost. Military is strict here — have all 4 persons' receipts and Aadhar cards ready in one folder before approaching checkpost.</div>
+    </div>
+    <div class="permit-card not-required">
+      <div class="permit-status">✅ NOT REQUIRED</div>
+      <div class="permit-title">Jammu & Kashmir Travel</div>
+      <div class="permit-desc">No permits needed for Indian citizens to travel within J&K (Jammu, Srinagar, Sonmarg, Kargil). Just carry standard ID proof (Aadhar). Vehicle RC and insurance at checkposts.</div>
+    </div>
+    <div class="permit-card fee-only">
+      <div class="permit-status">💡 RECOMMENDED</div>
+      <div class="permit-title">Travel Insurance</div>
+      <div class="permit-desc">Not mandatory but strongly recommended for high-altitude mountain travel. Cover all 4 people. Must include emergency helicopter evacuation coverage for Ladakh region. ₹500–800/person.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TIPS -->
+<section id="tips" style="background:#f8f4ed;padding:5rem 2rem;max-width:100%;">
+  <div style="max-width:1200px;margin:0 auto;" class="fade-in">
+    <div class="section-label">Expert Guidance</div>
+    <div class="section-title">IMPORTANT TIPS</div>
+    <div class="tips-grid">
+      <div class="tip-card tip-altitude">
+        <div class="tip-card-header">⛰️ Altitude Sickness (AMS)</div>
+        <div class="tip-card-body">
+          <ul>
+            <li>Take Diamox from Day 13 as prescribed by doctor</li>
+            <li>Drink 3–4 litres water/day at altitude (not less)</li>
+            <li>Absolutely no alcohol above 3,000m</li>
+            <li>Light meals only — heavy food worsens symptoms</li>
+            <li>Rest 24 hrs on first arrival in Leh. No exertion.</li>
+            <li>Carry pulse oximeter — SpO2 below 80% = descend</li>
+            <li>Severe headache + vomiting + loss of balance = DESCEND NOW</li>
+            <li>Garlic soup is a local remedy for mild headaches</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tip-card tip-veg">
+        <div class="tip-card-header">🌿 Vegetarian Food Guide</div>
+        <div class="tip-card-body">
+          <ul>
+            <li>Srinagar: Krishna Vaishno Bhojnalaya (Dal Gate), Pincer Vegetarian Foods</li>
+            <li>Sonmarg: Hotel Sonamarg Palace — pure veg restaurant</li>
+            <li>Kargil: Hotel Caravan veg eatery. Carry packed food from Sonmarg.</li>
+            <li>Mulbekh: Small dhaba opposite Buddha statue — veg only</li>
+            <li>Khalsi: Samyas Restaurant — Jain cuisine, pure veg</li>
+            <li>Leh: Tibetan Kitchen, Bon Appetit, Gesmo, Wonderland</li>
+            <li>Manali: Excellent pure veg + South Indian options</li>
+            <li>Always carry MTR pouches + Maggi for emergencies</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tip-card tip-hindi">
+        <div class="tip-card-header">🗣️ Language & Safety</div>
+        <div class="tip-card-body">
+          <ul>
+            <li>Chandigarh, Jammu: English widely spoken at hotels</li>
+            <li>Srinagar: Tourist areas are very English-friendly</li>
+            <li>Kargil, Leh: Hotel staff understand basic English</li>
+            <li>Learn: "Kitna hua?" (How much?) "Shudh shakahari?" (Pure veg?)</li>
+            <li>Download Google Translate offline: Hindi + Kashmiri</li>
+            <li>Book hotels on booking.com/MakeMyTrip only</li>
+            <li>Use Ola/Rapido in cities — metered, no scam</li>
+            <li>Kashmiri people are genuinely warm to South Indian tourists</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tip-car tip-card">
+        <div class="tip-card-header">🚙 Thar Roxx Mountain Driving</div>
+        <div class="tip-card-body">
+          <ul>
+            <li>Engage 4H (4WD) on Zojila, Rohtang, rough patches</li>
+            <li>Engage 4L (low range) on extremely steep/icy sections</li>
+            <li>Engine brake on descents — don't ride the brake pedal</li>
+            <li>Keep 150km fuel range at all times in Ladakh</li>
+            <li>Fill up completely at Leh before Manali direction</li>
+            <li>At passes: stop briefly, don't idle engine long</li>
+            <li>Never drive after dark in mountain areas</li>
+            <li>BRO helpline: 1800-180-3474 for road conditions</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tip-card tip-safety">
+        <div class="tip-card-header">🛡️ Safety & Scam Prevention</div>
+        <div class="tip-card-body">
+          <ul>
+            <li>Never exchange currency with non-bank people</li>
+            <li>ATMs: use machines inside petrol stations or bank branches</li>
+            <li>Pre-book hotels — don't book at highway touts</li>
+            <li>At checkposts: be polite, have documents ready, don't argue</li>
+            <li>Don't photograph military installations, checkposts, soldiers</li>
+            <li>Carry cash — many Ladakh areas have no card machines</li>
+            <li>Keep ₹5,000 emergency cash per person always</li>
+            <li>Share real-time location with family back home</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tip-card tip-money">
+        <div class="tip-card-header">💳 Money & Finance</div>
+        <div class="tip-card-body">
+          <ul>
+            <li>Use Splitwise app — create group from Day 1</li>
+            <li>Set: Fuel 50-50, Stay 50-50 (2 rooms), Food 50-50</li>
+            <li>Settle daily — don't let it accumulate</li>
+            <li>Carry ₹20,000 cash per couple for remote areas</li>
+            <li>UPI works in Leh town and Manali but not at passes</li>
+            <li>Chandigarh has all ATMs — withdraw before heading north</li>
+            <li>Kargil has ATMs — last reliable withdrawal before Leh</li>
+            <li>Fuel bill — save all receipts for exact fuel calculation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EMERGENCY -->
+<div class="emergency-wrapper" id="emergency">
+  <div class="emergency-section fade-in">
+    <div class="section-title" style="font-size:2rem">🆘 EMERGENCY CONTACTS</div>
+    <p style="color:rgba(255,255,255,0.7);font-size:0.85rem;margin-top:0.5rem">Save all these in every phone before leaving Chandigarh.</p>
+    <div class="emergency-grid">
+      <div class="emergency-card">
+        <div class="emergency-label">BRO Road Helpline</div>
+        <div class="emergency-num">1800-180-3474</div>
+        <div class="emergency-desc">Road conditions, blockages, emergencies</div>
+      </div>
+      <div class="emergency-card">
+        <div class="emergency-label">Leh Police</div>
+        <div class="emergency-num">01982-252018</div>
+        <div class="emergency-desc">Leh district police station</div>
+      </div>
+      <div class="emergency-card">
+        <div class="emergency-label">Leh Hospital SNM</div>
+        <div class="emergency-num">01982-252014</div>
+        <div class="emergency-desc">Main govt hospital in Leh</div>
+      </div>
+      <div class="emergency-card">
+        <div class="emergency-label">Kargil Hospital</div>
+        <div class="emergency-num">01985-232037</div>
+        <div class="emergency-desc">District hospital, Kargil</div>
+      </div>
+      <div class="emergency-card">
+        <div class="emergency-label">National Emergency</div>
+        <div class="emergency-num">112</div>
+        <div class="emergency-desc">Police + Ambulance + Fire unified</div>
+      </div>
+      <div class="emergency-card">
+        <div class="emergency-label">Mahindra Roadside</div>
+        <div class="emergency-num">1800-209-6006</div>
+        <div class="emergency-desc">Mahindra 24hr breakdown assist</div>
+      </div>
+      <div class="emergency-card">
+        <div class="emergency-label">J&K Tourist Help</div>
+        <div class="emergency-num">0194-2452690</div>
+        <div class="emergency-desc">J&K Tourism helpline, Srinagar</div>
+      </div>
+      <div class="emergency-card">
+        <div class="emergency-label">Altitude Emergency</div>
+        <div class="emergency-num">DESCEND</div>
+        <div class="emergency-desc">SpO2 &lt;80% or severe symptoms — lose 500m altitude immediately</div>
+      </div>
+    </div>
+
+    <!-- AMS Quick Reference -->
+    <div style="margin-top:2rem;background:rgba(0,0,0,0.3);border-radius:4px;padding:1.5rem;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:1rem;">AMS Quick Reference Card</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;">
+        <div style="background:rgba(255,255,255,0.1);padding:1rem;border-radius:3px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;color:#f88;font-size:0.8rem;letter-spacing:0.1em;margin-bottom:0.3rem">MILD AMS</div>
+          <div style="font-size:0.75rem;color:rgba(255,255,255,0.7);line-height:1.6">Headache, fatigue, dizziness → Rest, water, Diamox. Don't ascend further.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);padding:1rem;border-radius:3px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;color:#f44;font-size:0.8rem;letter-spacing:0.1em;margin-bottom:0.3rem">MODERATE AMS</div>
+          <div style="font-size:0.75rem;color:rgba(255,255,255,0.7);line-height:1.6">Severe headache + vomiting + weakness → Descend 500m immediately. Seek medical help.</div>
+        </div>
+        <div style="background:rgba(255,0,0,0.3);padding:1rem;border-radius:3px;border:1px solid rgba(255,0,0,0.5);">
+          <div style="font-family:'Barlow Condensed',sans-serif;color:#fff;font-size:0.8rem;letter-spacing:0.1em;margin-bottom:0.3rem">⚠️ SEVERE / HACE/HAPE</div>
+          <div style="font-size:0.75rem;color:rgba(255,255,255,0.9);line-height:1.6">Loss of coordination, confusion, gurgling breathing → DESCEND NOW. Call 112. Do not wait.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-title">BLR → LEH → BLR</div>
+  <div class="footer-sub" style="color:var(--gold);margin-bottom:0.5rem">Shrinandan & Shubhashree · May–June 2025</div>
+  <div class="footer-sub">Mahindra Thar Roxx · ~9,000 KM · 30 Days · 4 High Passes · 2 Iconic Lakes</div>
+  <div style="margin-top:1.5rem;font-size:0.75rem;color:#444;letter-spacing:0.1em">जो बीत गई सो बात गई · What has passed has passed — make new memories</div>
+</div>
+
+<script>
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Nav scroll
+function scrollToSection(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// Phase tabs
+function showPhase(id) {
+  document.querySelectorAll('.phase-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.phase-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Accordion
+function toggleAccordion(header) {
+  const item = header.parentElement;
+  const arrow = header.querySelector('.accordion-arrow');
+  item.classList.toggle('open');
+  arrow.textContent = item.classList.contains('open') ? '▲' : '▼';
+  item.querySelector('.accordion-body').style.display = item.classList.contains('open') ? 'block' : 'none';
+}
+
+// Checklist progress
+function updateProgress(checkbox) {
+  const card = checkbox.closest('.checklist-card');
+  const label = checkbox.nextElementSibling;
+  if (checkbox.checked) label.classList.add('checked');
+  else label.classList.remove('checked');
+
+  const allBoxes = card.querySelectorAll('input[type=checkbox]');
+  const checkedBoxes = card.querySelectorAll('input[type=checkbox]:checked');
+  const pct = (checkedBoxes.length / allBoxes.length) * 100;
+
+  // Find progress bar
+  const bar = card.querySelector('.checklist-progress-bar');
+  const count = card.querySelector('.checklist-count');
+  if (bar) bar.style.width = pct + '%';
+  if (count) count.textContent = `${checkedBoxes.length} / ${allBoxes.length} completed`;
+}
+
+// Packing list check
+document.querySelectorAll('.packing-item input').forEach(cb => {
+  cb.addEventListener('change', function() {
+    this.closest('.packing-item').classList.toggle('checked', this.checked);
+  });
+});
+
+// Nav active state on scroll
+const sections = ['itinerary','route','altitude','pitch','checklist','packing','budget','weather','permits','tips','emergency'];
+window.addEventListener('scroll', () => {
+  const scrollPos = window.scrollY + 100;
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (scrollPos >= el.offsetTop && scrollPos < el.offsetTop + el.offsetHeight) {
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      // mark the matching nav btn
+    }
+  });
+});
+
+// Initialize accordion bodies
+document.querySelectorAll('.accordion-item:not(.open) .accordion-body').forEach(b => b.style.display = 'none');
+</script>
+</body>
+</html>

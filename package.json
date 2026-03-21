@@ -1,0 +1,12 @@
+{
+  "name": "leh-trip-itinerary",
+  "version": "1.0.0",
+  "description": "Leh Trip Itinerary and Budget Planner",
+  "scripts": {
+    "start": "npx serve .",
+    "deploy": "wrangler pages deploy ."
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
