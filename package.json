@@ -4,7 +4,10 @@
   "description": "Leh Trip Itinerary and Budget Planner",
   "scripts": {
     "start": "npx serve .",
-    "deploy": "wrangler pages deploy ."
+    "deploy": "wrangler pages deploy .",
+    "db:create": "wrangler d1 create leh-tracker",
+    "db:init": "wrangler d1 execute leh-tracker --remote --file=./schema.sql",
+    "db:init:local": "wrangler d1 execute leh-tracker --local --file=./schema.sql"
   },
   "devDependencies": {
     "wrangler": "^3.0.0"

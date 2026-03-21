@@ -584,35 +584,32 @@ const SS_BUDGET  = 167584;
 const FR_BUDGET  = 49584;
 
 // ─────────────────────────────────────────────
-// STATE  (persisted in localStorage)
+// STATE  (loaded from D1 via /api/tracker)
 // ─────────────────────────────────────────────
-const STORAGE_KEY = 'blr_leh_tracker_v3';
+let state = { entries: {}, notes: {} };
+DAYS.forEach(d => { state.entries[d.id] = []; state.notes[d.id] = ''; });
 
-function loadState() {
+async function fetchState() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch(e) {}
-  // default empty state
-  const state = { entries: {}, notes: {} };
-  DAYS.forEach(d => { state.entries[d.id] = []; state.notes[d.id] = ''; });
-  return state;
+    const res = await fetch('/api/tracker');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    DAYS.forEach(d => {
+      state.entries[d.id] = data.entries?.[d.id] || [];
+      state.notes[d.id]   = data.notes?.[d.id]   ?? '';
+    });
+  } catch (err) {
+    console.error('Could not load from API:', err);
+    toast('Could not reach server — showing empty state', 4000);
+  }
 }
-function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-
-let state = loadState();
-// Ensure all day keys exist (migration safety)
-DAYS.forEach(d => {
-  if (!state.entries[d.id]) state.entries[d.id] = [];
-  if (state.notes[d.id] === undefined) state.notes[d.id] = '';
-});
 
 // ─────────────────────────────────────────────
 // BUILD TABS + PANELS
 // ─────────────────────────────────────────────
 function buildUI() {
   const tabBar = document.getElementById('tabBar');
-  const main   = document.getElementById('mainContent') || document.querySelector('.main');
+  const main   = document.querySelector('.main');
 
   DAYS.forEach(day => {
     // Tab
@@ -628,7 +625,7 @@ function buildUI() {
     panel.className = 'day-panel';
     panel.id = 'panel-' + day.id;
     panel.innerHTML = buildDayPanel(day);
-    document.querySelector('.main').appendChild(panel);
+    main.appendChild(panel);
   });
 }
 
@@ -675,44 +672,121 @@ function buildDayPanel(day) {
 
     <div class="day-notes-label">Notes for this day</div>
     <textarea class="day-notes" id="notes-${day.id}" placeholder="Anything memorable, warnings, tips..."
-      oninput="saveNote('${day.id}', this.value)">${state.notes[day.id] || ''}</textarea>
+      oninput="saveNote('${day.id}', this.value)"></textarea>
   `;
 }
 
 // ─────────────────────────────────────────────
 // ENTRIES
 // ─────────────────────────────────────────────
-function addEntry(dayId, entry = null) {
+async function addEntry(dayId, entry = null) {
   const day = DAYS.find(d => d.id === dayId);
   const isGroup = day && day.phase === 'group';
   const e = entry || {
-    id: Date.now() + Math.random(),
+    id: Date.now() + '_' + Math.random().toString(36).slice(2, 8),
     desc: '', cat: 'food', who: isGroup ? '50' : 'ss', amount: ''
   };
   state.entries[dayId].push(e);
-  saveState();
   renderEntries(dayId);
   updateAll();
+
+  try {
+    const res = await fetch('/api/entries', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ dayId, entry: e }),
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+  } catch (err) {
+    console.error('Failed to save entry:', err);
+    toast('Entry saved locally only — sync failed');
+  }
 }
 
-function removeEntry(dayId, entryId) {
+async function removeEntry(dayId, entryId) {
   state.entries[dayId] = state.entries[dayId].filter(e => e.id != entryId);
-  saveState();
   renderEntries(dayId);
   updateAll();
+
+  try {
+    const res = await fetch(`/api/entries/${entryId}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+  } catch (err) {
+    console.error('Failed to delete entry:', err);
+  }
 }
 
+// Patch only the S&S / Friends cells for a single row (avoids losing focus on amount input)
+function patchAmountCells(dayId, entryId) {
+  const e = state.entries[dayId].find(e => e.id == entryId);
+  if (!e) return;
+  const tbody = document.getElementById('entries-' + dayId);
+  if (!tbody) return;
+  const row = tbody.querySelector(`tr[data-entry-id="${entryId}"]`);
+  if (!row) return;
+  const amt   = parseFloat(e.amount) || 0;
+  const ssAmt = e.who === 'ss' ? amt : e.who === '50' ? amt/2 : 0;
+  const frAmt = e.who === 'fr' ? amt : e.who === '50' ? amt/2 : 0;
+  const cells = row.querySelectorAll('td');
+  cells[4].innerHTML = ssAmt > 0 ? '₹'+fmtNum(ssAmt) : '<span style="color:var(--muted)">—</span>';
+  cells[5].innerHTML = frAmt > 0 ? '₹'+fmtNum(frAmt) : '<span style="color:var(--muted)">—</span>';
+}
+
+const _updateTimers = {};
 function updateEntry(dayId, entryId, field, value) {
   const e = state.entries[dayId].find(e => e.id == entryId);
   if (!e) return;
-  e[field] = field === 'amount' ? (parseFloat(value) || '') : value;
-  saveState();
-  if (field !== 'desc') { renderEntries(dayId); updateAll(); }
+  e[field] = field === 'amount' ? value : value;  // keep raw string for amount
+  if (field !== 'amount' && field !== 'desc') {
+    renderEntries(dayId);
+    updateAll();
+  }
+  // amount: no DOM change here — onblur handles the visual refresh
+
+  // Debounce API call (600ms)
+  clearTimeout(_updateTimers[entryId]);
+  _updateTimers[entryId] = setTimeout(async () => {
+    try {
+      const res = await fetch(`/api/entries/${entryId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ entry: e }),
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+    } catch (err) {
+      console.error('Failed to update entry:', err);
+    }
+  }, 600);
 }
 
+// Called onblur — safe to update calculated cells now that input lost focus
+function commitAmount(dayId, entryId, value) {
+  const e = state.entries[dayId].find(e => e.id == entryId);
+  if (!e) return;
+  e.amount = parseFloat(value) || '';
+  patchAmountCells(dayId, entryId);
+  renderDayTotals(dayId);
+  updateAll();
+}
+
+const _noteTimers = {};
 function saveNote(dayId, val) {
   state.notes[dayId] = val;
-  saveState();
+
+  // Debounce API call (800ms) — notes fire on every keystroke
+  clearTimeout(_noteTimers[dayId]);
+  _noteTimers[dayId] = setTimeout(async () => {
+    try {
+      const res = await fetch(`/api/notes/${dayId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: val }),
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+    } catch (err) {
+      console.error('Failed to save note:', err);
+    }
+  }, 800);
 }
 
 function renderEntries(dayId) {
@@ -725,9 +799,9 @@ function renderEntries(dayId) {
     const amt = parseFloat(e.amount) || 0;
     const ssAmt  = e.who === 'ss' ? amt : e.who === '50' ? amt/2 : 0;
     const frAmt  = e.who === 'fr' ? amt : e.who === '50' ? amt/2 : 0;
-    const catC   = CATS[e.cat]?.color || 'var(--misc-c)';
 
     const tr = document.createElement('tr');
+    tr.dataset.entryId = String(e.id);
     tr.innerHTML = `
       <td>
         <input class="entry-input" value="${escHtml(e.desc)}" placeholder="What was this for?"
@@ -749,9 +823,10 @@ function renderEntries(dayId) {
         </select>
       </td>
       <td class="r">
-        <input class="amount-input" type="number" min="0" step="1"
+        <input class="amount-input" type="text" inputmode="decimal"
           value="${e.amount === '' ? '' : e.amount}" placeholder="0"
-          oninput="updateEntry('${dayId}','${e.id}','amount',this.value)">
+          oninput="updateEntry('${dayId}','${e.id}','amount',this.value)"
+          onblur="commitAmount('${dayId}','${e.id}',this.value)">
       </td>
       <td class="r" style="font-family:var(--mono);font-size:0.78rem;color:var(--ss)">
         ${ssAmt > 0 ? '₹'+fmtNum(ssAmt) : '<span style="color:var(--muted)">—</span>'}
@@ -928,7 +1003,6 @@ function renderVsBudget(g) {
     ['toll', 'Toll',      800, g.byCat.toll||0,  '#60a5fa'],
   ];
   const maxBudget = Math.max(...categories.map(c => c[2]));
-  vb.querySelector('.vs-title') || (vb.innerHTML = '<div class="vs-title">Actual vs Budgeted</div>');
   const rows = categories.map(([k, label, budget, actual, color]) => {
     const actualPct  = Math.min(100, (actual/maxBudget)*100).toFixed(1);
     const budgetPct  = ((budget/maxBudget)*100).toFixed(1);
@@ -962,7 +1036,6 @@ function showSplitwise() {
   const tbody = document.getElementById('splittableBody');
   const netEl = document.getElementById('splitNetOwed');
 
-  // collect only 50-50 entries
   let frOwes = 0;
   const rows = [];
 
@@ -1031,13 +1104,19 @@ function exportCSV() {
 // ─────────────────────────────────────────────
 // RESET
 // ─────────────────────────────────────────────
-function confirmReset() {
+async function confirmReset() {
   if (!confirm('Reset ALL expense entries? This cannot be undone.')) return;
   DAYS.forEach(d => { state.entries[d.id] = []; });
-  saveState();
   DAYS.forEach(d => renderEntries(d.id));
   updateAll();
-  toast('All entries cleared');
+
+  try {
+    const res = await fetch('/api/entries', { method: 'DELETE' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    toast('All entries cleared');
+  } catch (err) {
+    toast('Cleared locally — server sync failed');
+  }
 }
 
 // ─────────────────────────────────────────────
@@ -1059,10 +1138,20 @@ function toast(msg, dur=2500) {
 // ─────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────
-buildUI();
-// Render all entry tables
-DAYS.forEach(d => renderEntries(d.id));
-updateAll();
+async function init() {
+  buildUI();
+  await fetchState();
+  // Render all entry tables with fetched data
+  DAYS.forEach(d => renderEntries(d.id));
+  // Populate notes textareas (built before fetch, so fill them now)
+  DAYS.forEach(d => {
+    const ta = document.getElementById('notes-' + d.id);
+    if (ta) ta.value = state.notes[d.id] || '';
+  });
+  updateAll();
+}
+
+init();
 </script>
 </body>
 </html>
