@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLR→LEH · Trip Expense Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0c0d10;
+  --surface:  #14161c;
+  --surface2: #1c1e27;
+  --surface3: #22242f;
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(255,255,255,0.13);
+  --text:     #e2dfd8;
+  --muted:    #5a6270;
+  --muted2:   #8a93a0;
+  --ss:       #f97316;
+  --ss-dim:   rgba(249,115,22,0.12);
+  --fr:       #38bdf8;
+  --fr-dim:   rgba(56,189,248,0.1);
+  --split:    #a78bfa;
+  --split-dim:rgba(167,139,250,0.1);
+  --green:    #4ade80;
+  --green-dim:rgba(74,222,128,0.1);
+  --red:      #f87171;
+  --red-dim:  rgba(248,113,113,0.1);
+  --yellow:   #fbbf24;
+  --mono: 'DM Mono', monospace;
+  --fuel-c: #fb923c;
+  --food-c: #34d399;
+  --stay-c: #818cf8;
+  --act-c:  #f472b6;
+  --misc-c: #94a3b8;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border2);
+  position: sticky; top:0; z-index:60;
+  flex-wrap: wrap;
+}
+.topbar-back {
+  display: flex; align-items:center; gap:0.4rem;
+  font-family: var(--mono); font-size:0.72rem;
+  color: var(--muted2); text-decoration:none;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.topbar-back:hover { color:var(--text); border-color:var(--ss); }
+.topbar-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  flex: 1;
+}
+.topbar-title span { color: var(--ss); }
+.topbar-actions { display:flex; gap:0.5rem; flex-wrap:wrap; }
+.btn {
+  font-family: var(--mono); font-size:0.7rem;
+  letter-spacing:0.08em; text-transform:uppercase;
+  padding: 0.4rem 0.9rem;
+  border-radius: 4px; cursor:pointer;
+  border: 1px solid var(--border2);
+  background: var(--surface2); color:var(--muted2);
+  transition: all 0.2s;
+}
+.btn:hover { color:var(--text); border-color:var(--ss); }
+.btn-primary {
+  background: var(--ss); color:#fff;
+  border-color: var(--ss);
+}
+.btn-primary:hover { background:#ea6c0f; }
+.btn-danger { color:var(--red); }
+.btn-danger:hover { border-color:var(--red); background:var(--red-dim); }
+
+/* ── SUMMARY BAR ── */
+.summary-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px,1fr));
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.sum-chip {
+  padding: 0.7rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.sum-label {
+  font-family: var(--mono); font-size:0.58rem;
+  letter-spacing:0.15em; text-transform:uppercase;
+  color: var(--muted); margin-bottom:0.25rem;
+}
+.sum-val {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size:1.2rem; line-height:1;
+}
+.sum-sub { font-size:0.65rem; color:var(--muted); margin-top:0.2rem; font-family:var(--mono); }
+.chip-ss   { background:var(--ss-dim);   border-color:rgba(249,115,22,0.2); }
+.chip-fr   { background:var(--fr-dim);   border-color:rgba(56,189,248,0.2); }
+.chip-sp   { background:var(--split-dim);border-color:rgba(167,139,250,0.2); }
+.chip-tot  { background:var(--surface2); border-color:var(--border2); }
+.chip-ss .sum-val { color:var(--ss); }
+.chip-fr .sum-val { color:var(--fr); }
+.chip-sp .sum-val { color:var(--split); }
+.chip-tot .sum-val { color:var(--text); }
+
+/* BUDGET PROGRESS */
+.budget-track {
+  padding: 0.8rem 1.5rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items:center; gap:1rem;
+  flex-wrap: wrap;
+}
+.btrack-label { font-family:var(--mono); font-size:0.65rem; color:var(--muted); white-space:nowrap; }
+.btrack-bar-wrap { flex:1; min-width:120px; height:6px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden; }
+.btrack-bar { height:100%; border-radius:3px; transition: width 0.4s ease; background:var(--ss); }
+.btrack-bar.over { background:var(--red); }
+.btrack-pct { font-family:var(--mono); font-size:0.7rem; color:var(--muted2); white-space:nowrap; min-width:35px; text-align:right; }
+
+/* ── TABS ── */
+.tabs {
+  display: flex; gap:0;
+  border-bottom: 1px solid var(--border2);
+  overflow-x:auto; scrollbar-width:none;
+  background: var(--surface);
+}
+.tabs::-webkit-scrollbar { display:none; }
+.tab {
+  padding: 0.75rem 1.2rem;
+  font-family:var(--mono); font-size:0.7rem;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--muted); cursor:pointer;
+  border-bottom: 2px solid transparent;
+  white-space:nowrap; flex-shrink:0;
+  transition: all 0.2s;
+  background: transparent; border-top:none; border-left:none; border-right:none;
+}
+.tab:hover { color:var(--text); }
+.tab.active { color:var(--ss); border-bottom-color:var(--ss); }
+
+/* ── MAIN ── */
+.main { max-width:1100px; margin:0 auto; padding:1.5rem; }
+
+/* ── DAY PANEL ── */
+.day-panel { display:none; }
+.day-panel.active { display:block; }
+
+.day-header {
+  display: flex; align-items:flex-start;
+  justify-content:space-between; gap:1rem;
+  margin-bottom:1.2rem; flex-wrap:wrap;
+}
+.day-info {}
+.day-num-label {
+  font-family:var(--mono); font-size:0.65rem;
+  letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:0.2rem;
+}
+.day-title-text {
+  font-family:'Syne',sans-serif; font-weight:800;
+  font-size:1.5rem; color:var(--text); line-height:1.1;
+}
+.day-date-text { font-size:0.8rem; color:var(--muted2); margin-top:0.2rem; font-family:var(--mono); }
+.day-phase-badge {
+  font-family:var(--mono); font-size:0.62rem;
+  letter-spacing:0.1em; text-transform:uppercase;
+  padding:0.25rem 0.6rem; border-radius:3px; margin-top:0.4rem; display:inline-block;
+}
+.phase-solo   { background:var(--ss-dim); color:var(--ss); }
+.phase-group  { background:var(--split-dim); color:var(--split); }
+.phase-wfh    { background:var(--green-dim); color:var(--green); }
+
+.day-totals {
+  display:flex; gap:0.8rem; flex-wrap:wrap;
+}
+.day-total-chip {
+  text-align:right;
+  padding: 0.5rem 0.8rem;
+  background:var(--surface2); border-radius:6px;
+  border:1px solid var(--border);
+}
+.day-total-chip .dtc-label {
+  font-family:var(--mono); font-size:0.58rem;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:0.15rem;
+}
+.day-total-chip .dtc-val {
+  font-family:'Syne',sans-serif; font-weight:700;
+  font-size:1.1rem; line-height:1;
+}
+
+/* ── ENTRY TABLE ── */
+.entry-table-wrap { overflow-x:auto; }
+.entry-table {
+  width:100%; border-collapse:collapse;
+  border:1px solid var(--border);
+  border-radius:8px; overflow:hidden;
+  font-size:0.82rem;
+}
+.entry-table thead tr { background:var(--surface2); }
+.entry-table th {
+  padding:0.55rem 0.7rem;
+  font-family:var(--mono); font-size:0.6rem;
+  letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--muted); font-weight:400;
+  border-bottom:1px solid var(--border2); text-align:left;
+}
+.entry-table th.r { text-align:right; }
+.entry-table tbody tr { border-bottom:1px solid var(--border); transition:background 0.1s; }
+.entry-table tbody tr:last-child { border-bottom:none; }
+.entry-table tbody tr:hover { background:rgba(255,255,255,0.02); }
+.entry-table td { padding:0.55rem 0.7rem; vertical-align:middle; }
+.entry-table td.r { text-align:right; }
+
+/* inputs inside table */
+.entry-input {
+  background:transparent; border:none; outline:none;
+  color:var(--text); font-family:'DM Sans',sans-serif;
+  font-size:0.82rem; width:100%;
+  padding:0.1rem 0; min-width:60px;
+}
+.entry-input:focus { border-bottom:1px solid var(--ss); }
+.entry-input::placeholder { color:var(--muted); }
+
+.amount-input {
+  font-family:var(--mono); font-size:0.82rem;
+  background:transparent; border:none; outline:none;
+  color:var(--text); text-align:right; width:90px;
+}
+.amount-input:focus { border-bottom:1px solid var(--ss); }
+.amount-input::placeholder { color:var(--muted); }
+
+.cat-select {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:3px; color:var(--text);
+  font-family:var(--mono); font-size:0.68rem;
+  padding:0.2rem 0.4rem; cursor:pointer;
+  letter-spacing:0.05em;
+}
+.cat-select:focus { outline:none; border-color:var(--ss); }
+
+.who-select {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:3px; color:var(--text);
+  font-family:var(--mono); font-size:0.68rem;
+  padding:0.2rem 0.4rem; cursor:pointer;
+}
+.who-select:focus { outline:none; border-color:var(--ss); }
+
+.delete-btn {
+  background:none; border:none; cursor:pointer;
+  color:var(--muted); font-size:0.9rem;
+  padding:0.2rem 0.4rem; border-radius:3px;
+  transition:all 0.15s;
+}
+.delete-btn:hover { color:var(--red); background:var(--red-dim); }
+
+/* category dot */
+.cat-dot {
+  display:inline-block; width:7px; height:7px;
+  border-radius:50%; margin-right:0.4rem; flex-shrink:0;
+}
+
+/* add row */
+.add-row-btn {
+  display:flex; align-items:center; gap:0.5rem;
+  padding:0.6rem 0.8rem;
+  background:none; border:none; cursor:pointer;
+  color:var(--muted2); font-family:var(--mono);
+  font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase;
+  width:100%; transition:color 0.2s;
+}
+.add-row-btn:hover { color:var(--ss); }
+
+/* day notes */
+.day-notes-label {
+  font-family:var(--mono); font-size:0.62rem;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:0.4rem;
+  margin-top:1.2rem;
+}
+.day-notes {
+  width:100%; background:var(--surface2);
+  border:1px solid var(--border); border-radius:6px;
+  color:var(--text); font-family:'DM Sans',sans-serif;
+  font-size:0.82rem; padding:0.7rem;
+  resize:vertical; min-height:60px;
+  line-height:1.5;
+}
+.day-notes:focus { outline:none; border-color:var(--ss); }
+
+/* ── OVERVIEW TAB ── */
+.overview-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1rem;
+  margin-bottom:1.5rem;
+}
+.ov-card {
+  background:var(--surface); border:1px solid var(--border2);
+  border-radius:8px; overflow:hidden;
+}
+.ov-card-head {
+  padding:0.7rem 1rem;
+  background:var(--surface2);
+  border-bottom:1px solid var(--border);
+  font-family:'Syne',sans-serif; font-weight:700;
+  font-size:0.82rem; letter-spacing:0.05em; text-transform:uppercase;
+  color:var(--muted2);
+}
+.ov-card-body { padding:0.8rem 1rem; }
+.ov-row {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:0.35rem 0; border-bottom:1px solid var(--border);
+  font-size:0.8rem;
+}
+.ov-row:last-child { border-bottom:none; }
+.ov-label { color:var(--muted2); display:flex; align-items:center; gap:0.4rem; }
+.ov-val { font-family:var(--mono); font-weight:500; }
+
+/* category breakdown donut placeholder */
+.cat-bars { margin-top:0.5rem; }
+.cat-bar-row { display:flex; align-items:center; gap:0.6rem; margin-bottom:0.45rem; }
+.cat-bar-label { font-family:var(--mono); font-size:0.65rem; color:var(--muted2); width:70px; flex-shrink:0; }
+.cat-bar-track { flex:1; height:5px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden; }
+.cat-bar-fill { height:100%; border-radius:3px; transition:width 0.5s ease; }
+.cat-bar-amt { font-family:var(--mono); font-size:0.65rem; color:var(--text); width:55px; text-align:right; flex-shrink:0; }
+
+/* vs budget */
+.vs-budget {
+  padding:1rem; background:var(--surface2);
+  border-radius:8px; border:1px solid var(--border2);
+  margin-bottom:1.5rem;
+}
+.vs-title { font-family:'Syne',sans-serif; font-weight:700; font-size:0.85rem; color:var(--muted2); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:1rem; }
+.vs-row {
+  display:flex; align-items:center; gap:0.8rem; margin-bottom:0.7rem; flex-wrap:wrap;
+}
+.vs-cat { font-family:var(--mono); font-size:0.68rem; color:var(--muted2); width:90px; flex-shrink:0; }
+.vs-bars { flex:1; min-width:100px; }
+.vs-track { height:5px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden; margin-bottom:2px; }
+.vs-actual { height:100%; border-radius:3px; transition:width 0.5s; }
+.vs-budgeted { height:100%; border-radius:3px; background:rgba(255,255,255,0.12); }
+.vs-nums { font-family:var(--mono); font-size:0.65rem; white-space:nowrap; }
+.vs-nums .actual { color:var(--text); }
+.vs-nums .budgeted { color:var(--muted); }
+
+/* splitwise export */
+.export-card {
+  background:var(--surface2); border:1px solid var(--border2);
+  border-radius:8px; padding:1rem 1.2rem; margin-bottom:1.5rem;
+}
+.export-title { font-family:'Syne',sans-serif; font-weight:700; font-size:0.85rem; color:var(--muted2); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.8rem; }
+.export-table { width:100%; border-collapse:collapse; font-size:0.78rem; }
+.export-table th { font-family:var(--mono); font-size:0.6rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; padding:0.3rem 0.5rem; border-bottom:1px solid var(--border); text-align:left; }
+.export-table td { padding:0.35rem 0.5rem; border-bottom:1px solid var(--border); }
+.export-table tr:last-child td { border-bottom:none; }
+
+/* ── WHO BADGES ── */
+.badge {
+  font-family:var(--mono); font-size:0.58rem;
+  letter-spacing:0.06em; text-transform:uppercase;
+  padding:0.12rem 0.35rem; border-radius:2px; white-space:nowrap;
+}
+.b-ss    { background:var(--ss-dim); color:var(--ss); }
+.b-fr    { background:var(--fr-dim); color:var(--fr); }
+.b-50    { background:var(--split-dim); color:var(--split); }
+
+/* ── MOBILE ── */
+@media (max-width:600px) {
+  .main { padding:1rem 0.75rem; }
+  .summary-bar { grid-template-columns:1fr 1fr; }
+  .day-title-text { font-size:1.1rem; }
+  .entry-table th:nth-child(2), .entry-table td:nth-child(2) { display:none; }
+}
+
+/* ── PRINT ── */
+@media print {
+  .topbar-actions, .add-row-btn, .delete-btn, .tabs { display:none; }
+  body { background:white; color:black; }
+}
+
+/* toast */
+.toast {
+  position:fixed; bottom:1.5rem; right:1.5rem;
+  background:var(--surface2); border:1px solid var(--border2);
+  border-radius:6px; padding:0.7rem 1rem;
+  font-family:var(--mono); font-size:0.72rem; color:var(--text);
+  transform:translateY(8px); opacity:0;
+  transition:all 0.3s; pointer-events:none;
+  z-index:99;
+}
+.toast.show { transform:translateY(0); opacity:1; }
+
+/* category pills legend */
+.cat-legend {
+  display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:1rem;
+}
+.cat-pill {
+  display:flex; align-items:center; gap:0.3rem;
+  font-family:var(--mono); font-size:0.62rem;
+  color:var(--muted2); padding:0.2rem 0.5rem;
+  background:var(--surface2); border-radius:3px;
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a href="index.html" class="topbar-back">← Itinerary</a>
+  <div class="topbar-title">BLR <span>→</span> LEH Expense Tracker</div>
+  <div class="topbar-actions">
+    <button class="btn" onclick="exportCSV()">⬇ Export CSV</button>
+    <button class="btn" onclick="showSplitwise()">📱 Splitwise Summary</button>
+    <button class="btn btn-danger" onclick="confirmReset()">⚠ Reset All</button>
+    <a href="leh-budget.html" class="btn">📊 Budget Details</a>
+  </div>
+</div>
+
+<!-- SUMMARY BAR -->
+<div class="summary-bar" id="summaryBar">
+  <div class="sum-chip chip-ss">
+    <div class="sum-label">S&S Spent</div>
+    <div class="sum-val" id="sum-ss">₹0</div>
+    <div class="sum-sub">of ₹1,67,584 budget</div>
+  </div>
+  <div class="sum-chip chip-fr">
+    <div class="sum-label">Friends Owed</div>
+    <div class="sum-val" id="sum-fr">₹0</div>
+    <div class="sum-sub">their 50-50 share</div>
+  </div>
+  <div class="sum-chip chip-sp">
+    <div class="sum-label">Total Shared</div>
+    <div class="sum-val" id="sum-shared">₹0</div>
+    <div class="sum-sub">group phase only</div>
+  </div>
+  <div class="sum-chip chip-tot">
+    <div class="sum-label">All Entries</div>
+    <div class="sum-val" id="sum-total">₹0</div>
+    <div class="sum-sub" id="sum-entries">0 entries</div>
+  </div>
+</div>
+
+<!-- BUDGET PROGRESS -->
+<div class="budget-track">
+  <div class="btrack-label">S&S Budget Used</div>
+  <div class="btrack-bar-wrap">
+    <div class="btrack-bar" id="budgetBar" style="width:0%"></div>
+  </div>
+  <div class="btrack-pct" id="budgetPct">0%</div>
+  <div class="btrack-label" style="margin-left:1rem">Friends' Share</div>
+  <div class="btrack-bar-wrap">
+    <div class="btrack-bar" id="frBar" style="width:0%;background:var(--fr)"></div>
+  </div>
+  <div class="btrack-pct" id="frPct">0%</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs" id="tabBar">
+  <button class="tab active" onclick="switchTab('overview')">📊 Overview</button>
+  <!-- Day tabs injected by JS -->
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- OVERVIEW PANEL -->
+  <div class="day-panel active" id="panel-overview">
+
+    <div class="vs-budget" id="vsBudget">
+      <div class="vs-title">Actual vs Budgeted</div>
+      <!-- rendered by JS -->
+    </div>
+
+    <div class="overview-grid">
+      <div class="ov-card">
+        <div class="ov-card-head">By Category</div>
+        <div class="ov-card-body">
+          <div class="cat-bars" id="catBars"></div>
+        </div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-card-head">By Who Pays</div>
+        <div class="ov-card-body" id="whoBreakdown"></div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-card-head">Top Expenses</div>
+        <div class="ov-card-body" id="topExpenses"></div>
+      </div>
+    </div>
+
+    <div class="export-card" id="splitsummary" style="display:none">
+      <div class="export-title">📱 Splitwise Summary — Settle on June 7th in Manali</div>
+      <table class="export-table">
+        <thead>
+          <tr><th>Item</th><th>Total</th><th>S&S Paid</th><th>Friends Owe</th><th>Status</th></tr>
+        </thead>
+        <tbody id="splittableBody"></tbody>
+      </table>
+      <div id="splitNetOwed" style="margin-top:0.8rem;padding:0.6rem;background:var(--surface);border-radius:4px;font-family:var(--mono);font-size:0.75rem;color:var(--split)"></div>
+    </div>
+
+  </div>
+
+  <!-- DAY PANELS injected by JS -->
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─────────────────────────────────────────────
+// DATA MODEL
+// ─────────────────────────────────────────────
+
+const DAYS = [
+  // Phase 1: Solo BLR→CHD
+  { id:'d1',  label:'Day 1',  title:'Bangalore → Nagpur',          date:'Fri May 16',  phase:'solo',  budget:{ fuel:6550, food:600, stay:2000, act:0, misc:0 } },
+  { id:'d2',  label:'Day 2',  title:'Nagpur → Chandigarh',         date:'Sat May 17',  phase:'solo',  budget:{ fuel:7654, food:600, stay:0,    act:0, misc:0 } },
+  // Phase 2: WFH CHD
+  { id:'d3',  label:'WFH 1-4',title:'Chandigarh WFH (Week 1)',     date:'May 18-21',   phase:'wfh',   budget:{ fuel:0,    food:2400,stay:8800, act:0, misc:0 } },
+  { id:'d4',  label:'WFH 5-8',title:'Chandigarh WFH (Week 2)',     date:'May 22-25',   phase:'wfh',   budget:{ fuel:0,    food:2400,stay:8800, act:0, misc:0 } },
+  { id:'d5',  label:'Amrit',  title:'Amritsar Weekend Trip',       date:'May 24-25',   phase:'solo',  budget:{ fuel:3680, food:800, stay:0,    act:0, misc:0 } },
+  { id:'d6',  label:'Prep',   title:'Pre-Trip Prep Days',          date:'May 26-29',   phase:'wfh',   budget:{ fuel:0,    food:0,   stay:0,    act:0, misc:16900 } },
+  // Phase 3: Group
+  { id:'g1',  label:'G1',     title:'Group Meetup — Chandigarh',   date:'Fri May 30',  phase:'group', budget:{ fuel:0,    food:1000,stay:0,    act:0, misc:0 } },
+  { id:'g2',  label:'G2',     title:'Chandigarh → Jammu',          date:'Sat May 31',  phase:'group', budget:{ fuel:2134, food:800, stay:7000, act:0, misc:0 } },
+  { id:'g3',  label:'G3',     title:'Jammu → Srinagar',            date:'Sun Jun 1',   phase:'group', budget:{ fuel:1987, food:800, stay:10000,act:700,misc:0 } },
+  { id:'g4',  label:'G4',     title:'Srinagar Sightseeing',        date:'Mon Jun 2',   phase:'group', budget:{ fuel:442,  food:1200,stay:0,    act:4800,misc:0 } },
+  { id:'g5',  label:'G5',     title:'Srinagar → Kargil',           date:'Tue Jun 3',   phase:'group', budget:{ fuel:1937, food:700, stay:5000, act:0, misc:0 } },
+  { id:'g6',  label:'G6',     title:'Kargil → Leh',                date:'Wed Jun 4',   phase:'group', budget:{ fuel:2227, food:700, stay:24000,act:1000,misc:0 } },
+  { id:'g7',  label:'G7',     title:'Leh Acclimatization',         date:'Thu Jun 5',   phase:'group', budget:{ fuel:291,  food:1200,stay:0,    act:600, misc:0 } },
+  { id:'g8',  label:'G8',     title:'Pangong Tso Lake',            date:'Fri Jun 6',   phase:'group', budget:{ fuel:2905, food:1200,stay:5000, act:0, misc:0 } },
+  { id:'g9',  label:'G9',     title:'Leh → Manali (Drop-off)',     date:'Sat Jun 7',   phase:'group', budget:{ fuel:4745, food:600, stay:6000, act:0, misc:0 } },
+  // Phase 4: Solo return
+  { id:'s1',  label:'S1',     title:'Manali Rest + WFH',           date:'Sun Jun 8',   phase:'solo',  budget:{ fuel:0,    food:700, stay:2500, act:200, misc:0 } },
+  { id:'s2',  label:'S2',     title:'Manali WFH',                  date:'Mon Jun 9',   phase:'solo',  budget:{ fuel:0,    food:700, stay:2500, act:0, misc:0 } },
+  { id:'s3',  label:'S3',     title:'Manali → Leh (Nubra)',        date:'Tue Jun 10',  phase:'solo',  budget:{ fuel:4745, food:700, stay:3500, act:0, misc:0 } },
+  { id:'s4',  label:'S4',     title:'Leh + Nubra Valley',          date:'Wed Jun 11',  phase:'solo',  budget:{ fuel:2324, food:700, stay:4500, act:800, misc:0 } },
+  { id:'s5',  label:'S5',     title:'Leh → Manali Return',         date:'Thu Jun 12',  phase:'solo',  budget:{ fuel:4745, food:700, stay:0,    act:0, misc:0 } },
+  { id:'s6',  label:'S6',     title:'Manali → Chandigarh',         date:'Fri Jun 13',  phase:'solo',  budget:{ fuel:2282, food:600, stay:2500, act:0, misc:0 } },
+  { id:'s7',  label:'S7',     title:'Chandigarh → Nagpur',         date:'Sat Jun 14',  phase:'solo',  budget:{ fuel:7654, food:600, stay:2000, act:0, misc:0 } },
+  { id:'s8',  label:'S8',     title:'Nagpur → Bangalore 🏁',       date:'Sun Jun 15',  phase:'solo',  budget:{ fuel:6477, food:600, stay:0,    act:0, misc:0 } },
+];
+
+const CATS = {
+  fuel:  { label:'Fuel',          color:'var(--fuel-c)' },
+  food:  { label:'Food & Drinks', color:'var(--food-c)' },
+  stay:  { label:'Stay',          color:'var(--stay-c)' },
+  act:   { label:'Activities',    color:'var(--act-c)'  },
+  toll:  { label:'Toll / Tax',    color:'#60a5fa'       },
+  misc:  { label:'Misc / Prep',   color:'var(--misc-c)' },
+};
+
+const WHO_OPTS = {
+  ss:   { label:'S&S',     badge:'b-ss' },
+  fr:   { label:'Friends', badge:'b-fr' },
+  '50': { label:'50-50',   badge:'b-50' },
+};
+
+const SS_BUDGET  = 167584;
+const FR_BUDGET  = 49584;
+
+// ─────────────────────────────────────────────
+// STATE  (persisted in localStorage)
+// ─────────────────────────────────────────────
+const STORAGE_KEY = 'blr_leh_tracker_v3';
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  // default empty state
+  const state = { entries: {}, notes: {} };
+  DAYS.forEach(d => { state.entries[d.id] = []; state.notes[d.id] = ''; });
+  return state;
+}
+function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+let state = loadState();
+// Ensure all day keys exist (migration safety)
+DAYS.forEach(d => {
+  if (!state.entries[d.id]) state.entries[d.id] = [];
+  if (state.notes[d.id] === undefined) state.notes[d.id] = '';
+});
+
+// ─────────────────────────────────────────────
+// BUILD TABS + PANELS
+// ─────────────────────────────────────────────
+function buildUI() {
+  const tabBar = document.getElementById('tabBar');
+  const main   = document.getElementById('mainContent') || document.querySelector('.main');
+
+  DAYS.forEach(day => {
+    // Tab
+    const tab = document.createElement('button');
+    tab.className = 'tab';
+    tab.id = 'tab-' + day.id;
+    tab.innerHTML = `<span style="opacity:0.5;margin-right:0.3em">${phaseIcon(day.phase)}</span>${day.label}`;
+    tab.onclick = () => switchTab(day.id);
+    tabBar.appendChild(tab);
+
+    // Panel
+    const panel = document.createElement('div');
+    panel.className = 'day-panel';
+    panel.id = 'panel-' + day.id;
+    panel.innerHTML = buildDayPanel(day);
+    document.querySelector('.main').appendChild(panel);
+  });
+}
+
+function phaseIcon(p) {
+  return p === 'group' ? '👫' : p === 'wfh' ? '💻' : '🚗';
+}
+
+function buildDayPanel(day) {
+  const phaseLabelMap = { solo:'Solo Phase', group:'Group Phase (50-50)', wfh:'WFH Phase' };
+  return `
+    <div class="day-header">
+      <div class="day-info">
+        <div class="day-num-label">${day.label}</div>
+        <div class="day-title-text">${day.title}</div>
+        <div class="day-date-text">${day.date}</div>
+        <div class="day-phase-badge phase-${day.phase}">${phaseLabelMap[day.phase]}</div>
+      </div>
+      <div class="day-totals" id="daytotals-${day.id}"></div>
+    </div>
+
+    <div class="cat-legend">
+      ${Object.entries(CATS).map(([k,v]) =>
+        `<div class="cat-pill"><span class="cat-dot" style="background:${v.color}"></span>${v.label}</div>`
+      ).join('')}
+    </div>
+
+    <div class="entry-table-wrap">
+      <table class="entry-table">
+        <thead>
+          <tr>
+            <th style="width:35%">Description</th>
+            <th style="width:13%">Category</th>
+            <th style="width:10%">Who</th>
+            <th class="r" style="width:12%">Amount (₹)</th>
+            <th class="r" style="width:12%">S&S Pays</th>
+            <th class="r" style="width:12%">Friends Pay</th>
+            <th style="width:6%"></th>
+          </tr>
+        </thead>
+        <tbody id="entries-${day.id}"></tbody>
+      </table>
+      <button class="add-row-btn" onclick="addEntry('${day.id}')">+ Add Expense</button>
+    </div>
+
+    <div class="day-notes-label">Notes for this day</div>
+    <textarea class="day-notes" id="notes-${day.id}" placeholder="Anything memorable, warnings, tips..."
+      oninput="saveNote('${day.id}', this.value)">${state.notes[day.id] || ''}</textarea>
+  `;
+}
+
+// ─────────────────────────────────────────────
+// ENTRIES
+// ─────────────────────────────────────────────
+function addEntry(dayId, entry = null) {
+  const day = DAYS.find(d => d.id === dayId);
+  const isGroup = day && day.phase === 'group';
+  const e = entry || {
+    id: Date.now() + Math.random(),
+    desc: '', cat: 'food', who: isGroup ? '50' : 'ss', amount: ''
+  };
+  state.entries[dayId].push(e);
+  saveState();
+  renderEntries(dayId);
+  updateAll();
+}
+
+function removeEntry(dayId, entryId) {
+  state.entries[dayId] = state.entries[dayId].filter(e => e.id != entryId);
+  saveState();
+  renderEntries(dayId);
+  updateAll();
+}
+
+function updateEntry(dayId, entryId, field, value) {
+  const e = state.entries[dayId].find(e => e.id == entryId);
+  if (!e) return;
+  e[field] = field === 'amount' ? (parseFloat(value) || '') : value;
+  saveState();
+  if (field !== 'desc') { renderEntries(dayId); updateAll(); }
+}
+
+function saveNote(dayId, val) {
+  state.notes[dayId] = val;
+  saveState();
+}
+
+function renderEntries(dayId) {
+  const tbody = document.getElementById('entries-' + dayId);
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  const entries = state.entries[dayId] || [];
+  entries.forEach(e => {
+    const amt = parseFloat(e.amount) || 0;
+    const ssAmt  = e.who === 'ss' ? amt : e.who === '50' ? amt/2 : 0;
+    const frAmt  = e.who === 'fr' ? amt : e.who === '50' ? amt/2 : 0;
+    const catC   = CATS[e.cat]?.color || 'var(--misc-c)';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>
+        <input class="entry-input" value="${escHtml(e.desc)}" placeholder="What was this for?"
+          onchange="updateEntry('${dayId}','${e.id}','desc',this.value)"
+          oninput="updateEntry('${dayId}','${e.id}','desc',this.value)">
+      </td>
+      <td>
+        <select class="cat-select" onchange="updateEntry('${dayId}','${e.id}','cat',this.value)">
+          ${Object.entries(CATS).map(([k,v]) =>
+            `<option value="${k}" ${e.cat===k?'selected':''}>${v.label}</option>`
+          ).join('')}
+        </select>
+      </td>
+      <td>
+        <select class="who-select" onchange="updateEntry('${dayId}','${e.id}','who',this.value)">
+          ${Object.entries(WHO_OPTS).map(([k,v]) =>
+            `<option value="${k}" ${e.who===k?'selected':''}>${v.label}</option>`
+          ).join('')}
+        </select>
+      </td>
+      <td class="r">
+        <input class="amount-input" type="number" min="0" step="1"
+          value="${e.amount === '' ? '' : e.amount}" placeholder="0"
+          oninput="updateEntry('${dayId}','${e.id}','amount',this.value)">
+      </td>
+      <td class="r" style="font-family:var(--mono);font-size:0.78rem;color:var(--ss)">
+        ${ssAmt > 0 ? '₹'+fmtNum(ssAmt) : '<span style="color:var(--muted)">—</span>'}
+      </td>
+      <td class="r" style="font-family:var(--mono);font-size:0.78rem;color:var(--fr)">
+        ${frAmt > 0 ? '₹'+fmtNum(frAmt) : '<span style="color:var(--muted)">—</span>'}
+      </td>
+      <td>
+        <button class="delete-btn" onclick="removeEntry('${dayId}','${e.id}')" title="Remove">✕</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  renderDayTotals(dayId);
+}
+
+function renderDayTotals(dayId) {
+  const box = document.getElementById('daytotals-' + dayId);
+  if (!box) return;
+  const {ssTotal, frTotal, total} = calcDayTotals(dayId);
+
+  box.innerHTML = `
+    <div class="day-total-chip chip-tot">
+      <div class="dtc-label">Day Total</div>
+      <div class="dtc-val">₹${fmtNum(total)}</div>
+    </div>
+    <div class="day-total-chip chip-ss">
+      <div class="dtc-label">S&S</div>
+      <div class="dtc-val" style="color:var(--ss)">₹${fmtNum(ssTotal)}</div>
+    </div>
+    <div class="day-total-chip chip-fr">
+      <div class="dtc-label">Friends</div>
+      <div class="dtc-val" style="color:var(--fr)">₹${fmtNum(frTotal)}</div>
+    </div>
+  `;
+}
+
+function calcDayTotals(dayId) {
+  const entries = state.entries[dayId] || [];
+  let ssTotal = 0, frTotal = 0, total = 0;
+  entries.forEach(e => {
+    const amt = parseFloat(e.amount) || 0;
+    total += amt;
+    if (e.who === 'ss') ssTotal += amt;
+    else if (e.who === 'fr') frTotal += amt;
+    else if (e.who === '50') { ssTotal += amt/2; frTotal += amt/2; }
+  });
+  return { ssTotal: Math.round(ssTotal), frTotal: Math.round(frTotal), total: Math.round(total) };
+}
+
+// ─────────────────────────────────────────────
+// AGGREGATES
+// ─────────────────────────────────────────────
+function calcGlobalTotals() {
+  let ssTotal = 0, frTotal = 0, grandTotal = 0, sharedTotal = 0;
+  const byCat = {};
+  const byWho = { ss:0, fr:0, '50':0 };
+  const allEntries = [];
+  Object.keys(CATS).forEach(k => byCat[k] = 0);
+
+  DAYS.forEach(day => {
+    (state.entries[day.id] || []).forEach(e => {
+      const amt = parseFloat(e.amount) || 0;
+      if (!amt) return;
+      grandTotal += amt;
+      byCat[e.cat] = (byCat[e.cat] || 0) + amt;
+      if (e.who === 'ss') { ssTotal += amt; byWho.ss += amt; }
+      else if (e.who === 'fr') { frTotal += amt; byWho.fr += amt; }
+      else if (e.who === '50') { ssTotal += amt/2; frTotal += amt/2; sharedTotal += amt; byWho['50'] += amt; }
+      allEntries.push({...e, dayTitle: day.title, dayId: day.id, amtNum: amt});
+    });
+  });
+
+  return {
+    ssTotal: Math.round(ssTotal),
+    frTotal: Math.round(frTotal),
+    grandTotal: Math.round(grandTotal),
+    sharedTotal: Math.round(sharedTotal),
+    byCat,
+    byWho,
+    allEntries: allEntries.sort((a,b) => b.amtNum - a.amtNum),
+    count: allEntries.length
+  };
+}
+
+function updateAll() {
+  const g = calcGlobalTotals();
+
+  // summary bar
+  document.getElementById('sum-ss').textContent    = '₹'+fmtNum(g.ssTotal);
+  document.getElementById('sum-fr').textContent    = '₹'+fmtNum(g.frTotal);
+  document.getElementById('sum-shared').textContent= '₹'+fmtNum(g.sharedTotal);
+  document.getElementById('sum-total').textContent = '₹'+fmtNum(g.grandTotal);
+  document.getElementById('sum-entries').textContent = g.count + ' entr' + (g.count===1?'y':'ies');
+
+  // progress bars
+  const ssPct = Math.min(100, (g.ssTotal / SS_BUDGET) * 100);
+  const frPct = Math.min(100, (g.frTotal / FR_BUDGET) * 100);
+  const ssBar = document.getElementById('budgetBar');
+  ssBar.style.width = ssPct + '%';
+  ssBar.className = 'btrack-bar' + (ssPct > 95 ? ' over' : '');
+  document.getElementById('budgetPct').textContent = ssPct.toFixed(1) + '%';
+  document.getElementById('frBar').style.width = frPct + '%';
+  document.getElementById('frPct').textContent = frPct.toFixed(1) + '%';
+
+  renderOverview(g);
+}
+
+function renderOverview(g) {
+  // Cat bars
+  const catMax = Math.max(...Object.values(g.byCat), 1);
+  const catBarsEl = document.getElementById('catBars');
+  if (catBarsEl) {
+    catBarsEl.innerHTML = Object.entries(g.byCat).map(([k, v]) => `
+      <div class="cat-bar-row">
+        <div class="cat-bar-label">${CATS[k].label}</div>
+        <div class="cat-bar-track">
+          <div class="cat-bar-fill" style="width:${(v/catMax*100).toFixed(1)}%;background:${CATS[k].color}"></div>
+        </div>
+        <div class="cat-bar-amt">₹${fmtNum(v)}</div>
+      </div>
+    `).join('');
+  }
+
+  // Who breakdown
+  const whoEl = document.getElementById('whoBreakdown');
+  if (whoEl) {
+    whoEl.innerHTML = [
+      ['ss', 'S&S Direct', g.byWho.ss, 'var(--ss)'],
+      ['fr', 'Friends Direct', g.byWho.fr, 'var(--fr)'],
+      ['50', '50-50 Split Total', g.byWho['50'], 'var(--split)'],
+    ].map(([k,l,v,c]) => `
+      <div class="ov-row">
+        <div class="ov-label"><span class="badge b-${k==='50'?'50':k}">${l}</span></div>
+        <div class="ov-val" style="color:${c}">₹${fmtNum(v)}</div>
+      </div>
+    `).join('') + `
+      <div class="ov-row" style="margin-top:0.3rem;padding-top:0.5rem;border-top:1px solid var(--border2)">
+        <div class="ov-label">Grand Total</div>
+        <div class="ov-val">₹${fmtNum(g.grandTotal)}</div>
+      </div>
+    `;
+  }
+
+  // Top expenses
+  const topEl = document.getElementById('topExpenses');
+  if (topEl) {
+    const top = g.allEntries.slice(0,8);
+    topEl.innerHTML = top.length ? top.map(e => `
+      <div class="ov-row">
+        <div class="ov-label" style="flex-direction:column;align-items:flex-start;gap:0.1rem">
+          <span>${escHtml(e.desc || '—')}</span>
+          <span style="font-size:0.65rem;color:var(--muted)">${e.dayTitle}</span>
+        </div>
+        <div class="ov-val" style="font-family:var(--mono)">₹${fmtNum(e.amtNum)}</div>
+      </div>
+    `).join('') : '<div style="color:var(--muted);font-size:0.8rem;padding:0.5rem 0">No entries yet</div>';
+  }
+
+  // vs budget
+  renderVsBudget(g);
+}
+
+function renderVsBudget(g) {
+  const vb = document.getElementById('vsBudget');
+  if (!vb) return;
+  const categories = [
+    ['fuel', 'Fuel',    63368, g.byCat.fuel||0,  'var(--fuel-c)'],
+    ['stay', 'Stay',    97600, g.byCat.stay||0,  'var(--stay-c)'],
+    ['food', 'Food',    23400, g.byCat.food||0,  'var(--food-c)'],
+    ['act',  'Activ.',  15100, g.byCat.act||0,   'var(--act-c)'],
+    ['misc', 'Prep',    16900, g.byCat.misc||0,  'var(--misc-c)'],
+    ['toll', 'Toll',      800, g.byCat.toll||0,  '#60a5fa'],
+  ];
+  const maxBudget = Math.max(...categories.map(c => c[2]));
+  vb.querySelector('.vs-title') || (vb.innerHTML = '<div class="vs-title">Actual vs Budgeted</div>');
+  const rows = categories.map(([k, label, budget, actual, color]) => {
+    const actualPct  = Math.min(100, (actual/maxBudget)*100).toFixed(1);
+    const budgetPct  = ((budget/maxBudget)*100).toFixed(1);
+    const over = actual > budget;
+    return `
+      <div class="vs-row">
+        <div class="vs-cat">${label}</div>
+        <div class="vs-bars">
+          <div class="vs-track">
+            <div class="vs-actual" style="width:${actualPct}%;background:${over?'var(--red)':color}"></div>
+          </div>
+          <div class="vs-track">
+            <div class="vs-budgeted" style="width:${budgetPct}%"></div>
+          </div>
+        </div>
+        <div class="vs-nums">
+          <span class="actual" style="color:${over?'var(--red)':color}">₹${fmtNum(actual)}</span>
+          <span class="budgeted"> / ₹${fmtNum(budget)}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+  vb.innerHTML = '<div class="vs-title">Actual vs Budgeted <span style="font-size:0.7rem;color:var(--muted);font-family:var(--mono)"> — top bar = actual · bottom bar = budget</span></div>' + rows;
+}
+
+// ─────────────────────────────────────────────
+// SPLITWISE SUMMARY
+// ─────────────────────────────────────────────
+function showSplitwise() {
+  const card = document.getElementById('splitsummary');
+  const tbody = document.getElementById('splittableBody');
+  const netEl = document.getElementById('splitNetOwed');
+
+  // collect only 50-50 entries
+  let frOwes = 0;
+  const rows = [];
+
+  DAYS.forEach(day => {
+    (state.entries[day.id] || []).forEach(e => {
+      const amt = parseFloat(e.amount) || 0;
+      if (!amt || e.who !== '50') return;
+      frOwes += amt/2;
+      rows.push({ desc: e.desc || '—', dayTitle: day.title, amt, ssShare: amt/2, frShare: amt/2 });
+    });
+  });
+
+  tbody.innerHTML = rows.length ? rows.map(r => `
+    <tr>
+      <td>${escHtml(r.desc)} <span style="color:var(--muted);font-size:0.68rem">(${r.dayTitle})</span></td>
+      <td style="font-family:var(--mono)">₹${fmtNum(r.amt)}</td>
+      <td style="font-family:var(--mono);color:var(--ss)">₹${fmtNum(r.ssShare)}</td>
+      <td style="font-family:var(--mono);color:var(--fr)">₹${fmtNum(r.frShare)}</td>
+      <td><span class="badge b-50">50-50</span></td>
+    </tr>
+  `).join('') : '<tr><td colspan="5" style="color:var(--muted);padding:0.8rem">No 50-50 entries yet</td></tr>';
+
+  netEl.innerHTML = `Friends owe S&S total: <span style="color:var(--fr);font-weight:700">₹${fmtNum(Math.round(frOwes))}</span> — settle via UPI or cash in Manali on June 7th night`;
+
+  card.style.display = 'block';
+  card.scrollIntoView({ behavior:'smooth' });
+  switchTab('overview');
+}
+
+// ─────────────────────────────────────────────
+// TABS
+// ─────────────────────────────────────────────
+let currentTab = 'overview';
+function switchTab(id) {
+  document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id)?.classList.add('active');
+  document.getElementById('tab-' + id)?.classList.add('active');
+  currentTab = id;
+}
+
+// ─────────────────────────────────────────────
+// EXPORT CSV
+// ─────────────────────────────────────────────
+function exportCSV() {
+  const rows = [['Day','Date','Phase','Description','Category','Who','Amount','S&S Pays','Friends Pay']];
+  DAYS.forEach(day => {
+    (state.entries[day.id] || []).forEach(e => {
+      const amt = parseFloat(e.amount) || 0;
+      const ssAmt = e.who==='ss'?amt : e.who==='50'?amt/2 : 0;
+      const frAmt = e.who==='fr'?amt : e.who==='50'?amt/2 : 0;
+      rows.push([
+        day.label, day.date, day.phase,
+        e.desc||'', CATS[e.cat]?.label||e.cat, WHO_OPTS[e.who]?.label||e.who,
+        amt, Math.round(ssAmt), Math.round(frAmt)
+      ]);
+    });
+  });
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'blr_leh_expenses.csv'; a.click();
+  toast('CSV downloaded!');
+}
+
+// ─────────────────────────────────────────────
+// RESET
+// ─────────────────────────────────────────────
+function confirmReset() {
+  if (!confirm('Reset ALL expense entries? This cannot be undone.')) return;
+  DAYS.forEach(d => { state.entries[d.id] = []; });
+  saveState();
+  DAYS.forEach(d => renderEntries(d.id));
+  updateAll();
+  toast('All entries cleared');
+}
+
+// ─────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────
+function fmtNum(n) {
+  if (!n && n !== 0) return '0';
+  return Math.round(n).toLocaleString('en-IN');
+}
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function toast(msg, dur=2500) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), dur);
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+buildUI();
+// Render all entry tables
+DAYS.forEach(d => renderEntries(d.id));
+updateAll();
+</script>
+</body>
+</html>
