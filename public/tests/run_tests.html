@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leh Trip - Unit Tests</title>
+  <style>
+    :root {
+      --bg: #111; --text: #eee; --pass: #10b981; --fail: #ef4444; --border: #333;
+    }
+    body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 2rem; line-height: 1.5; }
+    h1 { font-size: 1.5rem; margin-bottom: 2rem; color: #f97316; }
+    .test-case { padding: 1rem; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 1rem; background: #1a1a1a; }
+    .status { font-weight: bold; text-transform: uppercase; font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; margin-right: 0.5rem; }
+    .pass { color: var(--pass); border: 1px solid var(--pass); }
+    .fail { color: var(--fail); border: 1px solid var(--fail); }
+    .name { font-weight: 600; }
+    .msg { margin-top: 0.5rem; font-size: 0.9rem; color: #aaa; font-family: monospace; white-space: pre-wrap; }
+    .summary { font-size: 1.2rem; font-weight: bold; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border); }
+  </style>
+</head>
+<body>
+
+  <h1>Leh Trip Logic - Unit Test Suite</h1>
+  <div id="summary" class="summary">Running tests...</div>
+  <div id="results"></div>
+
+  <!-- LOAD THE LOGIC TO BE TESTED -->
+  <script src="../js/tracker-logic.js"></script>
+
+  <script>
+    const results = [];
+    
+    function assert(condition, name, msg) {
+      if (condition) {
+        results.push({ name, status: 'pass' });
+      } else {
+        results.push({ name, status: 'fail', msg });
+      }
+    }
+
+    function assertEquals(actual, expected, name) {
+      const condition = JSON.stringify(actual) === JSON.stringify(expected);
+      assert(condition, name, `Expected: ${JSON.stringify(expected)}\nActual:   ${JSON.stringify(actual)}`);
+    }
+
+    // ─────────────────────────────────────────────
+    // TEST CASES
+    // ─────────────────────────────────────────────
+
+    // 1. fmtNum
+    assertEquals(fmtNum(1234567), "12,34,567", "fmtNum: Large number formatting (en-IN)");
+    assertEquals(fmtNum(0), "0", "fmtNum: Zero");
+    assertEquals(fmtNum(99.9), "100", "fmtNum: Rounds to nearest integer");
+
+    // 2. calcDayTotals
+    const mockStateEntries = {
+      'test-day': [
+        { amount: 1000, who: 'ss', cat: 'fuel' },
+        { amount: 2000, who: 'fr', cat: 'stay' },
+        { amount: 3000, who: '50', cat: 'food' }
+      ]
+    };
+    const dayTotals = calcDayTotals('test-day', mockStateEntries);
+    assertEquals(dayTotals.ssTotal, 1000 + 1500, "calcDayTotals: S&S share (Direct + 50% split)");
+    assertEquals(dayTotals.frTotal, 2000 + 1500, "calcDayTotals: Friends share (Direct + 50% split)");
+    assertEquals(dayTotals.total, 6000, "calcDayTotals: Day total");
+
+    // 3. calcGlobalTotals
+    // Mocking state with entries across multiple predefined days
+    const mockGlobalState = {
+      'd1': [{ amount: 1000, who: 'ss', cat: 'fuel' }],
+      'g1': [{ amount: 4000, who: '50', cat: 'stay' }]
+    };
+    const globalTotals = calcGlobalTotals(mockGlobalState);
+    assertEquals(globalTotals.ssTotal, 3000, "calcGlobalTotals: S&S total (1000 + 2000)");
+    assertEquals(globalTotals.frTotal, 2000, "calcGlobalTotals: Friends total (2000)");
+    assertEquals(globalTotals.grandTotal, 5000, "calcGlobalTotals: Grand total (5000)");
+    assertEquals(globalTotals.byCat.fuel, 1000, "calcGlobalTotals: Category grouping (Fuel)");
+    assertEquals(globalTotals.byCat.stay, 4000, "calcGlobalTotals: Category grouping (Stay)");
+
+    // 4. Data Consistency
+    assert(DAYS.length === 20, "Data Model: All 20 days are defined", `Found ${DAYS.length} days`);
+    assertEquals(SS_BUDGET, 182932, "Data Model: SS_BUDGET is correct");
+    assertEquals(FR_BUDGET, 57595, "Data Model: FR_BUDGET is correct");
+
+    // ─────────────────────────────────────────────
+    // RENDER RESULTS
+    // ─────────────────────────────────────────────
+    const resultsContainer = document.getElementById('results');
+    const summaryContainer = document.getElementById('summary');
+    let passed = 0;
+
+    results.forEach(res => {
+      const el = document.createElement('div');
+      el.className = 'test-case';
+      el.innerHTML = `
+        <div>
+          <span class="status ${res.status}">${res.status}</span>
+          <span class="name">${res.name}</span>
+        </div>
+        ${res.msg ? `<div class="msg">${res.msg}</div>` : ''}
+      `;
+      resultsContainer.appendChild(el);
+      if (res.status === 'pass') passed++;
+    });
+
+    summaryContainer.innerHTML = `
+      <span style="color: ${passed === results.length ? 'var(--pass)' : 'var(--fail)'}">
+        ${passed} / ${results.length} Tests Passed
+      </span>
+    `;
+
+  </script>
+</body>
+</html>
