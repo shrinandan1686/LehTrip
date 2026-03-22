@@ -103,7 +103,18 @@ __name(onRequestPut2, "onRequestPut2");
 __name2(onRequestPut2, "onRequestPut");
 async function onRequestGet({ env }) {
   try {
-    const { results } = await env.DB.prepare("SELECT * FROM checklists").all();
+    await env.DB.prepare(`
+      CREATE TABLE IF NOT EXISTS bookings (
+        id TEXT PRIMARY KEY,
+        booked INTEGER NOT NULL DEFAULT 0,
+        hotel_name TEXT NOT NULL DEFAULT '',
+        map_url TEXT NOT NULL DEFAULT '',
+        confirmation TEXT NOT NULL DEFAULT '',
+        notes TEXT NOT NULL DEFAULT '',
+        updated_at INTEGER NOT NULL DEFAULT (unixepoch())
+      )
+    `).run();
+    const { results } = await env.DB.prepare("SELECT * FROM bookings").all();
     return Response.json(results || []);
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 });
@@ -112,6 +123,45 @@ async function onRequestGet({ env }) {
 __name(onRequestGet, "onRequestGet");
 __name2(onRequestGet, "onRequestGet");
 async function onRequestPost({ request, env }) {
+  try {
+    const { id, booked, hotel_name, map_url, confirmation, notes } = await request.json();
+    if (!id) throw new Error("Missing booking ID");
+    await env.DB.prepare(`
+      INSERT INTO bookings (id, booked, hotel_name, map_url, confirmation, notes)
+      VALUES (?, ?, ?, ?, ?, ?)
+      ON CONFLICT(id) DO UPDATE SET
+        booked = excluded.booked,
+        hotel_name = excluded.hotel_name,
+        map_url = excluded.map_url,
+        confirmation = excluded.confirmation,
+        notes = excluded.notes,
+        updated_at = unixepoch()
+    `).bind(
+      String(id),
+      booked ? 1 : 0,
+      hotel_name || "",
+      map_url || "",
+      confirmation || "",
+      notes || ""
+    ).run();
+    return Response.json({ ok: true });
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 500 });
+  }
+}
+__name(onRequestPost, "onRequestPost");
+__name2(onRequestPost, "onRequestPost");
+async function onRequestGet2({ env }) {
+  try {
+    const { results } = await env.DB.prepare("SELECT * FROM checklists").all();
+    return Response.json(results || []);
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 500 });
+  }
+}
+__name(onRequestGet2, "onRequestGet2");
+__name2(onRequestGet2, "onRequestGet");
+async function onRequestPost2({ request, env }) {
   try {
     const { id, state } = await request.json();
     if (!id) throw new Error("Missing checklist item ID");
@@ -126,9 +176,9 @@ async function onRequestPost({ request, env }) {
     return Response.json({ error: err.message }, { status: 500 });
   }
 }
-__name(onRequestPost, "onRequestPost");
-__name2(onRequestPost, "onRequestPost");
-async function onRequestPost2({ request, env }) {
+__name(onRequestPost2, "onRequestPost2");
+__name2(onRequestPost2, "onRequestPost");
+async function onRequestPost3({ request, env }) {
   try {
     const { dayId, entry } = await request.json();
     await env.DB.prepare(
@@ -146,8 +196,8 @@ async function onRequestPost2({ request, env }) {
     return Response.json({ error: err.message }, { status: 500 });
   }
 }
-__name(onRequestPost2, "onRequestPost2");
-__name2(onRequestPost2, "onRequestPost");
+__name(onRequestPost3, "onRequestPost3");
+__name2(onRequestPost3, "onRequestPost");
 async function onRequestDelete2({ env }) {
   try {
     await env.DB.prepare("DELETE FROM entries").run();
@@ -158,7 +208,7 @@ async function onRequestDelete2({ env }) {
 }
 __name(onRequestDelete2, "onRequestDelete2");
 __name2(onRequestDelete2, "onRequestDelete");
-async function onRequestGet2({ env }) {
+async function onRequestGet3({ env }) {
   try {
     const [entriesResult, notesResult] = await Promise.all([
       env.DB.prepare(
@@ -185,8 +235,8 @@ async function onRequestGet2({ env }) {
     return Response.json({ error: err.message }, { status: 500 });
   }
 }
-__name(onRequestGet2, "onRequestGet2");
-__name2(onRequestGet2, "onRequestGet");
+__name(onRequestGet3, "onRequestGet3");
+__name2(onRequestGet3, "onRequestGet");
 var routes = [
   {
     routePath: "/api/entries/:id",
@@ -210,18 +260,32 @@ var routes = [
     modules: [onRequestPut2]
   },
   {
-    routePath: "/api/checklist",
+    routePath: "/api/bookings",
     mountPath: "/api",
     method: "GET",
     middlewares: [],
     modules: [onRequestGet]
   },
   {
-    routePath: "/api/checklist",
+    routePath: "/api/bookings",
     mountPath: "/api",
     method: "POST",
     middlewares: [],
     modules: [onRequestPost]
+  },
+  {
+    routePath: "/api/checklist",
+    mountPath: "/api",
+    method: "GET",
+    middlewares: [],
+    modules: [onRequestGet2]
+  },
+  {
+    routePath: "/api/checklist",
+    mountPath: "/api",
+    method: "POST",
+    middlewares: [],
+    modules: [onRequestPost2]
   },
   {
     routePath: "/api/entries",
@@ -235,14 +299,14 @@ var routes = [
     mountPath: "/api",
     method: "POST",
     middlewares: [],
-    modules: [onRequestPost2]
+    modules: [onRequestPost3]
   },
   {
     routePath: "/api/tracker",
     mountPath: "/api",
     method: "GET",
     middlewares: [],
-    modules: [onRequestGet2]
+    modules: [onRequestGet3]
   }
 ];
 function lexer(str) {

@@ -1,6 +1,8 @@
 import { onRequestDelete as __api_entries__id__js_onRequestDelete } from "/Users/shubhashreebhat/Documents/LehTrip/functions/api/entries/[id].js"
 import { onRequestPut as __api_entries__id__js_onRequestPut } from "/Users/shubhashreebhat/Documents/LehTrip/functions/api/entries/[id].js"
 import { onRequestPut as __api_notes__dayId__js_onRequestPut } from "/Users/shubhashreebhat/Documents/LehTrip/functions/api/notes/[dayId].js"
+import { onRequestGet as __api_bookings_js_onRequestGet } from "/Users/shubhashreebhat/Documents/LehTrip/functions/api/bookings.js"
+import { onRequestPost as __api_bookings_js_onRequestPost } from "/Users/shubhashreebhat/Documents/LehTrip/functions/api/bookings.js"
 import { onRequestGet as __api_checklist_js_onRequestGet } from "/Users/shubhashreebhat/Documents/LehTrip/functions/api/checklist.js"
 import { onRequestPost as __api_checklist_js_onRequestPost } from "/Users/shubhashreebhat/Documents/LehTrip/functions/api/checklist.js"
 import { onRequestDelete as __api_entries_js_onRequestDelete } from "/Users/shubhashreebhat/Documents/LehTrip/functions/api/entries.js"
@@ -28,6 +30,20 @@ export const routes = [
       method: "PUT",
       middlewares: [],
       modules: [__api_notes__dayId__js_onRequestPut],
+    },
+  {
+      routePath: "/api/bookings",
+      mountPath: "/api",
+      method: "GET",
+      middlewares: [],
+      modules: [__api_bookings_js_onRequestGet],
+    },
+  {
+      routePath: "/api/bookings",
+      mountPath: "/api",
+      method: "POST",
+      middlewares: [],
+      modules: [__api_bookings_js_onRequestPost],
     },
   {
       routePath: "/api/checklist",

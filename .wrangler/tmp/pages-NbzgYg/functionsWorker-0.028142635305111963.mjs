@@ -1,7 +1,7 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
-// ../.wrangler/tmp/bundle-tSDjDX/checked-fetch.js
+// ../.wrangler/tmp/bundle-IsXIT3/checked-fetch.js
 var urls = /* @__PURE__ */ new Set();
 function checkURL(request, init) {
   const url = request instanceof URL ? request : new URL(
@@ -74,10 +74,21 @@ async function onRequestPut2({ request, env, params }) {
 }
 __name(onRequestPut2, "onRequestPut");
 
-// api/checklist.js
+// api/bookings.js
 async function onRequestGet({ env }) {
   try {
-    const { results } = await env.DB.prepare("SELECT * FROM checklists").all();
+    await env.DB.prepare(`
+      CREATE TABLE IF NOT EXISTS bookings (
+        id TEXT PRIMARY KEY,
+        booked INTEGER NOT NULL DEFAULT 0,
+        hotel_name TEXT NOT NULL DEFAULT '',
+        map_url TEXT NOT NULL DEFAULT '',
+        confirmation TEXT NOT NULL DEFAULT '',
+        notes TEXT NOT NULL DEFAULT '',
+        updated_at INTEGER NOT NULL DEFAULT (unixepoch())
+      )
+    `).run();
+    const { results } = await env.DB.prepare("SELECT * FROM bookings").all();
     return Response.json(results || []);
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 });
@@ -85,6 +96,45 @@ async function onRequestGet({ env }) {
 }
 __name(onRequestGet, "onRequestGet");
 async function onRequestPost({ request, env }) {
+  try {
+    const { id, booked, hotel_name, map_url, confirmation, notes } = await request.json();
+    if (!id) throw new Error("Missing booking ID");
+    await env.DB.prepare(`
+      INSERT INTO bookings (id, booked, hotel_name, map_url, confirmation, notes)
+      VALUES (?, ?, ?, ?, ?, ?)
+      ON CONFLICT(id) DO UPDATE SET
+        booked = excluded.booked,
+        hotel_name = excluded.hotel_name,
+        map_url = excluded.map_url,
+        confirmation = excluded.confirmation,
+        notes = excluded.notes,
+        updated_at = unixepoch()
+    `).bind(
+      String(id),
+      booked ? 1 : 0,
+      hotel_name || "",
+      map_url || "",
+      confirmation || "",
+      notes || ""
+    ).run();
+    return Response.json({ ok: true });
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 500 });
+  }
+}
+__name(onRequestPost, "onRequestPost");
+
+// api/checklist.js
+async function onRequestGet2({ env }) {
+  try {
+    const { results } = await env.DB.prepare("SELECT * FROM checklists").all();
+    return Response.json(results || []);
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 500 });
+  }
+}
+__name(onRequestGet2, "onRequestGet");
+async function onRequestPost2({ request, env }) {
   try {
     const { id, state } = await request.json();
     if (!id) throw new Error("Missing checklist item ID");
@@ -99,10 +149,10 @@ async function onRequestPost({ request, env }) {
     return Response.json({ error: err.message }, { status: 500 });
   }
 }
-__name(onRequestPost, "onRequestPost");
+__name(onRequestPost2, "onRequestPost");
 
 // api/entries.js
-async function onRequestPost2({ request, env }) {
+async function onRequestPost3({ request, env }) {
   try {
     const { dayId, entry } = await request.json();
     await env.DB.prepare(
@@ -120,7 +170,7 @@ async function onRequestPost2({ request, env }) {
     return Response.json({ error: err.message }, { status: 500 });
   }
 }
-__name(onRequestPost2, "onRequestPost");
+__name(onRequestPost3, "onRequestPost");
 async function onRequestDelete2({ env }) {
   try {
     await env.DB.prepare("DELETE FROM entries").run();
@@ -132,7 +182,7 @@ async function onRequestDelete2({ env }) {
 __name(onRequestDelete2, "onRequestDelete");
 
 // api/tracker.js
-async function onRequestGet2({ env }) {
+async function onRequestGet3({ env }) {
   try {
     const [entriesResult, notesResult] = await Promise.all([
       env.DB.prepare(
@@ -159,7 +209,7 @@ async function onRequestGet2({ env }) {
     return Response.json({ error: err.message }, { status: 500 });
   }
 }
-__name(onRequestGet2, "onRequestGet");
+__name(onRequestGet3, "onRequestGet");
 
 // ../.wrangler/tmp/pages-NbzgYg/functionsRoutes-0.7497685765010806.mjs
 var routes = [
@@ -185,18 +235,32 @@ var routes = [
     modules: [onRequestPut2]
   },
   {
-    routePath: "/api/checklist",
+    routePath: "/api/bookings",
     mountPath: "/api",
     method: "GET",
     middlewares: [],
     modules: [onRequestGet]
   },
   {
-    routePath: "/api/checklist",
+    routePath: "/api/bookings",
     mountPath: "/api",
     method: "POST",
     middlewares: [],
     modules: [onRequestPost]
+  },
+  {
+    routePath: "/api/checklist",
+    mountPath: "/api",
+    method: "GET",
+    middlewares: [],
+    modules: [onRequestGet2]
+  },
+  {
+    routePath: "/api/checklist",
+    mountPath: "/api",
+    method: "POST",
+    middlewares: [],
+    modules: [onRequestPost2]
   },
   {
     routePath: "/api/entries",
@@ -210,14 +274,14 @@ var routes = [
     mountPath: "/api",
     method: "POST",
     middlewares: [],
-    modules: [onRequestPost2]
+    modules: [onRequestPost3]
   },
   {
     routePath: "/api/tracker",
     mountPath: "/api",
     method: "GET",
     middlewares: [],
-    modules: [onRequestGet2]
+    modules: [onRequestGet3]
   }
 ];
 
@@ -708,7 +772,7 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// ../.wrangler/tmp/bundle-tSDjDX/middleware-insertion-facade.js
+// ../.wrangler/tmp/bundle-IsXIT3/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
@@ -740,7 +804,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// ../.wrangler/tmp/bundle-tSDjDX/middleware-loader.entry.ts
+// ../.wrangler/tmp/bundle-IsXIT3/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;
