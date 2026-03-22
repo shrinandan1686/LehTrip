@@ -4,7 +4,7 @@
 export async function onRequestGet({ env }) {
   try {
     const { results } = await env.DB.prepare('SELECT * FROM checklists').all();
-    return Response.json(results || []);
+    return Response.json(results && Array.isArray(results) ? results : []);
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 });
   }
