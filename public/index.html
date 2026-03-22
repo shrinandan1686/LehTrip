@@ -2949,13 +2949,24 @@
             confirmation: document.getElementById('modal-conf').value.trim(),
             notes: document.getElementById('modal-notes').value.trim(),
           };
-          bookingState[_modalId] = updated;
+          const idToSave = _modalId;
+          bookingState[idToSave] = updated;
           closeBookingModal();
           renderBookings();
           try {
-            await fetch('/api/bookings', { method:'POST', headers:{'Content-Type':'application/json'},
-              body: JSON.stringify({ id:_modalId, booked:updated.booked?1:0, hotel_name:updated.hotel_name, map_url:updated.map_url, confirmation:updated.confirmation, notes:updated.notes }) });
-          } catch(e) {}
+            await fetch('/api/bookings', { 
+              method: 'POST', 
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                id: idToSave, 
+                booked: updated.booked ? 1 : 0, 
+                hotel_name: updated.hotel_name, 
+                map_url: updated.map_url, 
+                confirmation: updated.confirmation, 
+                notes: updated.notes 
+              }) 
+            });
+          } catch(e) { console.error('Save failed', e); }
         };
 
         document.getElementById('booking-modal').addEventListener('click', function(e) {
