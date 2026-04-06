@@ -190,6 +190,7 @@ body {
 .phase-solo   { background:var(--ss-dim); color:var(--ss); }
 .phase-group  { background:var(--split-dim); color:var(--split); }
 .phase-wfh    { background:var(--green-dim); color:var(--green); }
+.phase-prep   { background:rgba(251,191,36,0.12); color:var(--yellow); }
 
 .day-totals {
   display:flex; gap:0.8rem; flex-wrap:wrap;
@@ -537,6 +538,36 @@ body {
 let state = { entries: {}, notes: {} };
 DAYS.forEach(d => { state.entries[d.id] = []; state.notes[d.id] = ''; });
 
+async function ensurePrepPrefill() {
+  const prepDayId = 'p0';
+  const hasPrepDay = DAYS.some(d => d.id === prepDayId);
+  if (!hasPrepDay) return;
+  if ((state.entries[prepDayId] || []).length > 0) return;
+  if (!Array.isArray(PREP_EXPENSE_TEMPLATES) || PREP_EXPENSE_TEMPLATES.length === 0) return;
+
+  const prefilled = PREP_EXPENSE_TEMPLATES.map((item, idx) => ({
+    id: `prep_${idx + 1}`,
+    desc: item.desc || '',
+    cat: item.cat || 'misc',
+    who: item.who || 'ss',
+    amount: '',
+  }));
+  state.entries[prepDayId] = prefilled;
+
+  try {
+    const res = await fetch('/api/entries', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ dayId: prepDayId, entries: prefilled }),
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    toast('Day 0 prep list prefilled');
+  } catch (err) {
+    console.error('Failed to prefill prep entries:', err);
+    toast('Day 0 prefill saved locally only — sync failed');
+  }
+}
+
 async function fetchState() {
   try {
     const res = await fetch('/api/tracker');
@@ -578,11 +609,11 @@ function buildUI() {
 }
 
 function phaseIcon(p) {
-  return p === 'group' ? '👫' : p === 'wfh' ? '💻' : '🚗';
+  return p === 'group' ? '👫' : p === 'wfh' ? '💻' : p === 'prep' ? '🛒' : '🚗';
 }
 
 function buildDayPanel(day) {
-  const phaseLabelMap = { solo:'Solo Phase', group:'Group Phase (50-50)', wfh:'WFH Phase' };
+  const phaseLabelMap = { prep:'Preparation Costs', solo:'Solo Phase', group:'Group Phase (50-50)', wfh:'WFH Phase' };
   return `
     <div class="day-header">
       <div class="day-info">
@@ -1034,6 +1065,7 @@ function toast(msg, dur=2500) {
 async function init() {
   buildUI();
   await fetchState();
+  await ensurePrepPrefill();
   // Render all entry tables with fetched data
   DAYS.forEach(d => renderEntries(d.id));
   // Populate notes textareas (built before fetch, so fill them now)

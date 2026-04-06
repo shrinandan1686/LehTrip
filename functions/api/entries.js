@@ -3,18 +3,36 @@
 
 export async function onRequestPost({ request, env }) {
   try {
-    const { dayId, entry } = await request.json();
+    const { dayId, entry, entries } = await request.json();
+    const payload = Array.isArray(entries) ? entries : (entry ? [entry] : []);
+    if (!dayId) throw new Error('Missing dayId');
+    if (!payload.length) throw new Error('Missing entry payload');
 
-    await env.DB.prepare(
+    const stmt = env.DB.prepare(
       'INSERT INTO entries (id, day_id, description, category, who, amount) VALUES (?, ?, ?, ?, ?, ?)'
-    ).bind(
-      String(entry.id),
-      dayId,
-      entry.desc   || '',
-      entry.cat    || 'food',
-      entry.who    || 'ss',
-      parseFloat(entry.amount) || 0,
-    ).run();
+    );
+
+    if (payload.length === 1) {
+      const row = payload[0];
+      await stmt.bind(
+        String(row.id),
+        dayId,
+        row.desc || '',
+        row.cat || 'food',
+        row.who || 'ss',
+        parseFloat(row.amount) || 0,
+      ).run();
+    } else {
+      const batch = payload.map(row => stmt.bind(
+        String(row.id),
+        dayId,
+        row.desc || '',
+        row.cat || 'food',
+        row.who || 'ss',
+        parseFloat(row.amount) || 0,
+      ));
+      await env.DB.batch(batch);
+    }
 
     return Response.json({ ok: true });
   } catch (err) {
