@@ -5,14 +5,14 @@
 const DAYS = [
   // Day 0: Pre-trip costs (checklist + packing)
   { id:'p0',  label:'Day 0',  title:'Preparation & Shopping',      date:'Before May 15', phase:'prep',  budget:{ fuel:0,    food:0,    stay:0,    act:0, misc:31900 } },
-  // Phase 1: Solo BLR→CHD
+  // Phase 1: Solo BLR→Shimla
   { id:'d1',  label:'Day 1',  title:'Bangalore → Nagpur',          date:'Fri May 15',  phase:'solo',  budget:{ fuel:6550, food:600, stay:2000, act:0, misc:0 } },
   { id:'d2',  label:'Day 2',  title:'Nagpur → Jaipur',             date:'Sat May 16',  phase:'solo',  budget:{ fuel:7654, food:600, stay:2000, act:0, misc:0 } },
-  { id:'d3',  label:'Day 3',  title:'Jaipur → Chandigarh',         date:'Sun May 17',  phase:'solo',  budget:{ fuel:3000, food:600, stay:0,    act:0, misc:0 } },
-  // Phase 2: WFH CHD
-  { id:'d4',  label:'WFH 1-5',title:'Chandigarh WFH & Prep',       date:'May 18-22',   phase:'wfh',   budget:{ fuel:0,    food:3000,stay:12500, act:0, misc:31900 } },
+  { id:'d3',  label:'Day 3',  title:'Jaipur → Shimla',             date:'Sun May 17',  phase:'solo',  budget:{ fuel:3000, food:600, stay:0,    act:0, misc:0 } },
+  // Phase 2: WFH Shimla + Chandigarh transition
+  { id:'d4',  label:'WFH',    title:'Shimla WFH (May 17-22) + Chandigarh (May 22-23)', date:'May 17-23', phase:'wfh', budget:{ fuel:0, food:3000,stay:12500, act:0, misc:31900 } },
   // Phase 3: Group (updated route + dates)
-  { id:'g1',  label:'G1',     title:'Chandigarh → Srinagar',         date:'Sun May 24',  phase:'group', budget:{ fuel:5104, food:1200,stay:3500, act:350, misc:0 } },
+  { id:'g1',  label:'G1',     title:'Srinagar Acclimatization + Exploration', date:'Sun May 24', phase:'group', budget:{ fuel:5104, food:1200,stay:3500, act:350, misc:0 } },
   { id:'g2',  label:'G2',     title:'Srinagar → Kargil',             date:'Mon May 25',  phase:'group', budget:{ fuel:1580, food:800, stay:2500, act:0, misc:0 } },
   { id:'g3',  label:'G3',     title:'Kargil → Leh',                  date:'Tue May 26',  phase:'group', budget:{ fuel:1817, food:800, stay:4000, act:0, misc:0 } },
   { id:'g4',  label:'G4',     title:'Leh Acclimatization',           date:'Wed May 27',  phase:'group', budget:{ fuel:0,    food:1200,stay:4000, act:0, misc:0 } },
