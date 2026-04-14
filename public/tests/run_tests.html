@@ -57,32 +57,28 @@
     const mockStateEntries = {
       'test-day': [
         { amount: 1000, who: 'ss', cat: 'fuel' },
-        { amount: 2000, who: 'fr', cat: 'stay' },
-        { amount: 3000, who: '50', cat: 'food' }
+        { amount: 2000, who: 'ss', cat: 'stay' },
+        { amount: 3000, who: 'ss', cat: 'food' }
       ]
     };
     const dayTotals = calcDayTotals('test-day', mockStateEntries);
-    assertEquals(dayTotals.ssTotal, 1000 + 1500, "calcDayTotals: S&S share (Direct + 50% split)");
-    assertEquals(dayTotals.frTotal, 2000 + 1500, "calcDayTotals: Friends share (Direct + 50% split)");
+    assertEquals(dayTotals.ssTotal, 6000, "calcDayTotals: S&S total");
     assertEquals(dayTotals.total, 6000, "calcDayTotals: Day total");
 
     // 3. calcGlobalTotals
-    // Mocking state with entries across multiple predefined days
     const mockGlobalState = {
       'd1': [{ amount: 1000, who: 'ss', cat: 'fuel' }],
-      'g1': [{ amount: 4000, who: '50', cat: 'stay' }]
+      'g1': [{ amount: 4000, who: 'ss', cat: 'stay' }]
     };
     const globalTotals = calcGlobalTotals(mockGlobalState);
-    assertEquals(globalTotals.ssTotal, 3000, "calcGlobalTotals: S&S total (1000 + 2000)");
-    assertEquals(globalTotals.frTotal, 2000, "calcGlobalTotals: Friends total (2000)");
+    assertEquals(globalTotals.ssTotal, 5000, "calcGlobalTotals: S&S total (1000 + 4000)");
     assertEquals(globalTotals.grandTotal, 5000, "calcGlobalTotals: Grand total (5000)");
     assertEquals(globalTotals.byCat.fuel, 1000, "calcGlobalTotals: Category grouping (Fuel)");
     assertEquals(globalTotals.byCat.stay, 4000, "calcGlobalTotals: Category grouping (Stay)");
 
     // 4. Data Consistency
     assert(DAYS.length === 21, "Data Model: All 21 days are defined (includes Day 0 prep)", `Found ${DAYS.length} days`);
-    assertEquals(SS_BUDGET, 182932, "Data Model: SS_BUDGET is correct");
-    assertEquals(FR_BUDGET, 57595, "Data Model: FR_BUDGET is correct");
+    assertEquals(SS_BUDGET, 195577, "Data Model: SS_BUDGET is correct");
 
     // ─────────────────────────────────────────────
     // RENDER RESULTS
