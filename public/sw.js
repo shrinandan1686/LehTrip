@@ -60,8 +60,7 @@ self.addEventListener('fetch', event => {
   // Static assets → cache-first, network fallback
   event.respondWith(
     caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(response => {
+      return cached || fetch(event.request).then(response => {
         if (!response || response.status !== 200 || response.type === 'opaque') {
           return response;
         }
@@ -72,8 +71,11 @@ self.addEventListener('fetch', event => {
     }).catch(() => {
       // Offline fallback: serve index.html for navigations
       if (event.request.mode === 'navigate') {
-        return caches.match('/index.html');
+        return caches.match('/index.html').then(match => {
+          return match || Response.error(); // Avoid returning undefined
+        });
       }
+      return Response.error();
     })
   );
 });
