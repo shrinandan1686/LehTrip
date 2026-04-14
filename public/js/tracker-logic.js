@@ -41,25 +41,22 @@ const CATS = {
 };
 
 const WHO_OPTS = {
-  ss:   { label:'S&S',     badge:'b-ss' },
-  fr:   { label:'Friends', badge:'b-fr' },
-  '50': { label:'50-50',   badge:'b-50' },
+  ss: { label:'S&S', badge:'b-ss' },
 };
 
-const SS_BUDGET  = 182932;
-const FR_BUDGET  = 57595;
+const SS_BUDGET = 195577; // S&S total: Fuel+Stay+Food+Tolls+Sightseeing+CarPrep (excl. ₹15k emergency buffer)
 
 const PREP_EXPENSE_TEMPLATES = [
   // Checklist: Documents
   { desc:'[Documents] Vehicle RC Book', cat:'misc', who:'ss' },
   { desc:'[Documents] Vehicle Insurance', cat:'misc', who:'ss' },
   { desc:'[Documents] Shrinandan Driving License', cat:'misc', who:'ss' },
-  { desc:'[Documents] All 4 Aadhar Cards (x6 copies)', cat:'misc', who:'ss' },
+  { desc:'[Documents] Both Aadhar Cards (x6 copies each)', cat:'misc', who:'ss' },
   { desc:'[Documents] Ladakh Environment Fee paid (lahdclehpermit.in)', cat:'misc', who:'ss' },
-  { desc:'[Documents] EDF receipt printed x4', cat:'misc', who:'ss' },
-  { desc:'[Documents] Travel Insurance for all 4', cat:'misc', who:'ss' },
+  { desc:'[Documents] EDF receipt printed x2 (one per person)', cat:'misc', who:'ss' },
+  { desc:'[Documents] Travel Insurance for S&S (both)', cat:'misc', who:'ss' },
   { desc:'[Documents] All hotel bookings confirmed and printed', cat:'misc', who:'ss' },
-  { desc:'[Documents] Emergency contacts list (all 4 phones)', cat:'misc', who:'ss' },
+  { desc:'[Documents] Emergency contacts list (both phones)', cat:'misc', who:'ss' },
 
   // Checklist: Medical kit
   { desc:'[Medical] Diamox (acetazolamide) doctor prescription', cat:'misc', who:'ss' },
@@ -85,7 +82,7 @@ const PREP_EXPENSE_TEMPLATES = [
   { desc:'[Car Prep] Puncture repair kit', cat:'misc', who:'ss' },
   { desc:'[Car Prep] Windshield washer fluid (mountain dust)', cat:'misc', who:'ss' },
   { desc:'[Car Prep] Phone mount for dashboard', cat:'misc', who:'ss' },
-  { desc:'[Car Prep] Power bank (x2 for 4 people)', cat:'misc', who:'ss' },
+  { desc:'[Car Prep] Power bank (x2 for S&S)', cat:'misc', who:'ss' },
 
   // Checklist: Food supply
   { desc:'[Food Supply] MTR/Haldiram instant food pouches (x20)', cat:'food', who:'ss' },
@@ -159,21 +156,17 @@ const PREP_EXPENSE_TEMPLATES = [
 
 function calcDayTotals(dayId, stateEntries) {
   const entries = stateEntries[dayId] || [];
-  let ssTotal = 0, frTotal = 0, total = 0;
+  let total = 0;
   entries.forEach(e => {
     const amt = parseFloat(e.amount) || 0;
     total += amt;
-    if (e.who === 'ss') ssTotal += amt;
-    else if (e.who === 'fr') frTotal += amt;
-    else if (e.who === '50') { ssTotal += amt/2; frTotal += amt/2; }
   });
-  return { ssTotal: Math.round(ssTotal), frTotal: Math.round(frTotal), total: Math.round(total) };
+  return { ssTotal: Math.round(total), total: Math.round(total) };
 }
 
 function calcGlobalTotals(stateEntries) {
-  let ssTotal = 0, frTotal = 0, grandTotal = 0, sharedTotal = 0;
+  let grandTotal = 0;
   const byCat = {};
-  const byWho = { ss:0, fr:0, '50':0 };
   const allEntries = [];
   Object.keys(CATS).forEach(k => byCat[k] = 0);
 
@@ -183,20 +176,14 @@ function calcGlobalTotals(stateEntries) {
       if (!amt) return;
       grandTotal += amt;
       byCat[e.cat] = (byCat[e.cat] || 0) + amt;
-      if (e.who === 'ss') { ssTotal += amt; byWho.ss += amt; }
-      else if (e.who === 'fr') { frTotal += amt; byWho.fr += amt; }
-      else if (e.who === '50') { ssTotal += amt/2; frTotal += amt/2; sharedTotal += amt; byWho['50'] += amt; }
       allEntries.push({...e, dayTitle: day.title, dayId: day.id, amtNum: amt});
     });
   });
 
   return {
-    ssTotal: Math.round(ssTotal),
-    frTotal: Math.round(frTotal),
+    ssTotal: Math.round(grandTotal),
     grandTotal: Math.round(grandTotal),
-    sharedTotal: Math.round(sharedTotal),
     byCat,
-    byWho,
     allEntries: allEntries.sort((a,b) => b.amtNum - a.amtNum),
     count: allEntries.length
   };
@@ -217,5 +204,5 @@ function escHtml(s) {
 
 // Export for commonJS/Module testing environments if needed
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { DAYS, CATS, WHO_OPTS, SS_BUDGET, FR_BUDGET, PREP_EXPENSE_TEMPLATES, calcDayTotals, calcGlobalTotals, fmtNum };
+  module.exports = { DAYS, CATS, WHO_OPTS, SS_BUDGET, PREP_EXPENSE_TEMPLATES, calcDayTotals, calcGlobalTotals, fmtNum };
 }

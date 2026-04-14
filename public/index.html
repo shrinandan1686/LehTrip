@@ -5,6 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BLR → LEH → BLR | Epic Road Trip 2026</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1a2744">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LEH 2026">
   <link
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Barlow+Condensed:wght@400;600;700&display=swap"
     rel="stylesheet">
@@ -762,217 +767,6 @@
       color: #aaa;
     }
 
-    /* ===== PITCH SECTION ===== */
-    .pitch-wrapper {
-      background: linear-gradient(135deg, #1a2744 0%, #0d1520 100%);
-      padding: 5rem 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .pitch-wrapper::before {
-      content: 'JOIN US';
-      position: absolute;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 25vw;
-      color: rgba(255, 255, 255, 0.02);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      white-space: nowrap;
-      pointer-events: none;
-    }
-
-    .pitch-section {
-      max-width: 1200px;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    .pitch-section .section-title {
-      color: var(--snow);
-    }
-
-    .pitch-section .section-label {
-      color: var(--dawn);
-    }
-
-    .pitch-subtitle {
-      font-size: 1.1rem;
-      color: var(--mist);
-      margin-bottom: 3rem;
-      max-width: 600px;
-      line-height: 1.6;
-    }
-
-    .pitch-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
-
-    .pitch-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 4px;
-      padding: 1.5rem;
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .pitch-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--dawn);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s;
-    }
-
-    .pitch-card:hover::before {
-      transform: scaleX(1);
-    }
-
-    .pitch-card:hover {
-      border-color: rgba(232, 99, 58, 0.3);
-      transform: translateY(-4px);
-    }
-
-    .pitch-card-icon {
-      font-size: 2rem;
-      margin-bottom: 0.8rem;
-    }
-
-    .pitch-card-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--snow);
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
-    }
-
-    .pitch-card-text {
-      font-size: 0.85rem;
-      color: #aaa;
-      line-height: 1.6;
-    }
-
-    .pitch-highlight {
-      color: var(--gold);
-      font-weight: 600;
-    }
-
-    .pitch-timeline {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 4px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .pitch-timeline-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--dawn);
-      margin-bottom: 1.5rem;
-    }
-
-    .pitch-days {
-      display: flex;
-      gap: 0;
-      overflow-x: auto;
-      padding-bottom: 1rem;
-      scrollbar-width: thin;
-      scrollbar-color: var(--dawn) transparent;
-    }
-
-    .pitch-day {
-      flex: 0 0 auto;
-      text-align: center;
-      padding: 0 0.8rem;
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
-      min-width: 110px;
-    }
-
-    .pitch-day:last-child {
-      border-right: none;
-    }
-
-    .pitch-day-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 0.85rem;
-      color: var(--dawn);
-      margin-bottom: 0.3rem;
-    }
-
-    .pitch-day-name {
-      font-size: 0.8rem;
-      color: var(--snow);
-      font-weight: 600;
-      margin-bottom: 0.2rem;
-      font-family: 'Barlow Condensed', sans-serif;
-    }
-
-    .pitch-day-sub {
-      font-size: 0.65rem;
-      color: #666;
-      line-height: 1.3;
-    }
-
-    .pitch-cta {
-      background: var(--dawn);
-      border-radius: 4px;
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .pitch-cta-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.5rem;
-      color: var(--snow);
-      margin-bottom: 0.5rem;
-    }
-
-    .pitch-cta-sub {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.8);
-      margin-bottom: 1.5rem;
-    }
-
-    .pitch-cta-items {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .pitch-cta-item {
-      text-align: center;
-    }
-
-    .pitch-cta-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2rem;
-      color: var(--snow);
-    }
-
-    .pitch-cta-label {
-      font-size: 0.7rem;
-      color: rgba(255, 255, 255, 0.7);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      font-family: 'Barlow Condensed', sans-serif;
-    }
-
     /* ===== ALTITUDE PROFILE ===== */
     .altitude-section-wrapper {
       background: #f8f4ed;
@@ -1330,11 +1124,49 @@
 
     /* Print specific */
     @media print {
+      .sticky-nav, .hero, #trip-status-strip,
+      .scroll-hint, .phase-tabs { display: none !important; }
 
-      .sticky-nav,
-      .hero {
-        display: none;
+      body { background: #fff !important; color: #000 !important; font-size: 11pt; }
+
+      /* Budget section — dark bg → white */
+      .budget-section-wrapper {
+        background: #fff !important;
+        border: 1px solid #ccc;
+        padding: 2rem !important;
       }
+      .budget-section .section-title { color: #000 !important; }
+      .budget-section .section-label { color: #333 !important; }
+      .budget-card {
+        background: #f8f8f8 !important;
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+      }
+      .budget-card-amount { color: #b45309 !important; }
+      .budget-card-detail { color: #444 !important; }
+      .budget-total { background: #1a2744 !important; }
+
+      /* Map — dark bg */
+      .map-section-wrapper { background: #fff !important; }
+      .map-section .section-title { color: #000 !important; }
+      .route-map { background: #fff !important; border: 1px solid #ccc !important; }
+
+      /* Emergency — red bg → white with border */
+      .emergency-wrapper { background: #fff !important; border: 2px solid #c0392b; padding: 1.5rem !important; }
+      .emergency-card { background: #fff5f5 !important; border: 1px solid #fca5a5; }
+      .emergency-num a { color: #c0392b !important; }
+      .emergency-label { color: #555 !important; }
+      .emergency-desc { color: #333 !important; }
+
+      /* Checklist: keep backgrounds light */
+      .checklist-header { color: #fff; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+
+      /* Altitude — keep chart visible */
+      .altitude-section-wrapper { background: #fff !important; }
+
+      /* Page breaks */
+      section { page-break-inside: avoid; }
+      .permit-cards, .tips-grid, .emergency-grid { page-break-inside: avoid; }
     }
   </style>
 </head>
@@ -1366,11 +1198,11 @@
           <div class="hero-stat-label">Passes</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-num">₹1.83L</div>
+          <div class="hero-stat-num">₹1.96L</div>
           <div class="hero-stat-label">S&amp;S Budget</div>
         </div>
       </div>
-      <div class="hero-names">✦ Shrinandan & Shubhashree ✦ + Friends joining from Srinagar ✦</div>
+      <div class="hero-names">✦ Shrinandan & Shubhashree ✦ BLR → LEH → BLR ✦</div>
     </div>
     <div class="hero-mountains">
       <svg viewBox="0 0 1440 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -1389,7 +1221,9 @@
         <polygon points="1080,50 1060,63 1100,63" fill="white" opacity="0.65" />
       </svg>
     </div>
-    <div class="scroll-hint">▼ scroll to explore</div>
+    <div></div></br>
+  </div>
+  <div class="scroll-hint">▼ scroll to explore</div>
   </div>
 
   <!-- STICKY NAV -->
@@ -1397,7 +1231,6 @@
     <button class="nav-btn active" onclick="scrollToSection('itinerary')">📅 Itinerary</button>
     <button class="nav-btn" onclick="scrollToSection('route')">🗺️ Route Map</button>
     <button class="nav-btn" onclick="scrollToSection('altitude')">⛰️ Altitude</button>
-    <button class="nav-btn" onclick="scrollToSection('pitch')">👫 Pitch Friends</button>
     <button class="nav-btn" onclick="scrollToSection('checklist')">✅ Checklists</button>
     <button class="nav-btn" onclick="scrollToSection('packing')">🎒 Packing</button>
     <button class="nav-btn" onclick="scrollToSection('budget')">💰 Budget</button>
@@ -1409,6 +1242,184 @@
     <button class="nav-btn" onclick="scrollToSection('emergency')">🆘 Emergency</button>
   </nav>
 
+  <!-- TRIP STATUS STRIP -->
+  <div id="trip-status-strip" style="
+    background: linear-gradient(90deg, #0d1520 0%, #1a2744 100%);
+    border-bottom: 1px solid rgba(232,99,58,0.25);
+    padding: 0.55rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    overflow: hidden;
+    position: relative;
+  ">
+    <!-- Animated scan line -->
+    <div style="position:absolute;top:0;left:-100%;width:60%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(232,99,58,0.04),transparent);
+      animation:scanLine 4s linear infinite;pointer-events:none"></div>
+
+    <div id="tss-phase" style="display:flex;align-items:center;gap:0.5rem">
+      <span style="color:var(--dawn);font-size:1rem" id="tss-icon">⏳</span>
+      <div>
+        <div style="color:rgba(255,255,255,0.45);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase">Status</div>
+        <div style="color:var(--snow);font-weight:700;font-size:0.82rem" id="tss-label">Loading…</div>
+      </div>
+    </div>
+
+    <div style="width:1px;height:28px;background:rgba(255,255,255,0.1);flex-shrink:0"></div>
+
+    <div id="tss-location" style="display:flex;align-items:center;gap:0.5rem">
+      <span style="color:var(--glacier);font-size:0.9rem">📍</span>
+      <div>
+        <div style="color:rgba(255,255,255,0.45);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase">Today</div>
+        <div style="color:var(--mist);font-size:0.78rem" id="tss-today">—</div>
+      </div>
+    </div>
+
+    <div style="width:1px;height:28px;background:rgba(255,255,255,0.1);flex-shrink:0"></div>
+
+    <div id="tss-budget" style="display:flex;align-items:center;gap:0.5rem">
+      <span style="color:var(--gold);font-size:0.9rem">💰</span>
+      <div>
+        <div style="color:rgba(255,255,255,0.45);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase">Budget Left</div>
+        <div style="color:var(--gold);font-weight:700;font-size:0.82rem" id="tss-budget-val">—</div>
+      </div>
+    </div>
+
+    <div id="tss-ams-wrap" style="display:none;align-items:center;gap:0.5rem;margin-left:auto">
+      <div style="background:rgba(192,57,43,0.2);border:1px solid rgba(192,57,43,0.4);border-radius:4px;padding:0.25rem 0.7rem;color:#f87171;font-size:0.72rem;letter-spacing:0.08em">
+        ⚠️ AMS ZONE · Check SpO2 · No alcohol · 3L+ water/day
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes scanLine {
+      0%   { left: -60%; }
+      100% { left: 160%; }
+    }
+  </style>
+
+  <script>
+  (function() {
+    // Trip itinerary: id → {title, date, altitudeM}
+    const TRIP_START = new Date('2026-05-15T04:00:00+05:30');
+    const TRIP_END   = new Date('2026-06-15T20:00:00+05:30');
+    const SS_TOTAL   = 195577;
+
+    const DAY_MAP = [
+      { from:'2026-05-15', to:'2026-05-15', title:'Bangalore → Nagpur', alt:560 },
+      { from:'2026-05-16', to:'2026-05-16', title:'Nagpur → Jaipur', alt:431 },
+      { from:'2026-05-17', to:'2026-05-17', title:'Jaipur → Shimla', alt:2200 },
+      { from:'2026-05-18', to:'2026-05-22', title:'WFH Base: Shimla', alt:2200 },
+      { from:'2026-05-22', to:'2026-05-23', title:'Chandigarh → Srinagar Transition', alt:1585 },
+      { from:'2026-05-24', to:'2026-05-24', title:'Srinagar Acclimatization', alt:1585 },
+      { from:'2026-05-25', to:'2026-05-25', title:'Srinagar → Kargil', alt:2676 },
+      { from:'2026-05-26', to:'2026-05-26', title:'Kargil → Leh', alt:3500 },
+      { from:'2026-05-27', to:'2026-05-27', title:'Leh Acclimatization', alt:3500 },
+      { from:'2026-05-28', to:'2026-05-28', title:'Leh → Diskit / Hunder (Nubra)', alt:3050 },
+      { from:'2026-05-29', to:'2026-05-29', title:'Hunder → Pangong Tso', alt:4350 },
+      { from:'2026-05-30', to:'2026-05-30', title:'Pangong Tso → Hanle', alt:4300 },
+      { from:'2026-05-31', to:'2026-05-31', title:'Hanle → Umling La (5,798m) → Hanle', alt:5798 },
+      { from:'2026-06-01', to:'2026-06-01', title:'Hanle → Tso Moriri', alt:4522 },
+      { from:'2026-06-02', to:'2026-06-02', title:'Tso Moriri → Sarchu', alt:4290 },
+      { from:'2026-06-03', to:'2026-06-03', title:'Sarchu → Manali', alt:2050 },
+      { from:'2026-06-04', to:'2026-06-04', title:'Manali Rest & Recover', alt:2050 },
+      { from:'2026-06-05', to:'2026-06-12', title:'WFH Base: Manali', alt:2050 },
+      { from:'2026-06-13', to:'2026-06-13', title:'Manali → Chandigarh', alt:321 },
+      { from:'2026-06-14', to:'2026-06-14', title:'Chandigarh → Nagpur', alt:310 },
+      { from:'2026-06-15', to:'2026-06-15', title:'Nagpur → Bangalore 🏁', alt:920 },
+    ];
+
+    function todayIST() {
+      const d = new Date();
+      // Format as YYYY-MM-DD in IST
+      return new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Kolkata', year:'numeric', month:'2-digit', day:'2-digit'
+      }).format(d);
+    }
+
+    function getDayEntry(dateStr) {
+      return DAY_MAP.find(d => dateStr >= d.from && dateStr <= d.to) || null;
+    }
+
+    function daysSince(refDate) {
+      return Math.floor((Date.now() - refDate.getTime()) / 86400000);
+    }
+
+    function fmtINR(n) {
+      return '₹' + Math.round(n).toLocaleString('en-IN');
+    }
+
+    async function fetchSpent() {
+      try {
+        const r = await fetch('/api/tracker');
+        if (!r.ok) return 0;
+        const data = await r.json();
+        let total = 0;
+        if (data.entries) {
+          Object.values(data.entries).forEach(dayArr => {
+            (dayArr || []).forEach(e => { total += parseFloat(e.amount) || 0; });
+          });
+        }
+        return Math.round(total);
+      } catch(_) { return 0; }
+    }
+
+    async function renderStrip() {
+      const now = new Date();
+      const todayStr = todayIST();
+      const labelEl  = document.getElementById('tss-label');
+      const iconEl   = document.getElementById('tss-icon');
+      const todayEl  = document.getElementById('tss-today');
+      const budgetEl = document.getElementById('tss-budget-val');
+      const amsWrap  = document.getElementById('tss-ams-wrap');
+
+      if (now < TRIP_START) {
+        // Before trip
+        const daysLeft = Math.ceil((TRIP_START - now) / 86400000);
+        iconEl.textContent  = '⏳';
+        labelEl.textContent = `${daysLeft} day${daysLeft === 1 ? '' : 's'} to departure`;
+        todayEl.textContent = 'BLR · Trip: May 15 – Jun 15';
+        budgetEl.textContent= fmtINR(SS_TOTAL) + ' budgeted';
+        amsWrap.style.display = 'none';
+      } else if (now > TRIP_END) {
+        // After trip
+        iconEl.textContent  = '🏁';
+        labelEl.textContent = 'Trip complete! BLR → LEH → BLR ✅';
+        todayEl.textContent = 'Back in Bangalore';
+        const spent = await fetchSpent();
+        budgetEl.textContent = spent > 0 ? fmtINR(spent) + ' spent' : fmtINR(SS_TOTAL) + ' budgeted';
+        amsWrap.style.display = 'none';
+      } else {
+        // During trip
+        const tripDay = Math.floor((now - TRIP_START) / 86400000) + 1;
+        const entry = getDayEntry(todayStr);
+        const spent = await fetchSpent();
+        const remaining = SS_TOTAL - spent;
+
+        iconEl.textContent  = '🚗';
+        labelEl.textContent = `Day ${tripDay} of 31 — On The Road`;
+        todayEl.textContent = entry ? entry.title : 'En route';
+        budgetEl.textContent = remaining >= 0
+          ? fmtINR(remaining) + ' remaining'
+          : '⚠️ Over by ' + fmtINR(Math.abs(remaining));
+        budgetEl.style.color = remaining < 0 ? 'var(--danger)' : 'var(--gold)';
+
+        // AMS warning above 3000m
+        const alt = entry ? entry.alt : 0;
+        amsWrap.style.display = alt >= 3000 ? 'flex' : 'none';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', renderStrip);
+  })();
+  </script>
+
   <!-- ITINERARY -->
   <section id="itinerary" class="fade-in">
     <div class="section-label">Day by Day</div>
@@ -1417,7 +1428,7 @@
     <div class="phase-tabs">
       <button class="phase-tab active" onclick="showPhase('phase1')">🚗 Phase 1: BLR→Shimla</button>
       <button class="phase-tab" onclick="showPhase('phase2')">💻 Phase 2: WFH Shimla + CHD</button>
-      <button class="phase-tab" onclick="showPhase('phase3')">👫 Phase 3: Group (CHD→Manali)</button>
+      <button class="phase-tab" onclick="showPhase('phase3')">🏔️ Phase 3: Ladakh Circuit</button>
       <button class="phase-tab" onclick="showPhase('phase4')">🏠 Phase 4: WFH Manali + Return</button>
     </div>
 
@@ -1468,7 +1479,8 @@
             minutes — it's lit at night and worth it.
           </div>
           <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Jaipur stay — Check-in May 16 · Checkout May 17 · 1 night · 1 room · Near NH48/Ajmer Road for fast morning exit</div>
+            ★ <strong>Needs Action:</strong> Book Jaipur stay — Check-in May 16 · Checkout May 17 · 1 night · 1 room ·
+            Near NH48/Ajmer Road for fast morning exit</div>
         </div>
       </div>
       <div class="day-card">
@@ -1488,7 +1500,8 @@
             <li>Arrive in Shimla and settle into WFH base</li>
           </ul>
           <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Shimla WFH stay — Check-in May 17 · Checkout May 22 · 5 nights · 1 unit · Reliable WiFi required
+            ★ <strong>Needs Action:</strong> Book Shimla WFH stay — Check-in May 17 · Checkout May 22 · 5 nights · 1
+            unit · Reliable WiFi required
           </div>
         </div>
       </div>
@@ -1512,20 +1525,22 @@
             <li><strong>May 18–20:</strong> Buy trip supplies — jerry can, tow rope, jumper cables, puncture
               kit, pulse oximeter, medical kit</li>
             <li><strong>May 20–21:</strong> Complete documentation and offline maps setup</li>
-            <li><strong>May 22:</strong> Drive Shimla → Chandigarh, check in, and keep evening buffer before group drive</li>
+            <li><strong>May 22:</strong> Drive Shimla → Chandigarh, check in, and keep evening buffer before group drive
+            </li>
             <li><strong>May 23:</strong> Car readiness check in Chandigarh, luggage load validation, rest early</li>
             <li><strong>May 23 evening:</strong> Optional service check at Chandigarh Mahindra if needed</li>
             <li><strong>May 24 early morning:</strong> Depart for Srinagar</li>
             <li>Do a loaded test drive. Confirm everything
               works.</li>
-            <li>Pay Ladakh EDF online at lahdclehpermit.in — ₹400 × 4 persons. Print receipts ×4 copies each.</li>
-            <li>Print all documents: RC, insurance, DL, all 4 Aadhar — 6 copies each</li>
+            <li>Pay Ladakh EDF online at lahdclehpermit.in — ₹400 × 2 persons. Print receipts ×2 copies each.</li>
+            <li>Print all documents: RC, insurance, DL, both Aadhar — 6 copies each</li>
             <li>Download Google Maps + Maps.me offline for entire route</li>
-            <li>Set up Splitwise group with friends</li>
-            <li><strong>Sunday May 17 (arrival day):</strong> Long drive in — settle in, unpack, early night in Shimla.</li>
+            <li><strong>Sunday May 17 (arrival day):</strong> Long drive in — settle in, unpack, early night in Shimla.
+            </li>
           </ul>
           <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Shimla serviced stay — Check-in May 17 · Checkout May 22 · 5 nights · 1 unit · Fast WiFi essential, confirm upload speed
+            ★ <strong>Needs Action:</strong> Book Shimla serviced stay — Check-in May 17 · Checkout May 22 · 5 nights ·
+            1 unit · Fast WiFi essential, confirm upload speed
           </div>
         </div>
       </div>
@@ -1535,23 +1550,19 @@
         </div>
         <div class="day-body">
           <div class="day-date">May 22nd–23rd (Thu–Fri)</div>
-          <div class="day-title">Chandigarh Transition + Srinagar Join Plan ✈️</div>
+          <div class="day-title">Chandigarh → Srinagar Transition 🚗</div>
           <div class="day-meta">
-            <span class="day-tag tag-explore">🤝 Friends Arrive</span>
             <span class="day-tag tag-leave">🌿 2 Days Buffer</span>
           </div>
           <ul class="day-stops">
             <li>May 22: Shift from Shimla to Chandigarh and settle in</li>
             <li>May 23 early morning: Drive Chandigarh → Srinagar</li>
-            <li>Friends fly Bangalore → Srinagar on May 23</li>
-            <li>Meet up in Srinagar on May 23 evening and start the trip together from there</li>
+            <li>Arrive Srinagar on May 23 evening and settle in</li>
             <li>Pack the Thar and prep for onward Ladakh route from Srinagar</li>
           </ul>
           <div class="day-tip" style="background:#eef6fc;color:#2c5282;border-color:#bee3f8;margin-top:0.8rem">
-            💡 <strong>Note:</strong> WFH is in Shimla till May 22. Chandigarh is only a transition stop before Srinagar regroup on May 23.
-          </div>
-          <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Friends book BLR→SXR flights — Arrive Srinagar on Saturday May 23 · Group continues together from Srinagar onward
+            💡 <strong>Note:</strong> WFH is in Shimla till May 22. Chandigarh is only a transition stop before Srinagar
+            on May 23.
           </div>
         </div>
       </div>
@@ -1561,10 +1572,12 @@
     <!-- PHASE 3: GROUP -->
     <div id="phase3" class="phase-content">
       <div class="day-card group-day">
-        <div class="day-num"><div class="day-num-circle">G1</div></div>
+        <div class="day-num">
+          <div class="day-num-circle">G1</div>
+        </div>
         <div class="day-body">
           <div class="day-date">Sunday, May 24th</div>
-          <div class="day-title">Srinagar Acclimatization + Self Exploration (All 4)</div>
+          <div class="day-title">Srinagar Acclimatization + Self Exploration</div>
           <div class="day-meta">
             <span class="day-tag tag-km">📍 Local Day</span>
             <span class="day-tag tag-drive">🚗 Light Movement</span>
@@ -1578,7 +1591,9 @@
       </div>
 
       <div class="day-card group-day">
-        <div class="day-num"><div class="day-num-circle">G2</div></div>
+        <div class="day-num">
+          <div class="day-num-circle">G2</div>
+        </div>
         <div class="day-body">
           <div class="day-date">Monday, May 25th</div>
           <div class="day-title">Srinagar → Kargil</div>
@@ -1595,7 +1610,9 @@
       </div>
 
       <div class="day-card group-day">
-        <div class="day-num"><div class="day-num-circle">G3</div></div>
+        <div class="day-num">
+          <div class="day-num-circle">G3</div>
+        </div>
         <div class="day-body">
           <div class="day-date">Tuesday, May 26th</div>
           <div class="day-title">Kargil → Leh (Reach Leh on May 26)</div>
@@ -1612,7 +1629,9 @@
       </div>
 
       <div class="day-card group-day">
-        <div class="day-num"><div class="day-num-circle">G4</div></div>
+        <div class="day-num">
+          <div class="day-num-circle">G4</div>
+        </div>
         <div class="day-body">
           <div class="day-date">Wednesday, May 27th</div>
           <div class="day-title">Leh Acclimatization Day</div>
@@ -1629,7 +1648,9 @@
       </div>
 
       <div class="day-card group-day">
-        <div class="day-num"><div class="day-num-circle">G5</div></div>
+        <div class="day-num">
+          <div class="day-num-circle">G5</div>
+        </div>
         <div class="day-body">
           <div class="day-date">Thursday, May 28th</div>
           <div class="day-title">Leh → Diskit / Hunder</div>
@@ -1646,7 +1667,9 @@
       </div>
 
       <div class="day-card group-day">
-        <div class="day-num"><div class="day-num-circle">G6</div></div>
+        <div class="day-num">
+          <div class="day-num-circle">G6</div>
+        </div>
         <div class="day-body">
           <div class="day-date">Friday, May 29th</div>
           <div class="day-title">Hunder → Pangong Tso</div>
@@ -1663,7 +1686,9 @@
       </div>
 
       <div class="day-card group-day">
-        <div class="day-num"><div class="day-num-circle">G7</div></div>
+        <div class="day-num">
+          <div class="day-num-circle">G7</div>
+        </div>
         <div class="day-body">
           <div class="day-date">Saturday, May 30th</div>
           <div class="day-title">Pangong Tso → Hanle</div>
@@ -1680,7 +1705,9 @@
       </div>
 
       <div class="day-card group-day">
-        <div class="day-num"><div class="day-num-circle">G8</div></div>
+        <div class="day-num">
+          <div class="day-num-circle">G8</div>
+        </div>
         <div class="day-body">
           <div class="day-date">Sunday, May 31st</div>
           <div class="day-title">Hanle → Umling La → Hanle</div>
@@ -1697,7 +1724,9 @@
       </div>
 
       <div class="day-card group-day">
-        <div class="day-num"><div class="day-num-circle">G9</div></div>
+        <div class="day-num">
+          <div class="day-num-circle">G9</div>
+        </div>
         <div class="day-body">
           <div class="day-date">Monday, June 1st</div>
           <div class="day-title">Hanle → Tso Moriri</div>
@@ -1713,7 +1742,9 @@
       </div>
 
       <div class="day-card group-day">
-        <div class="day-num"><div class="day-num-circle">G10</div></div>
+        <div class="day-num">
+          <div class="day-num-circle">G10</div>
+        </div>
         <div class="day-body">
           <div class="day-date">Tuesday, June 2nd</div>
           <div class="day-title">Tso Moriri → Sarchu</div>
@@ -1730,7 +1761,9 @@
       </div>
 
       <div class="day-card group-day">
-        <div class="day-num"><div class="day-num-circle">G11</div></div>
+        <div class="day-num">
+          <div class="day-num-circle">G11</div>
+        </div>
         <div class="day-body">
           <div class="day-date">Wednesday, June 3rd</div>
           <div class="day-title">Sarchu → Manali</div>
@@ -1741,7 +1774,7 @@
           <ul class="day-stops">
             <li>Sarchu → Baralacha La → Suraj Tal → Zing Zing Bar → Darcha → Manali</li>
             <li>Arrive Manali by evening</li>
-            <li>All 4 continue together on return leg toward Bangalore</li>
+            <li>Continue on return leg toward Bangalore</li>
           </ul>
         </div>
       </div>
@@ -1766,7 +1799,8 @@
             <li>Explore cafes for best WFH spots with reliable WiFi</li>
           </ul>
           <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Manali WFH stay — Check-in June 3 · Checkout June 13 · 10 nights · 1 room · Confirm fast WiFi,
+            ★ <strong>Needs Action:</strong> Book Manali WFH stay — Check-in June 3 · Checkout June 13 · 10 nights · 1
+            room · Confirm fast WiFi,
             minimum 10 Mbps upload
           </div>
         </div>
@@ -1816,7 +1850,8 @@
             <li>Afternoon: rest, car check, confirm tyre pressures for long highway run</li>
           </ul>
           <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Chandigarh stay (return) — Check-in June 12 · Checkout June 13 · 1 night · 1 room
+            ★ <strong>Needs Action:</strong> Book Chandigarh stay (return) — Check-in June 12 · Checkout June 13 · 1
+            night · 1 room
           </div>
         </div>
       </div>
@@ -1844,7 +1879,8 @@
             road the whole way south.
           </div>
           <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Nagpur stay (return) — Check-in June 13 · Checkout June 14 · 1 night · 1 room
+            ★ <strong>Needs Action:</strong> Book Nagpur stay (return) — Check-in June 13 · Checkout June 14 · 1 night ·
+            1 room
           </div>
         </div>
       </div>
@@ -1931,23 +1967,37 @@
           <polygon points="110,40 106,48 114,48" fill="#87a8c4" />
 
           <!-- Axis labels -->
-          <text x="250" y="500" fill="#87a8c4" font-size="8.5" font-family="'Barlow Condensed', sans-serif" letter-spacing="1">X AXIS (WEST → EAST)</text>
-          <text x="20" y="280" fill="#87a8c4" font-size="8.5" font-family="'Barlow Condensed', sans-serif" letter-spacing="1" transform="rotate(-90 20 280)">Y AXIS (SOUTH → NORTH)</text>
+          <text x="250" y="500" fill="#87a8c4" font-size="8.5" font-family="'Barlow Condensed', sans-serif"
+            letter-spacing="1">X AXIS (WEST → EAST)</text>
+          <text x="20" y="280" fill="#87a8c4" font-size="8.5" font-family="'Barlow Condensed', sans-serif"
+            letter-spacing="1" transform="rotate(-90 20 280)">Y AXIS (SOUTH → NORTH)</text>
 
           <!-- Tick labels -->
-          <text x="106" y="485" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif" text-anchor="end">73E</text>
-          <text x="186" y="485" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif" text-anchor="end">75E</text>
-          <text x="266" y="485" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif" text-anchor="end">77E</text>
-          <text x="346" y="485" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif" text-anchor="end">79E</text>
-          <text x="426" y="485" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif" text-anchor="end">81E</text>
-          <text x="506" y="485" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif" text-anchor="end">83E</text>
+          <text x="106" y="485" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="end">73E</text>
+          <text x="186" y="485" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="end">75E</text>
+          <text x="266" y="485" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="end">77E</text>
+          <text x="346" y="485" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="end">79E</text>
+          <text x="426" y="485" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="end">81E</text>
+          <text x="506" y="485" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="end">83E</text>
 
-          <text x="98" y="473" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif" text-anchor="end">12N</text>
-          <text x="98" y="393" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif" text-anchor="end">16N</text>
-          <text x="98" y="313" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif" text-anchor="end">20N</text>
-          <text x="98" y="233" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif" text-anchor="end">24N</text>
-          <text x="98" y="153" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif" text-anchor="end">28N</text>
-          <text x="98" y="73" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif" text-anchor="end">32N+</text>
+          <text x="98" y="473" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="end">12N</text>
+          <text x="98" y="393" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="end">16N</text>
+          <text x="98" y="313" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="end">20N</text>
+          <text x="98" y="233" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="end">24N</text>
+          <text x="98" y="153" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="end">28N</text>
+          <text x="98" y="73" fill="#7ea1bf" font-size="7" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="end">32N+</text>
           <!-- Route lines -->
           <!-- Bangalore to Chandigarh (going) -->
           <path d="M480,420 L460,360 L440,300 L430,240 L420,180 L380,140" stroke="#e8633a" stroke-width="2.5"
@@ -1958,11 +2008,14 @@
           <path d="M290,110 L310,100 L340,95 L360,90" stroke="#4a90d9" stroke-width="2.5" fill="none" />
           <!-- Leh area exploration -->
           <!-- Leh to Pangong -->
-          <path d="M360,90 L380,80 L400,85 L420,78" stroke="#c9941a" stroke-width="2" stroke-dasharray="4,2" fill="none" />
+          <path d="M360,90 L380,80 L400,85 L420,78" stroke="#c9941a" stroke-width="2" stroke-dasharray="4,2"
+            fill="none" />
           <!-- Leh to Nubra to Turtuk & Panamik -->
-          <path d="M360,90 L350,75 L340,65 L320,55 M340,65 L350,60" stroke="#c9941a" stroke-width="2" stroke-dasharray="4,2" fill="none" />
+          <path d="M360,90 L350,75 L340,65 L320,55 M340,65 L350,60" stroke="#c9941a" stroke-width="2"
+            stroke-dasharray="4,2" fill="none" />
           <!-- Leh to Tsomoriri -> Hanle -> Umling La -->
-          <path d="M360,90 L380,95 L400,92 L405,102 L415,100" stroke="#c9941a" stroke-width="2" stroke-dasharray="4,2" fill="none" />
+          <path d="M360,90 L380,95 L400,92 L405,102 L415,100" stroke="#c9941a" stroke-width="2" stroke-dasharray="4,2"
+            fill="none" />
           <!-- Hanle joining Manali Highway -->
           <path d="M405,102 L385,110 L370,110" stroke="#c9941a" stroke-width="2" stroke-dasharray="4,2" fill="none" />
           <!-- Leh to Manali return -->
@@ -1998,7 +2051,8 @@
           <circle cx="380" cy="140" r="8" fill="#c9941a" stroke="white" stroke-width="2" />
           <text x="392" y="138" fill="white" font-size="11" font-family="'Barlow Condensed', sans-serif"
             font-weight="700">SHIMLA</text>
-          <text x="392" y="150" fill="#c9941a" font-size="8" font-family="'Barlow Condensed', sans-serif">WFH BASE</text>
+          <text x="392" y="150" fill="#c9941a" font-size="8" font-family="'Barlow Condensed', sans-serif">WFH
+            BASE</text>
 
           <!-- Jammu -->
           <circle cx="330" cy="120" r="5" fill="#aaa" stroke="white" stroke-width="1.5" />
@@ -2038,7 +2092,8 @@
 
           <!-- Turtuk -->
           <circle cx="320" cy="55" r="4" fill="#c9941a" stroke="white" stroke-width="1.5" />
-          <text x="312" y="58" fill="#c9941a" font-size="8" font-family="'Barlow Condensed', sans-serif" text-anchor="end">Turtuk (Thang)</text>
+          <text x="312" y="58" fill="#c9941a" font-size="8" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="end">Turtuk (Thang)</text>
 
           <!-- Panamik -->
           <circle cx="350" cy="60" r="3" fill="#c9941a" stroke="white" stroke-width="1" />
@@ -2052,11 +2107,13 @@
 
           <!-- Tsomoriri -->
           <circle cx="400" cy="92" r="5" fill="#4a90d9" stroke="white" stroke-width="1.5" />
-          <text x="400" y="84" fill="#4a90d9" font-size="8" font-family="'Barlow Condensed', sans-serif" text-anchor="middle">Tsomoriri</text>
+          <text x="400" y="84" fill="#4a90d9" font-size="8" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="middle">Tsomoriri</text>
 
           <!-- Hanle -->
           <circle cx="405" cy="102" r="5" fill="#5a7a5c" stroke="white" stroke-width="1.5" />
-          <text x="405" y="112" fill="#5a7a5c" font-size="8" font-family="'Barlow Condensed', sans-serif" text-anchor="middle">Hanle</text>
+          <text x="405" y="112" fill="#5a7a5c" font-size="8" font-family="'Barlow Condensed', sans-serif"
+            text-anchor="middle">Hanle</text>
 
           <!-- Umling La -->
           <circle cx="415" cy="100" r="6" fill="#e8633a" stroke="white" stroke-width="2" />
@@ -2116,7 +2173,8 @@
 
           <!-- Coordinate key -->
           <rect x="700" y="360" width="120" height="52" fill="rgba(0,0,0,0.35)" rx="4" stroke="#264a6c" />
-          <text x="710" y="378" fill="#9ec0db" font-size="8" font-family="'Barlow Condensed', sans-serif" letter-spacing="1">COORDINATE VIEW</text>
+          <text x="710" y="378" fill="#9ec0db" font-size="8" font-family="'Barlow Condensed', sans-serif"
+            letter-spacing="1">COORDINATE VIEW</text>
           <line x1="716" y1="398" x2="746" y2="398" stroke="#87a8c4" stroke-width="1.3" />
           <polygon points="750,398 744,395 744,401" fill="#87a8c4" />
           <line x1="716" y1="398" x2="716" y2="372" stroke="#87a8c4" stroke-width="1.3" />
@@ -2133,7 +2191,17 @@
     <section class="altitude-section fade-in">
       <div class="section-label">Elevation Profile</div>
       <div class="section-title">ALTITUDE JOURNEY</div>
-      <div class="altitude-chart">
+      <div class="altitude-chart" style="position:relative">
+        <!-- Mobile scroll hint -->
+        <div id="altScrollHint" style="
+          display:none;
+          position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+          background:rgba(26,39,68,0.85);color:#8fa4b8;
+          font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;
+          letter-spacing:0.15em;text-transform:uppercase;
+          padding:0.4rem 1rem;border-radius:4px;pointer-events:none;
+          z-index:5;white-space:nowrap;
+        ">← Swipe to explore →</div>
         <svg viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg" style="min-width:700px">
           <!-- Grid lines -->
           <line x1="60" y1="20" x2="860" y2="20" stroke="#ddd" stroke-width="1" stroke-dasharray="4,4" />
@@ -2173,78 +2241,102 @@
 
           <!-- Key point markers -->
           <circle cx="70" cy="214" r="5" fill="#e8633a" stroke="white" stroke-width="1.5" />
-          <text x="70" y="228" fill="#e8633a" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">BLR</text>
+          <text x="70" y="228" fill="#e8633a" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">BLR</text>
 
           <circle cx="105" cy="240" r="4" fill="#aaa" />
-          <text x="105" y="254" fill="#aaa" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Nagpur</text>
+          <text x="105" y="254" fill="#aaa" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Nagpur</text>
 
           <circle cx="140" cy="234" r="4" fill="#aaa" />
-          <text x="140" y="224" fill="#aaa" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Jaipur</text>
+          <text x="140" y="224" fill="#aaa" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Jaipur</text>
 
           <circle cx="175" cy="239" r="4" fill="#c9941a" />
-          <text x="175" y="253" fill="#c9941a" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Chandigarh</text>
+          <text x="175" y="253" fill="#c9941a" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Chandigarh</text>
 
           <circle cx="210" cy="186" r="4" fill="#4a90d9" />
-          <text x="210" y="176" fill="#4a90d9" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Srinagar 1,585m</text>
+          <text x="210" y="176" fill="#4a90d9" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Srinagar 1,585m</text>
 
           <circle cx="245" cy="103" r="4" fill="#4a90d9" />
           <line x1="245" y1="103" x2="245" y2="40" stroke="#4a90d9" stroke-width="1" stroke-dasharray="3,3" />
-          <text x="245" y="36" fill="#4a90d9" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Zojila 3,528m</text>
+          <text x="245" y="36" fill="#4a90d9" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Zojila 3,528m</text>
 
           <circle cx="280" cy="139" r="4" fill="#4a90d9" />
-          <text x="280" y="153" fill="#4a90d9" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Kargil 2,676m</text>
+          <text x="280" y="153" fill="#4a90d9" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Kargil 2,676m</text>
 
           <circle cx="315" cy="79" r="4" fill="#4a90d9" />
-          <text x="315" y="69" fill="#4a90d9" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Fotu La 4,108m</text>
+          <text x="315" y="69" fill="#4a90d9" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Fotu La 4,108m</text>
 
           <circle cx="350" cy="105" r="6" fill="#1a2744" stroke="#e8633a" stroke-width="2" />
-          <text x="350" y="122" fill="#e8633a" font-size="9" text-anchor="middle" font-family="'Barlow Condensed', sans-serif" font-weight="700">LEH 3,500m</text>
+          <text x="350" y="122" fill="#e8633a" font-size="9" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif" font-weight="700">LEH 3,500m</text>
 
           <circle cx="385" cy="26" r="5" fill="#c9941a" stroke="white" stroke-width="1.5" />
-          <text x="385" y="16" fill="#c9941a" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Khardung La 5,359m</text>
+          <text x="385" y="16" fill="#c9941a" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Khardung La 5,359m</text>
 
           <circle cx="420" cy="126" r="4" fill="#c9941a" />
-          <text x="420" y="140" fill="#c9941a" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Turtuk 3,001m</text>
+          <text x="420" y="140" fill="#c9941a" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Turtuk 3,001m</text>
 
           <circle cx="455" cy="73" r="4" fill="#4a90d9" />
-          <text x="455" y="63" fill="#4a90d9" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Pangong 4,250m</text>
+          <text x="455" y="63" fill="#4a90d9" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Pangong 4,250m</text>
 
           <circle cx="490" cy="61" r="4" fill="#4a90d9" />
-          <text x="490" y="51" fill="#4a90d9" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Tsomoriri 4,522m</text>
+          <text x="490" y="51" fill="#4a90d9" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Tsomoriri 4,522m</text>
 
           <circle cx="525" cy="71" r="4" fill="#5a7a5c" />
-          <text x="525" y="85" fill="#5a7a5c" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Hanle 4,300m</text>
+          <text x="525" y="85" fill="#5a7a5c" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Hanle 4,300m</text>
 
           <circle cx="560" cy="7" r="6" fill="#e8633a" stroke="white" stroke-width="2" />
-          <text x="560" y="20" fill="#e8633a" font-size="9" font-family="'Barlow Condensed', sans-serif" font-weight="700" text-anchor="middle">Umling La 5,798m 🏆</text>
-          
+          <text x="560" y="20" fill="#e8633a" font-size="9" font-family="'Barlow Condensed', sans-serif"
+            font-weight="700" text-anchor="middle">Umling La 5,798m 🏆</text>
+
           <circle cx="595" cy="39" r="4" fill="#888" />
-          <text x="595" y="49" fill="#888" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Lachulung 5,059m</text>
+          <text x="595" y="49" fill="#888" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Lachulung 5,059m</text>
 
           <circle cx="630" cy="71" r="4" fill="#888" />
-          <text x="630" y="61" fill="#888" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Sarchu 4,290m</text>
+          <text x="630" y="61" fill="#888" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Sarchu 4,290m</text>
 
           <circle cx="665" cy="46" r="4" fill="#888" />
-          <text x="665" y="36" fill="#888" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Baralacha 4,890m</text>
+          <text x="665" y="36" fill="#888" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Baralacha 4,890m</text>
 
           <circle cx="700" cy="126" r="4" fill="#888" />
-          <text x="700" y="140" fill="#888" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Atal Tunnel 3,000m</text>
+          <text x="700" y="140" fill="#888" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Atal Tunnel 3,000m</text>
 
           <circle cx="735" cy="166" r="5" fill="#5a7a5c" stroke="white" stroke-width="1.5" />
-          <text x="735" y="180" fill="#5a7a5c" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Manali 2,050m</text>
+          <text x="735" y="180" fill="#5a7a5c" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Manali 2,050m</text>
 
           <circle cx="770" cy="239" r="4" fill="#c9941a" />
-          <text x="770" y="229" fill="#c9941a" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Chandigarh</text>
+          <text x="770" y="229" fill="#c9941a" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Chandigarh</text>
 
           <circle cx="815" cy="240" r="4" fill="#aaa" />
-          <text x="815" y="229" fill="#aaa" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">Nagpur</text>
+          <text x="815" y="229" fill="#aaa" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">Nagpur</text>
 
           <circle cx="860" cy="214" r="5" fill="#e8633a" stroke="white" stroke-width="1.5" />
-          <text x="860" y="228" fill="#e8633a" font-size="8" text-anchor="middle" font-family="'Barlow Condensed', sans-serif">BLR</text>
+          <text x="860" y="228" fill="#e8633a" font-size="8" text-anchor="middle"
+            font-family="'Barlow Condensed', sans-serif">BLR</text>
 
           <!-- Altitude sickness zone -->
           <rect x="60" y="20" width="800" height="100" fill="rgba(255,0,0,0.04)" stroke="none" />
-          <text x="850" y="32" fill="#f88" font-size="8" text-anchor="end" font-family="'Barlow Condensed', sans-serif">⚠ AMS Risk Zone</text>
+          <text x="850" y="32" fill="#f88" font-size="8" text-anchor="end"
+            font-family="'Barlow Condensed', sans-serif">⚠ AMS Risk Zone</text>
         </svg>
 
         <!-- Ladakh Excursion Altitude Summary -->
@@ -2359,12 +2451,12 @@
     </section>
   </div>
 
-  <!-- PITCH SECTION -->
-  <div class="pitch-wrapper" id="pitch">
-    <div class="pitch-section fade-in">
+  <div style="display:none" id="pitch">
+    <div>
       <div class="section-label">Forward This Page To Them</div>
       <div class="section-title">HEY FRIENDS,<br>JOIN US.</div>
-      <div class="pitch-subtitle">We're driving from Srinagar to Leh Ladakh and back to Bangalore in a Mahindra Thar Roxx 4×4. 8
+      <div class="pitch-subtitle">We're driving from Srinagar to Leh Ladakh and back to Bangalore in a Mahindra Thar
+        Roxx 4×4. 8
         days. 4 people. One trip you'll talk about for the rest of your life. Here's everything you need to know.</div>
 
       <div class="pitch-grid">
@@ -2379,7 +2471,8 @@
           <div class="pitch-card-icon">📅</div>
           <div class="pitch-card-title">12 Days Together</div>
           <div class="pitch-card-text">Fly into <span class="pitch-highlight">Srinagar on Saturday May 23rd.</span> We
-            regroup there and continue together through the full circuit back to Bangalore. Total: <span class="pitch-highlight">one continuous roadtrip together</span> (weekends
+            regroup there and continue together through the full circuit back to Bangalore. Total: <span
+              class="pitch-highlight">one continuous roadtrip together</span> (weekends
             cover the rest).</div>
         </div>
         <div class="pitch-card">
@@ -2414,7 +2507,7 @@
 
       <!-- 12-day timeline for friends -->
       <div class="pitch-timeline">
-      <div class="pitch-timeline-title">⚡ Your 12 Days — Join in Srinagar</div>
+        <div class="pitch-timeline-title">⚡ Your 12 Days — Join in Srinagar</div>
         <div class="pitch-days">
           <div class="pitch-day">
             <div class="pitch-day-num">DAY 1 · MAY 23</div>
@@ -2565,63 +2658,62 @@
         <div
           style="display:flex;align-items:flex-start;gap:0.7rem;padding:0.6rem 0.8rem;background:white;border-radius:4px;border-left:3px solid #e8633a;">
           <span style="color:#e8633a;font-weight:700;font-size:0.8rem;white-space:nowrap;">1 · NOW</span>
-          <span style="font-size:0.82rem;color:#333;"><strong>Hanle guesthouse</strong> — 2 rooms. Check-in May 30 · Checkout June 1 · 2 nights. Fewest options of entire trip. Book this first.</span>
+          <span style="font-size:0.82rem;color:#333;"><strong>Hanle guesthouse</strong> — 1 room. Check-in May 30 ·
+            Checkout June 1 · 2 nights. Fewest options of entire trip. Book this first.</span>
         </div>
         <div
           style="display:flex;align-items:flex-start;gap:0.7rem;padding:0.6rem 0.8rem;background:white;border-radius:4px;border-left:3px solid #e8633a;">
           <span style="color:#e8633a;font-weight:700;font-size:0.8rem;white-space:nowrap;">2 · NOW</span>
-          <span style="font-size:0.82rem;color:#333;"><strong>Leh hotel</strong> — 2 rooms. Check-in May 26 · Checkout May 28 · 2 nights. Peak season, fills very fast.</span>
+          <span style="font-size:0.82rem;color:#333;"><strong>Leh hotel</strong> — 1 room. Check-in May 26 · Checkout
+            May 28 · 2 nights. Peak season, fills very fast.</span>
         </div>
         <div
           style="display:flex;align-items:flex-start;gap:0.7rem;padding:0.6rem 0.8rem;background:white;border-radius:4px;border-left:3px solid #e8633a;">
           <span style="color:#e8633a;font-weight:700;font-size:0.8rem;white-space:nowrap;">3 · NOW</span>
-          <span style="font-size:0.82rem;color:#333;"><strong>Hunder / Diskit stay</strong> — 2 rooms. Check-in May 28 · Checkout May 29 · 1 night. Book Nubra stay in advance.</span>
+          <span style="font-size:0.82rem;color:#333;"><strong>Hunder / Diskit stay</strong> — 1 room. Check-in May 28 ·
+            Checkout May 29 · 1 night. Book Nubra stay in advance.</span>
         </div>
         <div
           style="display:flex;align-items:flex-start;gap:0.7rem;padding:0.6rem 0.8rem;background:white;border-radius:4px;border-left:3px solid #c9941a;">
           <span style="color:#c9941a;font-weight:700;font-size:0.8rem;white-space:nowrap;">4 · SOON</span>
-          <span style="font-size:0.82rem;color:#333;"><strong>Tso Moriri camp / Korzok</strong> — 2 rooms. Check-in June 1 · Checkout June 2 · 1 night. Very limited options, call directly.</span>
+          <span style="font-size:0.82rem;color:#333;"><strong>Tso Moriri camp / Korzok</strong> — 1 room. Check-in June
+            1 · Checkout June 2 · 1 night. Very limited options, call directly.</span>
         </div>
         <div
           style="display:flex;align-items:flex-start;gap:0.7rem;padding:0.6rem 0.8rem;background:white;border-radius:4px;border-left:3px solid #c9941a;">
           <span style="color:#c9941a;font-weight:700;font-size:0.8rem;white-space:nowrap;">5 · SOON</span>
-          <span style="font-size:0.82rem;color:#333;"><strong>Srinagar stay</strong> — 2 rooms. Check-in May 24 · Checkout May 25 · 1 night. Dal Lake houseboat. Book early.</span>
+          <span style="font-size:0.82rem;color:#333;"><strong>Srinagar stay</strong> — 1 room. Check-in May 24 ·
+            Checkout May 25 · 1 night. Dal Lake houseboat. Book early.</span>
         </div>
         <div
           style="display:flex;align-items:flex-start;gap:0.7rem;padding:0.6rem 0.8rem;background:white;border-radius:4px;border-left:3px solid #c9941a;">
           <span style="color:#c9941a;font-weight:700;font-size:0.8rem;white-space:nowrap;">6 · SOON</span>
-          <span style="font-size:0.82rem;color:#333;"><strong>Shimla serviced apt</strong> — 1 unit. Check-in May 17 · Checkout May 22 · 5 nights. Fast WiFi, confirm upload speed.</span>
+          <span style="font-size:0.82rem;color:#333;"><strong>Shimla serviced apt</strong> — 1 unit. Check-in May 17 ·
+            Checkout May 22 · 5 nights. Fast WiFi, confirm upload speed.</span>
         </div>
         <div
           style="display:flex;align-items:flex-start;gap:0.7rem;padding:0.6rem 0.8rem;background:white;border-radius:4px;border-left:3px solid #c9941a;">
           <span style="color:#c9941a;font-weight:700;font-size:0.8rem;white-space:nowrap;">7 · SOON</span>
-          <span style="font-size:0.82rem;color:#333;"><strong>Manali full stay</strong> — 1 room. Check-in June 3 · Checkout June 13 · 10 nights. Confirm fast WiFi before booking.</span>
+          <span style="font-size:0.82rem;color:#333;"><strong>Manali full stay</strong> — 1 room. Check-in June 3 ·
+            Checkout June 13 · 10 nights. Confirm fast WiFi before booking.</span>
         </div>
         <div
           style="display:flex;align-items:flex-start;gap:0.7rem;padding:0.6rem 0.8rem;background:white;border-radius:4px;border-left:3px solid #4a90d9;">
           <span style="color:#4a90d9;font-weight:700;font-size:0.8rem;white-space:nowrap;">8 · PAY</span>
-          <span style="font-size:0.82rem;color:#333;"><strong>Ladakh EDF</strong> — lahdclehpermit.in · ₹400 × 4
-            persons. Print ×4 copies each.</span>
-        </div>
-        <div
-          style="display:flex;align-items:flex-start;gap:0.7rem;padding:0.6rem 0.8rem;background:white;border-radius:4px;border-left:3px solid #4a90d9;">
-          <span style="color:#4a90d9;font-weight:700;font-size:0.8rem;white-space:nowrap;">9 · FRIENDS</span>
-          <span style="font-size:0.82rem;color:#333;"><strong>Friends: BLR→SXR flights</strong> — Fly Saturday May 23 · Land Srinagar. Prefer morning arrival for buffer.</span>
-        </div>
-        <div
-          style="display:flex;align-items:flex-start;gap:0.7rem;padding:0.6rem 0.8rem;background:white;border-radius:4px;border-left:3px solid #4a90d9;">
-          <span style="color:#4a90d9;font-weight:700;font-size:0.8rem;white-space:nowrap;">10 · FRIENDS</span>
-          <span style="font-size:0.82rem;color:#333;"><strong>Friends return with us by road</strong> — Continue together from Srinagar till Bangalore return.</span>
+          <span style="font-size:0.82rem;color:#333;"><strong>Ladakh EDF</strong> — lahdclehpermit.in · ₹400 × 2
+            persons. Print ×2 copies each.</span>
         </div>
         <div
           style="display:flex;align-items:flex-start;gap:0.7rem;padding:0.6rem 0.8rem;background:white;border-radius:4px;border-left:3px solid #5a7a5c;">
-          <span style="color:#5a7a5c;font-weight:700;font-size:0.8rem;white-space:nowrap;">11 · LATER</span>
-          <span style="font-size:0.82rem;color:#333;"><strong>Kargil hotel</strong> — 2 rooms. Check-in May 25 · Checkout May 26 · 1 night. Less demand, can book a month before.</span>
+          <span style="color:#5a7a5c;font-weight:700;font-size:0.8rem;white-space:nowrap;">9 · LATER</span>
+          <span style="font-size:0.82rem;color:#333;"><strong>Kargil hotel</strong> — 1 room. Check-in May 25 · Checkout
+            May 26 · 1 night. Less demand, can book a month before.</span>
         </div>
         <div
           style="display:flex;align-items:flex-start;gap:0.7rem;padding:0.6rem 0.8rem;background:white;border-radius:4px;border-left:3px solid #5a7a5c;">
-          <span style="color:#5a7a5c;font-weight:700;font-size:0.8rem;white-space:nowrap;">12 · LATER</span>
-          <span style="font-size:0.82rem;color:#333;"><strong>Sarchu + Chandigarh + Nagpur</strong> — Check-in Jun 2 / Jun 13 / Jun 14. Standard hotels, book 2 weeks before.</span>
+          <span style="color:#5a7a5c;font-weight:700;font-size:0.8rem;white-space:nowrap;">10 · LATER</span>
+          <span style="font-size:0.82rem;color:#333;"><strong>Sarchu + Chandigarh + Nagpur</strong> — Check-in Jun 2 /
+            Jun 13 / Jun 14. Standard hotels, book 2 weeks before.</span>
         </div>
 
       </div>
@@ -2641,18 +2733,18 @@
               class="check-label" for="d3">Shrinandan Driving License</label><span class="check-urgent">CRITICAL</span>
           </div>
           <div class="check-item"><input type="checkbox" id="d4" onchange="updateProgress(this)"><label
-              class="check-label" for="d4">All 4 Aadhar Cards (×6 copies)</label><span
+              class="check-label" for="d4">Both Aadhar Cards (×6 copies)</label><span
               class="check-urgent">CRITICAL</span></div>
           <div class="check-item"><input type="checkbox" id="d5" onchange="updateProgress(this)"><label
               class="check-label" for="d5">Ladakh Environment Fee paid (lahdclehpermit.in)</label></div>
           <div class="check-item"><input type="checkbox" id="d6" onchange="updateProgress(this)"><label
-              class="check-label" for="d6">EDF receipt printed ×4</label></div>
+              class="check-label" for="d6">EDF receipt printed ×2</label></div>
           <div class="check-item"><input type="checkbox" id="d7" onchange="updateProgress(this)"><label
-              class="check-label" for="d7">Travel Insurance for all 4</label></div>
+              class="check-label" for="d7">Travel Insurance for S&amp;S (both)</label></div>
           <div class="check-item"><input type="checkbox" id="d8" onchange="updateProgress(this)"><label
               class="check-label" for="d8">All hotel bookings confirmed & printed</label></div>
           <div class="check-item"><input type="checkbox" id="d9" onchange="updateProgress(this)"><label
-              class="check-label" for="d9">Emergency contacts list (all 4 phones)</label></div>
+              class="check-label" for="d9">Emergency contacts list (both phones)</label></div>
           <div class="checklist-progress">
             <div class="checklist-progress-bar" id="prog-doc"></div>
           </div>
@@ -2662,7 +2754,7 @@
 
       <!-- Medical -->
       <div class="checklist-card">
-        <div class="checklist-header"><span class="icon">💊</span>Medical Kit (4 People)</div>
+        <div class="checklist-header"><span class="icon">💊</span>Medical Kit (S&amp;S)</div>
         <div class="checklist-body">
           <div class="check-item"><input type="checkbox" id="m1" onchange="updateProgress(this)"><label
               class="check-label" for="m1">Diamox (acetazolamide) — doctor prescription</label><span
@@ -2722,7 +2814,7 @@
           <div class="check-item"><input type="checkbox" id="c11" onchange="updateProgress(this)"><label
               class="check-label" for="c11">Phone mount for dashboard</label></div>
           <div class="check-item"><input type="checkbox" id="c12" onchange="updateProgress(this)"><label
-              class="check-label" for="c12">Power bank (×2 for 4 people)</label></div>
+              class="check-label" for="c12">Power bank (×2 for 2 people)</label></div>
           <div class="checklist-progress">
             <div class="checklist-progress-bar" id="prog-car"></div>
           </div>
@@ -2762,13 +2854,42 @@
 
       <!-- Bookings — D1 Synced -->
       <style>
-        .bk-card { transition: all 0.2s; }
-        .bk-card:hover { border-color: #b0c4d8 !important; }
-        .bk-booked .bk-label { text-decoration: line-through; opacity: 0.6; }
-        #booking-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center; }
-        #booking-modal.open { display: flex; }
-        .modal-inner input, .modal-inner textarea { outline: none; }
-        .modal-inner input:focus, .modal-inner textarea:focus { border-color: #4a90d9 !important; }
+        .bk-card {
+          transition: all 0.2s;
+        }
+
+        .bk-card:hover {
+          border-color: #b0c4d8 !important;
+        }
+
+        .bk-booked .bk-label {
+          text-decoration: line-through;
+          opacity: 0.6;
+        }
+
+        #booking-modal {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.6);
+          z-index: 9999;
+          align-items: center;
+          justify-content: center;
+        }
+
+        #booking-modal.open {
+          display: flex;
+        }
+
+        .modal-inner input,
+        .modal-inner textarea {
+          outline: none;
+        }
+
+        .modal-inner input:focus,
+        .modal-inner textarea:focus {
+          border-color: #4a90d9 !important;
+        }
       </style>
 
       <div class="checklist-card" id="booking-section">
@@ -2780,156 +2901,182 @@
 
       <!-- Edit Modal -->
       <div id="booking-modal">
-        <div class="modal-inner" style="background:#fff;border:1px solid #dde3ec;border-radius:12px;padding:1.8rem;width:min(95vw,480px);position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#1a2744;margin-bottom:1.2rem;" id="modal-title">Edit Booking</div>
+        <div class="modal-inner"
+          style="background:#fff;border:1px solid #dde3ec;border-radius:12px;padding:1.8rem;width:min(95vw,480px);position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+          <div
+            style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#1a2744;margin-bottom:1.2rem;"
+            id="modal-title">Edit Booking</div>
+          <!-- Booking context strip (read-only) -->
+          <div id="modal-context" style="background:#f0f5ff;border:1px solid #dde3ec;border-radius:6px;padding:0.55rem 0.85rem;margin-bottom:1.1rem;display:none">
+            <div style="font-size:0.68rem;color:#666;font-family:'Barlow Condensed',sans-serif;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.2rem">Booking Details</div>
+            <div id="modal-dates" style="font-size:0.82rem;color:#b45309;font-weight:600"></div>
+            <div id="modal-type" style="font-size:0.72rem;color:#888;margin-top:0.15rem"></div>
+          </div>
           <label style="display:block;font-size:0.78rem;color:#555;margin-bottom:0.3rem;">Hotel / Homestay Name</label>
-          <input id="modal-hotel" type="text" placeholder="e.g. Hotel Shan-Gri-La" style="width:100%;padding:0.6rem 0.8rem;background:#f7f9fc;border:1px solid #dde3ec;border-radius:6px;color:#1a2744;font-size:0.9rem;box-sizing:border-box;margin-bottom:0.9rem;">
+          <input id="modal-hotel" type="text" placeholder="e.g. Hotel Shan-Gri-La"
+            style="width:100%;padding:0.6rem 0.8rem;background:#f7f9fc;border:1px solid #dde3ec;border-radius:6px;color:#1a2744;font-size:0.9rem;box-sizing:border-box;margin-bottom:0.9rem;">
           <label style="display:block;font-size:0.78rem;color:#555;margin-bottom:0.3rem;">Google Maps Link</label>
-          <input id="modal-map" type="url" placeholder="https://maps.google.com/..." style="width:100%;padding:0.6rem 0.8rem;background:#f7f9fc;border:1px solid #dde3ec;border-radius:6px;color:#1a2744;font-size:0.9rem;box-sizing:border-box;margin-bottom:0.9rem;">
-          <label style="display:block;font-size:0.78rem;color:#555;margin-bottom:0.3rem;">Confirmation / Booking ID</label>
-          <input id="modal-conf" type="text" placeholder="e.g. BKG-123456" style="width:100%;padding:0.6rem 0.8rem;background:#f7f9fc;border:1px solid #dde3ec;border-radius:6px;color:#1a2744;font-size:0.9rem;box-sizing:border-box;margin-bottom:0.9rem;">
+          <input id="modal-map" type="url" placeholder="https://maps.google.com/..."
+            style="width:100%;padding:0.6rem 0.8rem;background:#f7f9fc;border:1px solid #dde3ec;border-radius:6px;color:#1a2744;font-size:0.9rem;box-sizing:border-box;margin-bottom:0.9rem;">
+          <label style="display:block;font-size:0.78rem;color:#555;margin-bottom:0.3rem;">Confirmation / Booking
+            ID</label>
+          <input id="modal-conf" type="text" placeholder="e.g. BKG-123456"
+            style="width:100%;padding:0.6rem 0.8rem;background:#f7f9fc;border:1px solid #dde3ec;border-radius:6px;color:#1a2744;font-size:0.9rem;box-sizing:border-box;margin-bottom:0.9rem;">
           <label style="display:block;font-size:0.78rem;color:#555;margin-bottom:0.3rem;">Notes</label>
-          <textarea id="modal-notes" rows="3" placeholder="Any special notes..." style="width:100%;padding:0.6rem 0.8rem;background:#f7f9fc;border:1px solid #dde3ec;border-radius:6px;color:#1a2744;font-size:0.9rem;box-sizing:border-box;resize:vertical;margin-bottom:1.2rem;"></textarea>
+          <textarea id="modal-notes" rows="3" placeholder="Any special notes..."
+            style="width:100%;padding:0.6rem 0.8rem;background:#f7f9fc;border:1px solid #dde3ec;border-radius:6px;color:#1a2744;font-size:0.9rem;box-sizing:border-box;resize:vertical;margin-bottom:1.2rem;"></textarea>
           <div style="display:flex;gap:0.8rem;justify-content:flex-end;">
-            <button onclick="closeBookingModal()" style="padding:0.6rem 1.2rem;background:transparent;border:1px solid #dde3ec;color:#666;border-radius:6px;cursor:pointer;font-size:0.85rem;">Cancel</button>
-            <button onclick="saveBookingModal()" style="padding:0.6rem 1.4rem;background:#e8633a;border:none;color:white;border-radius:6px;cursor:pointer;font-weight:700;font-size:0.85rem;">Save</button>
+            <button onclick="closeBookingModal()"
+              style="padding:0.6rem 1.2rem;background:transparent;border:1px solid #dde3ec;color:#666;border-radius:6px;cursor:pointer;font-size:0.85rem;">Cancel</button>
+            <button onclick="saveBookingModal()"
+              style="padding:0.6rem 1.4rem;background:#e8633a;border:none;color:white;border-radius:6px;cursor:pointer;font-weight:700;font-size:0.85rem;">Save</button>
           </div>
         </div>
       </div>
 
       <script>
-      (function() {
-        const BOOKINGS_DEF = [
-          { id:'bk1',  order:1,  priority:'BOOK FIRST',    label:'Shimla — Serviced Apt with WiFi',             dates:'Check-in May 17 · Checkout May 22 · 5 nights',  type:'Apartment', note:'Needs stable internet for WFH. Use Chandigarh on May 22–23 as transition before Phase 3.' },
-          { id:'bk2',  order:2,  priority:'BOOK EARLY',    label:'Srinagar — Houseboat / Hotel (2 rooms)',      dates:'Check-in May 24 · Checkout May 25 · 1 night',      type:'Houseboat', note:'Dal Lake houseboat is iconic. Book via MakeMyTrip or directly.' },
-          { id:'bk3',  order:3,  priority:'BOOK NOW',      label:'Kargil — Hotel (2 rooms)',                    dates:'Check-in May 25 · Checkout May 26 · 1 night',      type:'Hotel',     note:'Limited options on NH1. Zojila View or Hotel Siachen recommended.' },
-          { id:'bk4',  order:4,  priority:'BOOK EARLY',    label:'Leh — Hotel (2 rooms)',                       dates:'Check-in May 26 · Checkout May 28 · 2 nights',     type:'Hotel',     note:'Peak season fills fast. Dragon Guest House, Shambhala, or Zostel.' },
-          { id:'bk5',  order:5,  priority:'BOOK EARLY',    label:'Hunder / Diskit — Stay (2 rooms)',            dates:'Check-in May 28 · Checkout May 29 · 1 night',      type:'Homestay',  note:'Book Nubra stay in advance near Hunder or Diskit.' },
-          { id:'bk6',  order:6,  priority:'BOOK NOW',      label:'Pangong — Camps / Guesthouse (2 rooms)',      dates:'Check-in May 29 · Checkout May 30 · 1 night',      type:'Camp',      note:'Limited inventory and high demand in season.' },
-          { id:'bk7',  order:7,  priority:'LIMITED',       label:'Hanle — Guesthouse (2 rooms)',                dates:'Check-in May 30 · Checkout June 1 · 2 nights',     type:'Guesthouse',note:'Very few options. Book early and confirm power/cash needs.' },
-          { id:'bk8',  order:8,  priority:'MOST CRITICAL', label:'Tso Moriri / Korzok — Camp (2 rooms)',        dates:'Check-in June 1 · Checkout June 2 · 1 night',      type:'Camp',      note:'Very few options. Call months in advance. No online portal.' },
-          { id:'bk9',  order:9,  priority:'WFH BASE',      label:'Manali — Full Stay (Arrival + WFH, 1 room)',  dates:'Check-in June 3 · Checkout June 13 · 10 nights',   type:'Guesthouse', note:'Must have broadband. Late arrival Jun 3. Book by April.' },
-          { id:'bk10', order:10, priority:'LOW',           label:'Chandigarh — Overnight (return leg)',         dates:'Check-in June 13 · Checkout June 14 · 1 night',    type:'Hotel',     note:'Any decent hotel near NH44 for easy exit next morning.' },
-          { id:'bk11', order:11, priority:'LOW',           label:'Nagpur — Overnight (return leg)',             dates:'Check-in June 14 · Checkout June 15 · 1 night',    type:'Hotel',     note:'Last stop before reaching Bangalore. Near NH44 southbound.' },
-          { id:'bk12', order:12, priority:'ACTION',         label:'Friends: Book BLR→Srinagar Flights',          dates:'Fly May 23 (Sat) · Land Srinagar',             type:'Flight',    note:'Book early for best fares and morning arrival buffer.' },
-          { id:'bk13', order:13, priority:'ACTION',         label:'Friends: Return by Road to Bangalore',         dates:'Stay with group till Bangalore return',         type:'Plan',      note:'No separate Manali exit required.' },
-        ];
-        const PRIORITY_COLORS = {
-          'BOOK FIRST':'#e8633a','BOOK EARLY':'#c9941a','MOST CRITICAL':'#e8633a',
-          'LIMITED':'#a855f7','BOOK NOW':'#c9941a','WFH BASE':'#4a90d9','LOW':'#5a7a5c','ACTION':'#4a90d9'
-        };
-        let bookingState = {};
-        let _modalId = null;
+        (function () {
+          const BOOKINGS_DEF = [
+            { id: 'bk1', order: 1, priority: 'BOOK FIRST', label: 'Shimla — Serviced Apt with WiFi', dates: 'Check-in May 17 · Checkout May 22 · 5 nights', type: 'Apartment', note: 'Needs stable internet for WFH. Use Chandigarh on May 22–23 as transition before Phase 3.' },
+            { id: 'bk2', order: 2, priority: 'BOOK EARLY', label: 'Srinagar — Houseboat / Hotel (1 room)', dates: 'Check-in May 24 · Checkout May 25 · 1 night', type: 'Houseboat', note: 'Dal Lake houseboat is iconic. Book via MakeMyTrip or directly.' },
+            { id: 'bk3', order: 3, priority: 'BOOK NOW', label: 'Kargil — Hotel (1 room)', dates: 'Check-in May 25 · Checkout May 26 · 1 night', type: 'Hotel', note: 'Limited options on NH1. Zojila View or Hotel Siachen recommended.' },
+            { id: 'bk4', order: 4, priority: 'BOOK EARLY', label: 'Leh — Hotel (1 room)', dates: 'Check-in May 26 · Checkout May 28 · 2 nights', type: 'Hotel', note: 'Peak season fills fast. Dragon Guest House, Shambhala, or Zostel.' },
+            { id: 'bk5', order: 5, priority: 'BOOK EARLY', label: 'Hunder / Diskit — Stay (1 room)', dates: 'Check-in May 28 · Checkout May 29 · 1 night', type: 'Homestay', note: 'Book Nubra stay in advance near Hunder or Diskit.' },
+            { id: 'bk6', order: 6, priority: 'BOOK NOW', label: 'Pangong — Camps / Guesthouse (1 room)', dates: 'Check-in May 29 · Checkout May 30 · 1 night', type: 'Camp', note: 'Limited inventory and high demand in season.' },
+            { id: 'bk7', order: 7, priority: 'LIMITED', label: 'Hanle — Guesthouse (1 room)', dates: 'Check-in May 30 · Checkout June 1 · 2 nights', type: 'Guesthouse', note: 'Very few options. Book early and confirm power/cash needs.' },
+            { id: 'bk8', order: 8, priority: 'MOST CRITICAL', label: 'Tso Moriri / Korzok — Camp (1 room)', dates: 'Check-in June 1 · Checkout June 2 · 1 night', type: 'Camp', note: 'Very few options. Call months in advance. No online portal.' },
+            { id: 'bk9', order: 9, priority: 'WFH BASE', label: 'Manali — Full Stay (Arrival + WFH, 1 room)', dates: 'Check-in June 3 · Checkout June 13 · 10 nights', type: 'Guesthouse', note: 'Must have broadband. Late arrival Jun 3. Book by April.' },
+            { id: 'bk10', order: 10, priority: 'LOW', label: 'Chandigarh — Overnight (return leg)', dates: 'Check-in June 13 · Checkout June 14 · 1 night', type: 'Hotel', note: 'Any decent hotel near NH44 for easy exit next morning.' },
+            { id: 'bk11', order: 11, priority: 'LOW', label: 'Nagpur — Overnight (return leg)', dates: 'Check-in June 14 · Checkout June 15 · 1 night', type: 'Hotel', note: 'Last stop before reaching Bangalore. Near NH44 southbound.' },
+          ];
+          const PRIORITY_COLORS = {
+            'BOOK FIRST': '#e8633a', 'BOOK EARLY': '#c9941a', 'MOST CRITICAL': '#e8633a',
+            'LIMITED': '#a855f7', 'BOOK NOW': '#c9941a', 'WFH BASE': '#4a90d9', 'LOW': '#5a7a5c', 'ACTION': '#4a90d9'
+          };
+          let bookingState = {};
+          let _modalId = null;
 
-        async function loadBookings() {
-          try {
-            const res = await fetch('/api/bookings');
-            const rows = await res.json();
-            if (Array.isArray(rows)) rows.forEach(r => { bookingState[r.id] = r; });
-          } catch(e) {}
-          renderBookings();
-        }
+          async function loadBookings() {
+            try {
+              const res = await fetch('/api/bookings');
+              const rows = await res.json();
+              if (Array.isArray(rows)) rows.forEach(r => { bookingState[r.id] = r; });
+            } catch (e) { }
+            renderBookings();
+          }
 
-        function renderBookings() {
-          const list = document.getElementById('booking-list');
-          const total = BOOKINGS_DEF.length;
-          const booked = BOOKINGS_DEF.filter(b => bookingState[b.id]?.booked).length;
-          list.innerHTML = BOOKINGS_DEF.map(b => {
-            const s = bookingState[b.id] || {};
-            const ok = !!s.booked;
-            const col = PRIORITY_COLORS[b.priority] || '#888';
-            return `<div class="bk-card ${ok?'bk-booked':''}" style="border:1px solid ${ok?'rgba(34,197,94,0.4)':'#e0e7ef'};border-radius:8px;padding:0.85rem 1rem;margin-bottom:0.6rem;background:${ok?'rgba(34,197,94,0.05)':'#f7f9fc'}">
+          function renderBookings() {
+            const list = document.getElementById('booking-list');
+            const total = BOOKINGS_DEF.length;
+            const booked = BOOKINGS_DEF.filter(b => bookingState[b.id]?.booked).length;
+            list.innerHTML = BOOKINGS_DEF.map(b => {
+              const s = bookingState[b.id] || {};
+              const ok = !!s.booked;
+              const col = PRIORITY_COLORS[b.priority] || '#888';
+              return `<div class="bk-card ${ok ? 'bk-booked' : ''}" style="border:1px solid ${ok ? 'rgba(34,197,94,0.4)' : '#e0e7ef'};border-radius:8px;padding:0.85rem 1rem;margin-bottom:0.6rem;background:${ok ? 'rgba(34,197,94,0.05)' : '#f7f9fc'}">
               <div style="display:flex;gap:0.9rem;align-items:flex-start">
-                <div onclick="window._bkToggle('${b.id}')" style="flex-shrink:0;margin-top:3px;cursor:pointer;width:22px;height:22px;border-radius:50%;border:2px solid ${ok?'#16a34a':col};background:${ok?'#16a34a':'transparent'};display:flex;align-items:center;justify-content:center;">
-                  ${ok?'<svg width="11" height="11" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>':''}
+                <div onclick="window._bkToggle('${b.id}')" style="flex-shrink:0;margin-top:3px;cursor:pointer;width:22px;height:22px;border-radius:50%;border:2px solid ${ok ? '#16a34a' : col};background:${ok ? '#16a34a' : 'transparent'};display:flex;align-items:center;justify-content:center;">
+                  ${ok ? '<svg width="11" height="11" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>' : ''}
                 </div>
                 <div style="flex:1;min-width:0">
                   <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.2rem">
                     <span style="font-size:0.62rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:0.08em;padding:2px 7px;border-radius:4px;background:${col}18;color:${col};font-weight:700;border:1px solid ${col}30">${b.priority}</span>
                     <span style="font-size:0.68rem;color:#888;font-family:'Barlow Condensed',sans-serif">#${b.order} · ${b.type}</span>
                   </div>
-                  <div class="bk-label" style="font-size:0.9rem;font-weight:700;color:${ok?'#16a34a':'#1a2744'};font-family:'Barlow Condensed',sans-serif;margin-bottom:0.15rem">${b.label}</div>
+                  <div class="bk-label" style="font-size:0.9rem;font-weight:700;color:${ok ? '#16a34a' : '#1a2744'};font-family:'Barlow Condensed',sans-serif;margin-bottom:0.15rem">${b.label}</div>
                   <div style="font-size:0.76rem;color:#b45309;margin-bottom:0.3rem;font-weight:600">📅 ${b.dates}</div>
                   <div style="font-size:0.73rem;color:#64748b;margin-bottom:0.5rem">${b.note}</div>
-                  ${s.hotel_name?`<div style="font-size:0.76rem;color:#374151;margin-bottom:0.25rem">🏨 <strong style="color:#1a2744">${s.hotel_name}</strong>${s.confirmation?` · <span style="color:#2563eb">Conf: ${s.confirmation}</span>`:''}</div>`:''}
-                  ${s.notes?`<div style="font-size:0.73rem;color:#64748b;font-style:italic;margin-bottom:0.3rem">&ldquo;${s.notes}&rdquo;</div>`:''}
+                  ${s.hotel_name ? `<div style="font-size:0.76rem;color:#374151;margin-bottom:0.25rem">🏨 <strong style="color:#1a2744">${s.hotel_name}</strong>${s.confirmation ? ` · <span style="color:#2563eb">Conf: ${s.confirmation}</span>` : ''}</div>` : ''}
+                  ${s.notes ? `<div style="font-size:0.73rem;color:#64748b;font-style:italic;margin-bottom:0.3rem">&ldquo;${s.notes}&rdquo;</div>` : ''}
                   <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.45rem">
                     <button onclick="window._bkEdit('${b.id}')" style="padding:3px 10px;font-size:0.7rem;font-family:'Barlow Condensed',sans-serif;background:white;border:1px solid #d1dbe8;color:#555;border-radius:5px;cursor:pointer">✏️ Edit</button>
-                    ${s.map_url?`<a href="${s.map_url}" target="_blank" title="Open in Google Maps" style="padding:3px 10px;font-size:0.7rem;font-family:'Barlow Condensed',sans-serif;background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.25);color:#2563eb;border-radius:5px;text-decoration:none">🗺️ Maps</a>`:''}
+                    ${s.map_url ? `<a href="${s.map_url}" target="_blank" title="Open in Google Maps" style="padding:3px 10px;font-size:0.7rem;font-family:'Barlow Condensed',sans-serif;background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.25);color:#2563eb;border-radius:5px;text-decoration:none">🗺️ Maps</a>` : ''}
                   </div>
                 </div>
               </div>
             </div>`;
-          }).join('');
-          list.innerHTML += `<div style="margin-top:0.8rem">
+            }).join('');
+            list.innerHTML += `<div style="margin-top:0.8rem">
             <div style="font-size:0.76rem;color:#64748b;font-family:'Barlow Condensed',sans-serif;margin-bottom:0.4rem">${booked}/${total} bookings confirmed</div>
-            <div style="height:5px;background:#e0e7ef;border-radius:3px;overflow:hidden"><div style="height:100%;width:${Math.round(booked/total*100)}%;background:#16a34a;border-radius:3px;transition:width 0.4s"></div></div>
+            <div style="height:5px;background:#e0e7ef;border-radius:3px;overflow:hidden"><div style="height:100%;width:${Math.round(booked / total * 100)}%;background:#16a34a;border-radius:3px;transition:width 0.4s"></div></div>
           </div>`;
-        }
+          }
 
-        window._bkToggle = async function(id) {
-          const s = bookingState[id] || {};
-          bookingState[id] = { ...s, booked: !s.booked };
-          renderBookings();
-          try {
-            const u = bookingState[id];
-            await fetch('/api/bookings', { method:'POST', headers:{'Content-Type':'application/json'},
-              body: JSON.stringify({ id, booked: u.booked?1:0, hotel_name:u.hotel_name||'', map_url:u.map_url||'', confirmation:u.confirmation||'', notes:u.notes||'' }) });
-          } catch(e) {}
-        };
-
-        window._bkEdit = function(id) {
-          _modalId = id;
-          const s = bookingState[id] || {};
-          const def = [{id:'bk1',label:'Shimla Apt'},{id:'bk2',label:'Srinagar'},{id:'bk3',label:'Kargil'},{id:'bk4',label:'Leh'},{id:'bk5',label:'Hunder/Diskit'},{id:'bk6',label:'Pangong'},{id:'bk7',label:'Hanle'},{id:'bk8',label:'Tso Moriri'},{id:'bk9',label:'Manali WFH'},{id:'bk10',label:'Chandigarh (return)'},{id:'bk11',label:'Nagpur (return)'},{id:'bk12',label:'Friends Srinagar Flight'},{id:'bk13',label:'Friends Road Return'}].find(d=>d.id===id);
-          document.getElementById('modal-title').textContent = 'Edit — ' + (def?.label || id);
-          document.getElementById('modal-hotel').value = s.hotel_name || '';
-          document.getElementById('modal-map').value = s.map_url || '';
-          document.getElementById('modal-conf').value = s.confirmation || '';
-          document.getElementById('modal-notes').value = s.notes || '';
-          document.getElementById('booking-modal').classList.add('open');
-        };
-
-        window.closeBookingModal = function() {
-          document.getElementById('booking-modal').classList.remove('open');
-          _modalId = null;
-        };
-
-        window.saveBookingModal = async function() {
-          if (!_modalId) return;
-          const s = bookingState[_modalId] || {};
-          const updated = { ...s,
-            hotel_name: document.getElementById('modal-hotel').value.trim(),
-            map_url: document.getElementById('modal-map').value.trim(),
-            confirmation: document.getElementById('modal-conf').value.trim(),
-            notes: document.getElementById('modal-notes').value.trim(),
+          window._bkToggle = async function (id) {
+            const s = bookingState[id] || {};
+            bookingState[id] = { ...s, booked: !s.booked };
+            renderBookings();
+            try {
+              const u = bookingState[id];
+              await fetch('/api/bookings', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, booked: u.booked ? 1 : 0, hotel_name: u.hotel_name || '', map_url: u.map_url || '', confirmation: u.confirmation || '', notes: u.notes || '' })
+              });
+            } catch (e) { }
           };
-          const idToSave = _modalId;
-          bookingState[idToSave] = updated;
-          closeBookingModal();
-          renderBookings();
-          try {
-            await fetch('/api/bookings', { 
-              method: 'POST', 
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ 
-                id: idToSave, 
-                booked: updated.booked ? 1 : 0, 
-                hotel_name: updated.hotel_name, 
-                map_url: updated.map_url, 
-                confirmation: updated.confirmation, 
-                notes: updated.notes 
-              }) 
-            });
-          } catch(e) { console.error('Save failed', e); }
-        };
 
-        document.getElementById('booking-modal').addEventListener('click', function(e) {
-          if (e.target === this) closeBookingModal();
-        });
+          window._bkEdit = function (id) {
+            _modalId = id;
+            const s = bookingState[id] || {};
+            const bDef = BOOKINGS_DEF.find(d => d.id === id);
+            document.getElementById('modal-title').textContent = 'Edit — ' + (bDef?.label || id);
+            // Show read-only context strip
+            const ctx = document.getElementById('modal-context');
+            const datesEl = document.getElementById('modal-dates');
+            const typeEl  = document.getElementById('modal-type');
+            if (ctx && bDef) {
+              datesEl.textContent = '📅 ' + bDef.dates;
+              typeEl.textContent  = bDef.type + ' · Priority: ' + bDef.priority;
+              ctx.style.display = 'block';
+            }
+            document.getElementById('modal-hotel').value = s.hotel_name || '';
+            document.getElementById('modal-map').value = s.map_url || '';
+            document.getElementById('modal-conf').value = s.confirmation || '';
+            document.getElementById('modal-notes').value = s.notes || '';
+            document.getElementById('booking-modal').classList.add('open');
+          };
 
-        loadBookings();
-      })();
+          window.closeBookingModal = function () {
+            document.getElementById('booking-modal').classList.remove('open');
+            _modalId = null;
+          };
+
+          window.saveBookingModal = async function () {
+            if (!_modalId) return;
+            const s = bookingState[_modalId] || {};
+            const updated = {
+              ...s,
+              hotel_name: document.getElementById('modal-hotel').value.trim(),
+              map_url: document.getElementById('modal-map').value.trim(),
+              confirmation: document.getElementById('modal-conf').value.trim(),
+              notes: document.getElementById('modal-notes').value.trim(),
+            };
+            const idToSave = _modalId;
+            bookingState[idToSave] = updated;
+            closeBookingModal();
+            renderBookings();
+            try {
+              await fetch('/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  id: idToSave,
+                  booked: updated.booked ? 1 : 0,
+                  hotel_name: updated.hotel_name,
+                  map_url: updated.map_url,
+                  confirmation: updated.confirmation,
+                  notes: updated.notes
+                })
+              });
+            } catch (e) { console.error('Save failed', e); }
+          };
+
+          document.getElementById('booking-modal').addEventListener('click', function (e) {
+            if (e.target === this) closeBookingModal();
+          });
+
+          loadBookings();
+        })();
       </script>
 
       <!-- Tech & Connectivity -->
@@ -3097,19 +3244,19 @@
           <div class="budget-card-icon">⛽</div>
           <div class="budget-card-label">Fuel (Diesel)</div>
           <div class="budget-card-amount">₹56,627</div>
-          <div class="budget-card-detail">7,277 km · 651L · ₹87/L<br>S&amp;S ₹44,182 + Friends ₹12,445</div>
+          <div class="budget-card-detail">7,277 km · 651L · ₹87/L<br>Full cost S&amp;S only</div>
         </div>
         <div class="budget-card">
           <div class="budget-card-icon">🏨</div>
           <div class="budget-card-label">Accommodation</div>
-          <div class="budget-card-amount">₹1,16,500</div>
-          <div class="budget-card-detail">29 nights total<br>S&amp;S ₹81,500 + Friends ₹35,000</div>
+          <div class="budget-card-amount">₹81,500</div>
+          <div class="budget-card-detail">29 nights total · 1 room<br>S&amp;S full cost</div>
         </div>
         <div class="budget-card">
           <div class="budget-card-icon">🥗</div>
           <div class="budget-card-label">Food</div>
-          <div class="budget-card-amount">₹30,200</div>
-          <div class="budget-card-detail">Packed food + 1 restaurant/day<br>S&amp;S ₹22,600 + Friends ₹7,600</div>
+          <div class="budget-card-amount">₹22,400</div>
+          <div class="budget-card-detail">Packed food + 1 restaurant/day<br>S&amp;S (2 people)</div>
         </div>
         <div class="budget-card">
           <div class="budget-card-icon">🛣️</div>
@@ -3120,14 +3267,14 @@
         <div class="budget-card">
           <div class="budget-card-icon">🎟️</div>
           <div class="budget-card-label">Sightseeing</div>
-          <div class="budget-card-amount">₹4,500</div>
-          <div class="budget-card-detail">Shikara, camel rides,<br>monasteries, Hadimba</div>
+          <div class="budget-card-amount">₹2,350</div>
+          <div class="budget-card-detail">Shikara, camel rides,<br>monasteries, Hadimba (×2)</div>
         </div>
         <div class="budget-card">
           <div class="budget-card-icon">🔧</div>
           <div class="budget-card-label">Car Service & Prep</div>
-          <div class="budget-card-amount">₹16,900</div>
-          <div class="budget-card-detail">Car service, insurance, kit,<br>medicines, snacks (S&amp;S prep)</div>
+          <div class="budget-card-amount">₹31,900</div>
+          <div class="budget-card-detail">Car service, insurance, kit,<br>medicines, snacks &amp; supplies</div>
         </div>
         <div class="budget-card">
           <div class="budget-card-icon">🆘</div>
@@ -3139,19 +3286,19 @@
 
       <div class="budget-total">
         <div style="flex:1;min-width:180px">
-          <div class="budget-total-label">Grand Total</div>
-          <div class="budget-total-amount" style="font-size:2.2rem">₹2,40,527</div>
-          <div class="budget-split-note">Total expenses (S&S + Friends)</div>
-        </div>
-        <div style="flex:1;min-width:180px">
-          <div class="budget-total-label">S&S Share</div>
-          <div class="budget-total-amount" style="font-size:2.2rem;color:#ffffff">₹1,82,932</div>
+          <div class="budget-total-label">S&S Total</div>
+          <div class="budget-total-amount" style="font-size:2.2rem;color:#ffffff">₹1,95,577</div>
           <div class="budget-split-note">For 2 people · Full 31 days</div>
         </div>
+        <div style="flex:1;min-width:180px">
+          <div class="budget-total-label">Emergency Buffer</div>
+          <div class="budget-total-amount" style="font-size:2.2rem;color:var(--gold)">₹15,000</div>
+          <div class="budget-split-note">Medical, breakdown, unexpected stays</div>
+        </div>
         <div style="flex:1;min-width:180px;text-align:right">
-          <div class="budget-total-label">Friends' Share</div>
-          <div class="budget-total-amount" style="font-size:2.2rem;color:#4a90d9">₹57,595</div>
-          <div class="budget-split-note">50-50 split for group phase (10 days)</div>
+          <div class="budget-total-label">Per Person / Day</div>
+          <div class="budget-total-amount" style="font-size:2.2rem;color:var(--dawn)">₹3,154</div>
+          <div class="budget-split-note">₹1,95,577 ÷ 31 days ÷ 2 people</div>
         </div>
       </div>
 
@@ -3163,19 +3310,14 @@
           Per Person Per Day Cost</div>
         <div style="display:flex;gap:2rem;flex-wrap:wrap;">
           <div>
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold)">₹3,313</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold)">₹3,154</div>
             <div style="font-size:0.75rem;color:#666;font-family:'Barlow Condensed',sans-serif">Per person/day
-              (Shrinandan+Shubha)</div>
+              (Shrinandan+Shubha · 31 days)</div>
           </div>
           <div>
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold)">₹2,066</div>
-            <div style="font-size:0.75rem;color:#666;font-family:'Barlow Condensed',sans-serif">Per person/day (Friends,
-              12 days)</div>
-          </div>
-          <div>
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#5a7a5c">Splitwise</div>
-            <div style="font-size:0.75rem;color:#666;font-family:'Barlow Condensed',sans-serif">Recommended app for
-              splitting expenses</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold)">₹6,309</div>
+            <div style="font-size:0.75rem;color:#666;font-family:'Barlow Condensed',sans-serif">Per day total
+              (couple · full trip)</div>
           </div>
         </div>
       </div>
@@ -3209,7 +3351,7 @@
       <div class="permit-card required">
         <div class="permit-status">⚠️ EDF RECEIPT NEEDED</div>
         <div class="permit-title">Pangong Tso Lake</div>
-        <div class="permit-desc">Show EDF at Chang La checkpost. Military is strict here — have all 4 persons' receipts
+        <div class="permit-desc">Show EDF at Chang La checkpost. Military is strict here — have both persons' receipts
           and Aadhar cards ready in one folder before approaching checkpost.</div>
       </div>
       <div class="permit-card required">
@@ -3217,21 +3359,21 @@
         <div class="permit-title">Turtuk → Thang Village</div>
         <div class="permit-desc">Thang is India's northernmost village, 2.5 km from the Pakistan LOC. No online permit —
           your Turtuk homestay owner arranges army permission the evening before. Tell them on check-in. At the Thang
-          checkpost: surrender original Aadhar card on entry, collect on exit. All 4 persons required to be present.
+          checkpost: surrender original Aadhar card on entry, collect on exit. Both persons required to be present.
           Indians only.</div>
       </div>
       <div class="permit-card required">
         <div class="permit-status">⚠️ EDF RECEIPT NEEDED</div>
         <div class="permit-title">Hanle + Umling La (5,798m)</div>
         <div class="permit-desc">EDF receipt is sufficient for Hanle and the Umling La road. No additional permit
-          needed. Show EDF at the Hanle checkpost. Carry all 4 Aadhar cards. The Hanle→Umling La route via Photi La does
-          not require a special pass beyond EDF for Indian citizens.</div>
+          needed. Show EDF at the Hanle checkpost. Carry both Aadhar cards. The Hanle→Umling La route via Photi La does
+          not require a special pass beyond EDF for Indian citizens. Carry both Aadhar cards.</div>
       </div>
       <div class="permit-card required">
         <div class="permit-status">⚠️ EDF RECEIPT NEEDED</div>
         <div class="permit-title">Tsomoriri (Tso Moriri)</div>
         <div class="permit-desc">Show EDF at Upshi checkpost before turning south toward Tsomoriri. Same EDF receipt
-          covers this. Have all 4 receipts and Aadhar in one folder. Checkpost is at Upshi junction — keep documents
+          covers this. Have both receipts and Aadhar in one folder. Checkpost is at Upshi junction — keep documents
           accessible before you reach it.</div>
       </div>
       <div class="permit-card not-required">
@@ -3243,8 +3385,8 @@
       <div class="permit-card fee-only">
         <div class="permit-status">💡 RECOMMENDED</div>
         <div class="permit-title">Travel Insurance</div>
-        <div class="permit-desc">Not mandatory but strongly recommended for high-altitude mountain travel. Cover all 4
-          people. Must include emergency helicopter evacuation coverage for Ladakh region. ₹500–800/person.</div>
+        <div class="permit-desc">Not mandatory but strongly recommended for high-altitude mountain travel. Cover S&S
+          (both). Must include emergency helicopter evacuation coverage for Ladakh region. ₹500–800/person.</div>
       </div>
     </div>
   </section>
@@ -3350,10 +3492,8 @@
           <div class="tip-card-header">💳 Money & Finance</div>
           <div class="tip-card-body">
             <ul>
-              <li>Use Splitwise app — create group from Day 1</li>
-              <li>Set: Fuel 50-50, Stay 50-50 (2 rooms), Food 50-50</li>
-              <li>Settle daily — don't let it accumulate</li>
-              <li>Carry ₹20,000 cash per couple for remote areas</li>
+              <li>Use the Expense Tracker to log every spend as you go</li>
+              <li>Carry ₹20,000 cash for remote areas</li>
               <li>UPI works in Leh town and Manali but not at passes</li>
               <li>Chandigarh has all ATMs — withdraw before heading north</li>
               <li>Kargil has ATMs — last reliable withdrawal before Leh</li>
@@ -3394,47 +3534,47 @@
       <div class="emergency-grid">
         <div class="emergency-card">
           <div class="emergency-label">BRO Road Helpline</div>
-          <div class="emergency-num">1800-180-3474</div>
+          <div class="emergency-num"><a href="tel:18001803474" style="color:white;text-decoration:none">1800-180-3474</a></div>
           <div class="emergency-desc">Road conditions, blockages, emergencies</div>
         </div>
         <div class="emergency-card">
           <div class="emergency-label">Leh Police</div>
-          <div class="emergency-num">01982-252018</div>
+          <div class="emergency-num"><a href="tel:+911982252018" style="color:white;text-decoration:none">01982-252018</a></div>
           <div class="emergency-desc">Leh district police station</div>
         </div>
         <div class="emergency-card">
           <div class="emergency-label">Leh Hospital SNM</div>
-          <div class="emergency-num">01982-252014</div>
+          <div class="emergency-num"><a href="tel:+911982252014" style="color:white;text-decoration:none">01982-252014</a></div>
           <div class="emergency-desc">Main govt hospital in Leh</div>
         </div>
         <div class="emergency-card">
           <div class="emergency-label">Kargil Hospital</div>
-          <div class="emergency-num">01985-232037</div>
+          <div class="emergency-num"><a href="tel:+911985232037" style="color:white;text-decoration:none">01985-232037</a></div>
           <div class="emergency-desc">District hospital, Kargil</div>
         </div>
         <div class="emergency-card">
           <div class="emergency-label">National Emergency</div>
-          <div class="emergency-num">112</div>
+          <div class="emergency-num"><a href="tel:112" style="color:white;text-decoration:none">112</a></div>
           <div class="emergency-desc">Police + Ambulance + Fire unified</div>
         </div>
         <div class="emergency-card">
           <div class="emergency-label">Mahindra Roadside</div>
-          <div class="emergency-num">1800-209-6006</div>
+          <div class="emergency-num"><a href="tel:18002096006" style="color:white;text-decoration:none">1800-209-6006</a></div>
           <div class="emergency-desc">Mahindra 24hr breakdown assist</div>
         </div>
         <div class="emergency-card">
           <div class="emergency-label">J&K Tourist Help</div>
-          <div class="emergency-num">0194-2452690</div>
+          <div class="emergency-num"><a href="tel:+911942452690" style="color:white;text-decoration:none">0194-2452690</a></div>
           <div class="emergency-desc">J&K Tourism helpline, Srinagar</div>
         </div>
         <div class="emergency-card">
           <div class="emergency-label">Manali Civil Hospital</div>
-          <div class="emergency-num">01902-252118</div>
+          <div class="emergency-num"><a href="tel:+911902252118" style="color:white;text-decoration:none">01902-252118</a></div>
           <div class="emergency-desc">Main govt hospital, Manali town</div>
         </div>
         <div class="emergency-card">
           <div class="emergency-label">Hanle PHC</div>
-          <div class="emergency-num">01982-267001</div>
+          <div class="emergency-num"><a href="tel:+911982267001" style="color:white;text-decoration:none">01982-267001</a></div>
           <div class="emergency-desc">Primary Health Centre, Hanle village</div>
         </div>
         <div class="emergency-card">
@@ -3768,7 +3908,7 @@
 
 
     // Nav active state on scroll
-    const sections = ['itinerary', 'route', 'altitude', 'pitch', 'checklist', 'packing', 'budget', 'weather', 'permits', 'tips', 'emergency'];
+    const sections = ['itinerary', 'route', 'altitude', 'checklist', 'packing', 'budget', 'weather', 'permits', 'tips', 'emergency'];
     window.addEventListener('scroll', () => {
       const scrollPos = window.scrollY + 100;
       sections.forEach(id => {
@@ -3783,6 +3923,27 @@
 
     // Initialize accordion bodies
     document.querySelectorAll('.accordion-item:not(.open) .accordion-body').forEach(b => b.style.display = 'none');
+
+    // Mobile altitude scroll hint
+    (function() {
+      var hint = document.getElementById('altScrollHint');
+      var wrap = hint && hint.parentElement;
+      if (!hint || !wrap) return;
+      function showHint() { if (window.innerWidth < 720) { hint.style.display = 'block'; hint.style.opacity = '1'; } else { hint.style.display = 'none'; } }
+      showHint();
+      wrap.addEventListener('scroll', function() { hint.style.opacity='0'; setTimeout(function(){hint.style.display='none';},400); }, {once:true});
+      wrap.addEventListener('touchstart', function() { hint.style.opacity='0'; setTimeout(function(){hint.style.display='none';},400); }, {once:true});
+      window.addEventListener('resize', showHint);
+    })();
+
+    // PWA Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function(r) { console.log('[SW] Registered:', r.scope); })
+          .catch(function(e) { console.warn('[SW] Failed:', e); });
+      });
+    }
   </script>
 </body>
 

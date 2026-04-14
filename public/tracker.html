@@ -18,10 +18,6 @@
   --muted2:   #8a93a0;
   --ss:       #f97316;
   --ss-dim:   rgba(249,115,22,0.12);
-  --fr:       #38bdf8;
-  --fr-dim:   rgba(56,189,248,0.1);
-  --split:    #a78bfa;
-  --split-dim:rgba(167,139,250,0.1);
   --green:    #4ade80;
   --green-dim:rgba(74,222,128,0.1);
   --red:      #f87171;
@@ -117,12 +113,8 @@ body {
 }
 .sum-sub { font-size:0.65rem; color:var(--muted); margin-top:0.2rem; font-family:var(--mono); }
 .chip-ss   { background:var(--ss-dim);   border-color:rgba(249,115,22,0.2); }
-.chip-fr   { background:var(--fr-dim);   border-color:rgba(56,189,248,0.2); }
-.chip-sp   { background:var(--split-dim);border-color:rgba(167,139,250,0.2); }
 .chip-tot  { background:var(--surface2); border-color:var(--border2); }
 .chip-ss .sum-val { color:var(--ss); }
-.chip-fr .sum-val { color:var(--fr); }
-.chip-sp .sum-val { color:var(--split); }
 .chip-tot .sum-val { color:var(--text); }
 
 /* BUDGET PROGRESS */
@@ -384,9 +376,7 @@ body {
   letter-spacing:0.06em; text-transform:uppercase;
   padding:0.12rem 0.35rem; border-radius:2px; white-space:nowrap;
 }
-.b-ss    { background:var(--ss-dim); color:var(--ss); }
-.b-fr    { background:var(--fr-dim); color:var(--fr); }
-.b-50    { background:var(--split-dim); color:var(--split); }
+.b-ss { background:var(--ss-dim); color:var(--ss); }
 
 /* ── MOBILE ── */
 @media (max-width:600px) {
@@ -434,7 +424,6 @@ body {
   <div class="topbar-title">BLR <span>→</span> LEH Expense Tracker</div>
   <div class="topbar-actions">
     <button class="btn" onclick="exportCSV()">⬇ Export CSV</button>
-    <button class="btn" onclick="showSplitwise()">📱 Splitwise Summary</button>
     <button class="btn btn-danger" onclick="confirmReset()">⚠ Reset All</button>
     <a href="leh-budget.html" class="btn">📊 Budget Details</a>
   </div>
@@ -445,17 +434,7 @@ body {
   <div class="sum-chip chip-ss">
     <div class="sum-label">S&S Spent</div>
     <div class="sum-val" id="sum-ss">₹0</div>
-    <div class="sum-sub">of ₹1,82,932 budget</div>
-  </div>
-  <div class="sum-chip chip-fr">
-    <div class="sum-label">Friends Owed</div>
-    <div class="sum-val" id="sum-fr">₹0</div>
-    <div class="sum-sub">their 50-50 share</div>
-  </div>
-  <div class="sum-chip chip-sp">
-    <div class="sum-label">Total Shared</div>
-    <div class="sum-val" id="sum-shared">₹0</div>
-    <div class="sum-sub">group phase only</div>
+    <div class="sum-sub">of ₹1,95,577 budget</div>
   </div>
   <div class="sum-chip chip-tot">
     <div class="sum-label">All Entries</div>
@@ -466,16 +445,11 @@ body {
 
 <!-- BUDGET PROGRESS -->
 <div class="budget-track">
-  <div class="btrack-label">S&S Budget Used</div>
+  <div class="btrack-label">Budget Used</div>
   <div class="btrack-bar-wrap">
     <div class="btrack-bar" id="budgetBar" style="width:0%"></div>
   </div>
   <div class="btrack-pct" id="budgetPct">0%</div>
-  <div class="btrack-label" style="margin-left:1rem">Friends' Share</div>
-  <div class="btrack-bar-wrap">
-    <div class="btrack-bar" id="frBar" style="width:0%;background:var(--fr)"></div>
-  </div>
-  <div class="btrack-pct" id="frPct">0%</div>
 </div>
 
 <!-- TABS -->
@@ -503,7 +477,7 @@ body {
         </div>
       </div>
       <div class="ov-card">
-        <div class="ov-card-head">By Who Pays</div>
+        <div class="ov-card-head">Budget Summary</div>
         <div class="ov-card-body" id="whoBreakdown"></div>
       </div>
       <div class="ov-card">
@@ -512,16 +486,6 @@ body {
       </div>
     </div>
 
-    <div class="export-card" id="splitsummary" style="display:none">
-      <div class="export-title">📱 Splitwise Summary — Settle on June 2nd in Manali</div>
-      <table class="export-table">
-        <thead>
-          <tr><th>Item</th><th>Total</th><th>S&S Paid</th><th>Friends Owe</th><th>Status</th></tr>
-        </thead>
-        <tbody id="splittableBody"></tbody>
-      </table>
-      <div id="splitNetOwed" style="margin-top:0.8rem;padding:0.6rem;background:var(--surface);border-radius:4px;font-family:var(--mono);font-size:0.75rem;color:var(--split)"></div>
-    </div>
 
   </div>
 
@@ -609,11 +573,12 @@ function buildUI() {
 }
 
 function phaseIcon(p) {
-  return p === 'group' ? '👫' : p === 'wfh' ? '💻' : p === 'prep' ? '🛒' : '🚗';
+  return p === 'group' ? '🏔️' : p === 'wfh' ? '💻' : p === 'prep' ? '🛒' : '🚗';
 }
 
 function buildDayPanel(day) {
-  const phaseLabelMap = { prep:'Preparation Costs', solo:'Solo Phase', group:'Group Phase (50-50)', wfh:'WFH Phase' };
+  const phaseLabelMap = { prep:'Preparation Costs', solo:'Solo Phase', group:'Group Phase', wfh:'WFH Phase' };
+  const showFuel = day.phase !== 'prep'; // Show fuel log on all driving days
   return `
     <div class="day-header">
       <div class="day-info">
@@ -635,18 +600,95 @@ function buildDayPanel(day) {
       <table class="entry-table">
         <thead>
           <tr>
-            <th style="width:35%">Description</th>
-            <th style="width:13%">Category</th>
-            <th style="width:10%">Who</th>
-            <th class="r" style="width:12%">Amount (₹)</th>
-            <th class="r" style="width:12%">S&S Pays</th>
-            <th class="r" style="width:12%">Friends Pay</th>
+            <th style="width:40%">Description</th>
+            <th style="width:15%">Category</th>
+            <th class="r" style="width:20%">Amount (₹)</th>
             <th style="width:6%"></th>
           </tr>
         </thead>
         <tbody id="entries-${day.id}"></tbody>
       </table>
       <button class="add-row-btn" onclick="addEntry('${day.id}')">+ Add Expense</button>
+    </div>
+
+    ${showFuel ? `
+    <!-- FUEL LOG -->
+    <div class="fuel-log-wrap" style="margin-top:1.2rem;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;overflow:hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:0.6rem 1rem;background:rgba(251,146,60,0.08);border-bottom:1px solid rgba(251,146,60,0.15)">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.78rem;color:var(--fuel-c);letter-spacing:0.05em;text-transform:uppercase">⛽ Fuel Log</div>
+        <div id="fuel-day-cost-${day.id}" style="font-family:var(--mono);font-size:0.72rem;color:var(--muted2)">—</div>
+      </div>
+      <div style="padding:0.7rem 1rem">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:0.5rem;align-items:end;margin-bottom:0.5rem">
+          <div>
+            <div style="font-family:var(--mono);font-size:0.58rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:0.25rem">Litres</div>
+            <input id="flog-litres-${day.id}" class="amount-input" type="text" inputmode="decimal" placeholder="e.g. 32.5" style="width:100%;text-align:left;border:1px solid var(--border2);border-radius:4px;padding:0.4rem 0.5rem">
+          </div>
+          <div>
+            <div style="font-family:var(--mono);font-size:0.58rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:0.25rem">₹/Litre</div>
+            <input id="flog-rate-${day.id}" class="amount-input" type="text" inputmode="decimal" placeholder="e.g. 89" style="width:100%;text-align:left;border:1px solid var(--border2);border-radius:4px;padding:0.4rem 0.5rem">
+          </div>
+          <div>
+            <div style="font-family:var(--mono);font-size:0.58rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:0.25rem">Odometer (km)</div>
+            <input id="flog-odo-${day.id}" class="amount-input" type="text" inputmode="decimal" placeholder="e.g. 14,230" style="width:100%;text-align:left;border:1px solid var(--border2);border-radius:4px;padding:0.4rem 0.5rem">
+          </div>
+          <button onclick="logFuel('${day.id}')" style="padding:0.4rem 0.9rem;background:var(--fuel-c);color:#fff;border:none;border-radius:4px;font-family:var(--mono);font-size:0.65rem;cursor:pointer;white-space:nowrap;height:32px;margin-top:auto">Log</button>
+        </div>
+        <div id="flog-preview-${day.id}" style="font-family:var(--mono);font-size:0.68rem;color:var(--muted);min-height:16px"></div>
+      </div>
+    </div>
+    ` : ''}
+
+    <!-- WELLNESS LOG -->
+    <div class="wellness-wrap" style="margin-top:1rem;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;overflow:hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:0.55rem 1rem;background:rgba(34,197,94,0.06);border-bottom:1px solid rgba(34,197,94,0.12);cursor:pointer"
+           onclick="toggleWellness('${day.id}')">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.78rem;color:#22c55e;letter-spacing:0.05em;text-transform:uppercase">
+          🫁 Wellness Log
+        </div>
+        <div style="display:flex;align-items:center;gap:0.6rem">
+          <div id="well-summary-${day.id}" style="font-family:var(--mono);font-size:0.68rem;color:var(--muted)"></div>
+          <div id="well-toggle-${day.id}" style="font-size:0.7rem;color:var(--muted)">▼</div>
+        </div>
+      </div>
+      <div id="well-body-${day.id}" style="display:none;padding:0.8rem 1rem">
+        <div id="well-alert-${day.id}" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.4);border-radius:5px;padding:0.45rem 0.75rem;margin-bottom:0.7rem;color:#f87171;font-size:0.73rem;letter-spacing:0.04em">
+          ⚠️ SpO2 below 90% — Rest immediately. Drink water. Descend if symptoms worsen.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:0.7rem">
+          <div>
+            <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:0.25rem">SpO2 % (pulse ox)</div>
+            <input id="well-spo2-${day.id}" class="amount-input" type="text" inputmode="decimal" placeholder="e.g. 94"
+              style="width:100%;text-align:left;border:1px solid var(--border2);border-radius:4px;padding:0.4rem 0.5rem"
+              oninput="wellnessChanged('${day.id}')">
+          </div>
+          <div>
+            <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:0.25rem">Water (litres)</div>
+            <input id="well-water-${day.id}" class="amount-input" type="text" inputmode="decimal" placeholder="e.g. 3"
+              style="width:100%;text-align:left;border:1px solid var(--border2);border-radius:4px;padding:0.4rem 0.5rem"
+              oninput="wellnessChanged('${day.id}')">
+          </div>
+        </div>
+        <div style="margin-bottom:0.7rem">
+          <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem">Headache Severity</div>
+          <div style="display:flex;gap:0.4rem" id="well-headache-row-${day.id}">
+            ${[1,2,3,4,5].map(n => `
+              <button id="well-h${n}-${day.id}" onclick="setHeadache('${day.id}', ${n})"
+                style="flex:1;padding:0.4rem 0;border:1px solid var(--border2);border-radius:4px;background:var(--surface);cursor:pointer;font-family:var(--mono);font-size:0.7rem;color:var(--muted);transition:all 0.15s"
+                title="${n === 1 ? 'None' : n === 2 ? 'Mild' : n === 3 ? 'Moderate' : n === 4 ? 'Severe' : 'Excruciating'}"
+              >${n}</button>`).join('')}
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.58rem;color:var(--muted);margin-top:0.2rem"><span>None</span><span>Excruciating</span></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--mono);font-size:0.72rem;color:var(--muted)">
+            <input type="checkbox" id="well-diamox-${day.id}" onchange="wellnessChanged('${day.id}')"
+              style="width:16px;height:16px;cursor:pointer;accent-color:#22c55e">
+            Diamox taken today
+          </label>
+          <div id="well-save-status-${day.id}" style="font-size:0.65rem;color:#22c55e;font-family:var(--mono)"></div>
+        </div>
+      </div>
     </div>
 
     <div class="day-notes-label">Notes for this day</div>
@@ -659,11 +701,9 @@ function buildDayPanel(day) {
 // ENTRIES
 // ─────────────────────────────────────────────
 async function addEntry(dayId, entry = null) {
-  const day = DAYS.find(d => d.id === dayId);
-  const isGroup = day && day.phase === 'group';
   const e = entry || {
     id: Date.now() + '_' + Math.random().toString(36).slice(2, 8),
-    desc: '', cat: 'food', who: isGroup ? '50' : 'ss', amount: ''
+    desc: '', cat: 'food', who: 'ss', amount: ''
   };
   state.entries[dayId].push(e);
   renderEntries(dayId);
@@ -695,20 +735,196 @@ async function removeEntry(dayId, entryId) {
   }
 }
 
-// Patch only the S&S / Friends cells for a single row (avoids losing focus on amount input)
 function patchAmountCells(dayId, entryId) {
-  const e = state.entries[dayId].find(e => e.id == entryId);
-  if (!e) return;
-  const tbody = document.getElementById('entries-' + dayId);
-  if (!tbody) return;
-  const row = tbody.querySelector(`tr[data-entry-id="${entryId}"]`);
-  if (!row) return;
-  const amt   = parseFloat(e.amount) || 0;
-  const ssAmt = e.who === 'ss' ? amt : e.who === '50' ? amt/2 : 0;
-  const frAmt = e.who === 'fr' ? amt : e.who === '50' ? amt/2 : 0;
-  const cells = row.querySelectorAll('td');
-  cells[4].innerHTML = ssAmt > 0 ? '₹'+fmtNum(ssAmt) : '<span style="color:var(--muted)">—</span>';
-  cells[5].innerHTML = frAmt > 0 ? '₹'+fmtNum(frAmt) : '<span style="color:var(--muted)">—</span>';
+  // no-op: amount column is the only numeric cell now
+}
+
+// ─────────────────────────────────────────────
+// FUEL LOG
+// ─────────────────────────────────────────────
+const FUEL_BUDGET = 56627; // total fuel budget for S&S
+
+function logFuel(dayId) {
+  const litresEl = document.getElementById('flog-litres-' + dayId);
+  const rateEl   = document.getElementById('flog-rate-'   + dayId);
+  const odoEl    = document.getElementById('flog-odo-'    + dayId);
+  const preview  = document.getElementById('flog-preview-' + dayId);
+
+  const litres = parseFloat(litresEl?.value) || 0;
+  const rate   = parseFloat(rateEl?.value)   || 0;
+  const odo    = rateEl?.value ? odoEl?.value.trim() : '';
+
+  if (!litres || !rate) {
+    if (preview) preview.textContent = '⚠️ Enter litres and ₹/litre to log';
+    return;
+  }
+
+  const cost = Math.round(litres * rate);
+  const odoStr = odo ? ` · Odo: ${odo}km` : '';
+  const desc = `[Fuel] ${litres}L @ ₹${rate}/L${odoStr}`;
+
+  addEntry(dayId, {
+    id: Date.now() + '_fuel',
+    desc,
+    cat: 'fuel',
+    who: 'ss',
+    amount: cost
+  });
+
+  // Reset inputs
+  if (litresEl) litresEl.value = '';
+  if (rateEl)   rateEl.value   = '';
+  if (odoEl)    odoEl.value    = '';
+  if (preview)  preview.textContent = `✓ Logged ₹${cost.toLocaleString('en-IN')} (${litres}L @ ₹${rate})`;
+  setTimeout(() => { if (preview) preview.textContent = ''; }, 3000);
+
+  // Update day fuel cost display
+  updateFuelDayCost(dayId);
+}
+
+function updateFuelDayCost(dayId) {
+  const el = document.getElementById('fuel-day-cost-' + dayId);
+  if (!el) return;
+  const dayFuel = (state.entries[dayId] || [])
+    .filter(e => e.cat === 'fuel')
+    .reduce((s, e) => s + (parseFloat(e.amount) || 0), 0);
+
+  const totalFuel = Object.values(state.entries)
+    .flat()
+    .filter(e => e?.cat === 'fuel')
+    .reduce((s, e) => s + (parseFloat(e.amount) || 0), 0);
+
+  const pct = Math.min(100, (totalFuel / FUEL_BUDGET) * 100).toFixed(0);
+  const over = totalFuel > FUEL_BUDGET;
+  el.innerHTML = dayFuel > 0
+    ? `Today: <span style="color:var(--fuel-c)">₹${dayFuel.toLocaleString('en-IN')}</span>` +
+      ` &nbsp;|&nbsp; Trip total: <span style="color:${over ? 'var(--red)':'var(--fuel-c)'}">₹${Math.round(totalFuel).toLocaleString('en-IN')}</span>` +
+      ` <span style="color:var(--muted)">(${pct}% of ₹${FUEL_BUDGET.toLocaleString('en-IN')} budget)</span>`
+    : '';
+}
+
+// Live preview while typing fuel inputs
+document.addEventListener('input', e => {
+  const id = e.target?.id || '';
+  const match = id.match(/^flog-(litres|rate)-(.+)$/);
+  if (!match) return;
+  const dayId = match[2];
+  const litres = parseFloat(document.getElementById('flog-litres-' + dayId)?.value) || 0;
+  const rate   = parseFloat(document.getElementById('flog-rate-'   + dayId)?.value) || 0;
+  const preview = document.getElementById('flog-preview-' + dayId);
+  if (preview && litres && rate) {
+    preview.textContent = `→ ₹${Math.round(litres * rate).toLocaleString('en-IN')} total cost`;
+  } else if (preview) {
+    preview.textContent = '';
+  }
+});
+
+// ─────────────────────────────────────────────
+// WELLNESS LOG (localStorage)
+// ─────────────────────────────────────────────
+
+const WELLNESS_KEY = 'leh_wellness';
+
+function _getWellnessStore() {
+  try { return JSON.parse(localStorage.getItem(WELLNESS_KEY) || '{}'); } catch(_) { return {}; }
+}
+function _setWellnessStore(store) {
+  try { localStorage.setItem(WELLNESS_KEY, JSON.stringify(store)); } catch(_) {}
+}
+
+function toggleWellness(dayId) {
+  const body   = document.getElementById('well-body-' + dayId);
+  const toggle = document.getElementById('well-toggle-' + dayId);
+  if (!body) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (toggle) toggle.textContent = isOpen ? '▼' : '▲';
+}
+
+function setHeadache(dayId, value) {
+  // Highlight selected button
+  [1,2,3,4,5].forEach(n => {
+    const btn = document.getElementById(`well-h${n}-${dayId}`);
+    if (!btn) return;
+    const active = n === value;
+    const hue = n === 1 ? '#22c55e' : n === 2 ? '#84cc16' : n === 3 ? '#f59e0b' : n === 4 ? '#ef4444' : '#7f1d1d';
+    btn.style.background  = active ? hue : 'var(--surface)';
+    btn.style.color       = active ? '#fff' : 'var(--muted)';
+    btn.style.borderColor = active ? hue : 'var(--border2)';
+  });
+
+  // Store in dataset for reading
+  const row = document.getElementById('well-headache-row-' + dayId);
+  if (row) row.dataset.val = value;
+  wellnessChanged(dayId);
+}
+
+function wellnessChanged(dayId) {
+  const store = _getWellnessStore();
+  const spo2El    = document.getElementById('well-spo2-'    + dayId);
+  const waterEl   = document.getElementById('well-water-'   + dayId);
+  const diamoxEl  = document.getElementById('well-diamox-'  + dayId);
+  const headEl    = document.getElementById('well-headache-row-' + dayId);
+
+  const spo2    = spo2El    ? spo2El.value.trim()    : '';
+  const water   = waterEl   ? waterEl.value.trim()   : '';
+  const diamox  = diamoxEl  ? diamoxEl.checked        : false;
+  const headache= headEl    ? parseInt(headEl.dataset.val || '0') : 0;
+
+  store[dayId] = { spo2, water, diamox, headache, ts: Date.now() };
+  _setWellnessStore(store);
+
+  // AMS alert
+  const alertEl = document.getElementById('well-alert-'   + dayId);
+  const spo2Num = parseFloat(spo2);
+  if (alertEl) alertEl.style.display = (spo2 && spo2Num < 90) ? 'block' : 'none';
+
+  // Summary in collapsed header
+  updateWellnessSummary(dayId, { spo2, water, diamox, headache });
+
+  // Flash saved
+  const statusEl = document.getElementById('well-save-status-' + dayId);
+  if (statusEl) { statusEl.textContent = 'Saved ✓'; setTimeout(() => { statusEl.textContent = ''; }, 1500); }
+}
+
+function updateWellnessSummary(dayId, data) {
+  const sumEl = document.getElementById('well-summary-' + dayId);
+  if (!sumEl) return;
+  const parts = [];
+  if (data.spo2) {
+    const n = parseFloat(data.spo2);
+    const col = n >= 95 ? '#22c55e' : n >= 90 ? '#f59e0b' : '#ef4444';
+    parts.push(`<span style="color:${col};font-weight:700">SpO2 ${data.spo2}%</span>`);
+  }
+  if (data.water) parts.push(`💧${data.water}L`);
+  if (data.headache > 1) {
+    const hcol = data.headache <= 2 ? '#84cc16' : data.headache <= 3 ? '#f59e0b' : '#ef4444';
+    parts.push(`<span style="color:${hcol}">H${data.headache}/5</span>`);
+  }
+  if (data.diamox) parts.push('💊');
+  sumEl.innerHTML = parts.join(' · ');
+}
+
+function loadAllWellness() {
+  const store = _getWellnessStore();
+  DAYS.forEach(day => {
+    const data = store[day.id];
+    if (!data) return;
+    const spo2El   = document.getElementById('well-spo2-'   + day.id);
+    const waterEl  = document.getElementById('well-water-'  + day.id);
+    const diamoxEl = document.getElementById('well-diamox-' + day.id);
+    if (spo2El  && data.spo2)   spo2El.value    = data.spo2;
+    if (waterEl && data.water)  waterEl.value   = data.water;
+    if (diamoxEl && data.diamox) diamoxEl.checked = true;
+    if (data.headache) setHeadache(day.id, data.headache);
+
+    // AMS alert restore
+    const alertEl = document.getElementById('well-alert-' + day.id);
+    const spo2Num = parseFloat(data.spo2 || '');
+    if (alertEl && data.spo2 && spo2Num < 90) alertEl.style.display = 'block';
+
+    updateWellnessSummary(day.id, data);
+  });
 }
 
 const _updateTimers = {};
@@ -775,10 +991,6 @@ function renderEntries(dayId) {
 
   const entries = state.entries[dayId] || [];
   entries.forEach(e => {
-    const amt = parseFloat(e.amount) || 0;
-    const ssAmt  = e.who === 'ss' ? amt : e.who === '50' ? amt/2 : 0;
-    const frAmt  = e.who === 'fr' ? amt : e.who === '50' ? amt/2 : 0;
-
     const tr = document.createElement('tr');
     tr.dataset.entryId = String(e.id);
     tr.innerHTML = `
@@ -794,24 +1006,11 @@ function renderEntries(dayId) {
           ).join('')}
         </select>
       </td>
-      <td>
-        <select class="who-select" onchange="updateEntry('${dayId}','${e.id}','who',this.value)">
-          ${Object.entries(WHO_OPTS).map(([k,v]) =>
-            `<option value="${k}" ${e.who===k?'selected':''}>${v.label}</option>`
-          ).join('')}
-        </select>
-      </td>
       <td class="r">
         <input class="amount-input" type="text" inputmode="decimal"
           value="${e.amount === '' ? '' : e.amount}" placeholder="0"
           oninput="updateEntry('${dayId}','${e.id}','amount',this.value)"
           onblur="commitAmount('${dayId}','${e.id}',this.value)">
-      </td>
-      <td class="r" style="font-family:var(--mono);font-size:0.78rem;color:var(--ss)">
-        ${ssAmt > 0 ? '₹'+fmtNum(ssAmt) : '<span style="color:var(--muted)">—</span>'}
-      </td>
-      <td class="r" style="font-family:var(--mono);font-size:0.78rem;color:var(--fr)">
-        ${frAmt > 0 ? '₹'+fmtNum(frAmt) : '<span style="color:var(--muted)">—</span>'}
       </td>
       <td>
         <button class="delete-btn" onclick="removeEntry('${dayId}','${e.id}')" title="Remove">✕</button>
@@ -826,20 +1025,12 @@ function renderEntries(dayId) {
 function renderDayTotals(dayId) {
   const box = document.getElementById('daytotals-' + dayId);
   if (!box) return;
-  const {ssTotal, frTotal, total} = calcDayTotals(dayId, state.entries);
+  const {total} = calcDayTotals(dayId, state.entries);
 
   box.innerHTML = `
-    <div class="day-total-chip chip-tot">
-      <div class="dtc-label">Day Total</div>
-      <div class="dtc-val">₹${fmtNum(total)}</div>
-    </div>
     <div class="day-total-chip chip-ss">
-      <div class="dtc-label">S&S</div>
-      <div class="dtc-val" style="color:var(--ss)">₹${fmtNum(ssTotal)}</div>
-    </div>
-    <div class="day-total-chip chip-fr">
-      <div class="dtc-label">Friends</div>
-      <div class="dtc-val" style="color:var(--fr)">₹${fmtNum(frTotal)}</div>
+      <div class="dtc-label">Day Total</div>
+      <div class="dtc-val" style="color:var(--ss)">₹${fmtNum(total)}</div>
     </div>
   `;
 }
@@ -852,20 +1043,15 @@ function updateAll() {
 
   // summary bar
   document.getElementById('sum-ss').textContent    = '₹'+fmtNum(g.ssTotal);
-  document.getElementById('sum-fr').textContent    = '₹'+fmtNum(g.frTotal);
-  document.getElementById('sum-shared').textContent= '₹'+fmtNum(g.sharedTotal);
   document.getElementById('sum-total').textContent = '₹'+fmtNum(g.grandTotal);
   document.getElementById('sum-entries').textContent = g.count + ' entr' + (g.count===1?'y':'ies');
 
-  // progress bars
+  // progress bar
   const ssPct = Math.min(100, (g.ssTotal / SS_BUDGET) * 100);
-  const frPct = Math.min(100, (g.frTotal / FR_BUDGET) * 100);
   const ssBar = document.getElementById('budgetBar');
   ssBar.style.width = ssPct + '%';
   ssBar.className = 'btrack-bar' + (ssPct > 95 ? ' over' : '');
   document.getElementById('budgetPct').textContent = ssPct.toFixed(1) + '%';
-  document.getElementById('frBar').style.width = frPct + '%';
-  document.getElementById('frPct').textContent = frPct.toFixed(1) + '%';
 
   renderOverview(g);
 }
@@ -886,22 +1072,17 @@ function renderOverview(g) {
     `).join('');
   }
 
-  // Who breakdown
+  // Spend summary
   const whoEl = document.getElementById('whoBreakdown');
   if (whoEl) {
-    whoEl.innerHTML = [
-      ['ss', 'S&S Direct', g.byWho.ss, 'var(--ss)'],
-      ['fr', 'Friends Direct', g.byWho.fr, 'var(--fr)'],
-      ['50', '50-50 Split Total', g.byWho['50'], 'var(--split)'],
-    ].map(([k,l,v,c]) => `
+    whoEl.innerHTML = `
       <div class="ov-row">
-        <div class="ov-label"><span class="badge b-${k==='50'?'50':k}">${l}</span></div>
-        <div class="ov-val" style="color:${c}">₹${fmtNum(v)}</div>
+        <div class="ov-label"><span class="badge b-ss">S&amp;S Total</span></div>
+        <div class="ov-val" style="color:var(--ss)">₹${fmtNum(g.ssTotal)}</div>
       </div>
-    `).join('') + `
       <div class="ov-row" style="margin-top:0.3rem;padding-top:0.5rem;border-top:1px solid var(--border2)">
-        <div class="ov-label">Grand Total</div>
-        <div class="ov-val">₹${fmtNum(g.grandTotal)}</div>
+        <div class="ov-label">Budget Remaining</div>
+        <div class="ov-val" style="color:${g.ssTotal > SS_BUDGET ? 'var(--red)' : 'var(--green)'}">₹${fmtNum(SS_BUDGET - g.ssTotal)}</div>
       </div>
     `;
   }
@@ -930,9 +1111,9 @@ function renderVsBudget(g) {
   if (!vb) return;
   const categories = [
     ['fuel', 'Fuel',    56627, g.byCat.fuel||0,  'var(--fuel-c)'],
-    ['stay', 'Stay',   116500, g.byCat.stay||0,  'var(--stay-c)'],
-    ['food', 'Food',    30200, g.byCat.food||0,  'var(--food-c)'],
-    ['act',  'Activ.',   4500, g.byCat.act||0,   'var(--act-c)'],
+    ['stay', 'Stay',    81500, g.byCat.stay||0,  'var(--stay-c)'],
+    ['food', 'Food',    22400, g.byCat.food||0,  'var(--food-c)'],
+    ['act',  'Activ.',   2350, g.byCat.act||0,   'var(--act-c)'],
     ['misc', 'Prep',    31900, g.byCat.misc||0,  'var(--misc-c)'],
     ['toll', 'Toll',      800, g.byCat.toll||0,  '#60a5fa'],
   ];
@@ -963,43 +1144,6 @@ function renderVsBudget(g) {
 }
 
 // ─────────────────────────────────────────────
-// SPLITWISE SUMMARY
-// ─────────────────────────────────────────────
-function showSplitwise() {
-  const card = document.getElementById('splitsummary');
-  const tbody = document.getElementById('splittableBody');
-  const netEl = document.getElementById('splitNetOwed');
-
-  let frOwes = 0;
-  const rows = [];
-
-  DAYS.forEach(day => {
-    (state.entries[day.id] || []).forEach(e => {
-      const amt = parseFloat(e.amount) || 0;
-      if (!amt || e.who !== '50') return;
-      frOwes += amt/2;
-      rows.push({ desc: e.desc || '—', dayTitle: day.title, amt, ssShare: amt/2, frShare: amt/2 });
-    });
-  });
-
-  tbody.innerHTML = rows.length ? rows.map(r => `
-    <tr>
-      <td>${escHtml(r.desc)} <span style="color:var(--muted);font-size:0.68rem">(${r.dayTitle})</span></td>
-      <td style="font-family:var(--mono)">₹${fmtNum(r.amt)}</td>
-      <td style="font-family:var(--mono);color:var(--ss)">₹${fmtNum(r.ssShare)}</td>
-      <td style="font-family:var(--mono);color:var(--fr)">₹${fmtNum(r.frShare)}</td>
-      <td><span class="badge b-50">50-50</span></td>
-    </tr>
-  `).join('') : '<tr><td colspan="5" style="color:var(--muted);padding:0.8rem">No 50-50 entries yet</td></tr>';
-
-  netEl.innerHTML = `Friends owe S&S total: <span style="color:var(--fr);font-weight:700">₹${fmtNum(Math.round(frOwes))}</span> — settle via UPI or cash in Manali on June 7th night`;
-
-  card.style.display = 'block';
-  card.scrollIntoView({ behavior:'smooth' });
-  switchTab('overview');
-}
-
-// ─────────────────────────────────────────────
 // TABS
 // ─────────────────────────────────────────────
 let currentTab = 'overview';
@@ -1015,16 +1159,14 @@ function switchTab(id) {
 // EXPORT CSV
 // ─────────────────────────────────────────────
 function exportCSV() {
-  const rows = [['Day','Date','Phase','Description','Category','Who','Amount','S&S Pays','Friends Pay']];
+  const rows = [['Day','Date','Phase','Description','Category','Amount']];
   DAYS.forEach(day => {
     (state.entries[day.id] || []).forEach(e => {
       const amt = parseFloat(e.amount) || 0;
-      const ssAmt = e.who==='ss'?amt : e.who==='50'?amt/2 : 0;
-      const frAmt = e.who==='fr'?amt : e.who==='50'?amt/2 : 0;
       rows.push([
         day.label, day.date, day.phase,
-        e.desc||'', CATS[e.cat]?.label||e.cat, WHO_OPTS[e.who]?.label||e.who,
-        amt, Math.round(ssAmt), Math.round(frAmt)
+        e.desc||'', CATS[e.cat]?.label||e.cat,
+        amt
       ]);
     });
   });
@@ -1073,6 +1215,10 @@ async function init() {
     const ta = document.getElementById('notes-' + d.id);
     if (ta) ta.value = state.notes[d.id] || '';
   });
+  // Update fuel log headers with existing fuel entries
+  DAYS.forEach(d => updateFuelDayCost(d.id));
+  // Restore wellness log data from localStorage
+  loadAllWellness();
   updateAll();
 }
 
