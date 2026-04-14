@@ -21,8 +21,8 @@ const DAYS = [
   { id:'g7',  label:'G7',     title:'Pangong Tso → Hanle',           date:'Sat May 30',  phase:'group', budget:{ fuel:1800, food:800, stay:4000, act:0, misc:0 } },
   { id:'g8',  label:'G8',     title:'Hanle → Umling La → Hanle',     date:'Sun May 31',  phase:'group', budget:{ fuel:2000, food:800, stay:3500, act:0, misc:0 } },
   { id:'g9',  label:'G9',     title:'Hanle → Tso Moriri',            date:'Mon Jun 1',   phase:'group', budget:{ fuel:670,  food:800, stay:3500, act:0, misc:0 } },
-  { id:'g10', label:'G10',    title:'Tso Moriri → Sarchu',           date:'Tue Jun 2',   phase:'group', budget:{ fuel:1180, food:800, stay:3500, act:0, misc:0 } },
-  { id:'g11', label:'G11',    title:'Sarchu → Manali',               date:'Wed Jun 3',   phase:'group', budget:{ fuel:3400, food:1000,stay:4000, act:0, misc:0 } },
+  { id:'g10', label:'G10',    title:'Tso Moriri → Jispa',            date:'Tue Jun 2',   phase:'group', budget:{ fuel:3000, food:800, stay:3500, act:0, misc:0 } },
+  { id:'g11', label:'G11',    title:'Jispa → Manali',                date:'Wed Jun 3',   phase:'group', budget:{ fuel:1580, food:1000,stay:4000, act:0, misc:0 } },
   // Phase 4: Solo return (shifted by 1 day after updated Phase 3)
   { id:'s1',  label:'P4-1',   title:'Manali Rest Day',               date:'Thu Jun 4',   phase:'wfh',   budget:{ fuel:0,    food:800, stay:2500, act:0, misc:0 } },
   { id:'s2',  label:'P4-2',   title:'Manali WFH Base',               date:'Jun 5-12',    phase:'wfh',   budget:{ fuel:1000, food:8000,stay:22500,act:200, misc:0 } },
