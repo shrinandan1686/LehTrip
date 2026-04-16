@@ -521,7 +521,8 @@ async function ensurePrepPrefill() {
     id: `prep_${idx + 1}`,
     desc: item.desc || '',
     cat: item.cat || 'misc',
-    who: item.who || 'ss',
+    who: item.who || '',
+    paid_using: '',
     amount: '',
   }));
   state.entries[prepDayId] = prefilled;
