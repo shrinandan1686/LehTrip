@@ -377,13 +377,21 @@ body {
   padding:0.12rem 0.35rem; border-radius:2px; white-space:nowrap;
 }
 .b-ss { background:var(--ss-dim); color:var(--ss); }
+.b-sn { background:rgba(59,130,246,0.12); color:#3b82f6; }
+.b-sh { background:rgba(236,72,153,0.12); color:#ec4899; }
 
 /* ── MOBILE ── */
 @media (max-width:600px) {
   .main { padding:1rem 0.75rem; }
   .summary-bar { grid-template-columns:1fr 1fr; }
   .day-title-text { font-size:1.1rem; }
+  /* hide category on middle-small */
   .entry-table th:nth-child(2), .entry-table td:nth-child(2) { display:none; }
+}
+@media (max-width:480px) {
+  /* hide paid-by and using on very small */
+  .entry-table th:nth-child(3), .entry-table td:nth-child(3),
+  .entry-table th:nth-child(4), .entry-table td:nth-child(4) { display:none; }
 }
 
 /* ── PRINT ── */
@@ -600,9 +608,11 @@ function buildDayPanel(day) {
       <table class="entry-table">
         <thead>
           <tr>
-            <th style="width:40%">Description</th>
-            <th style="width:15%">Category</th>
-            <th class="r" style="width:20%">Amount (₹)</th>
+            <th style="width:30%">Description</th>
+            <th style="width:12%">Category</th>
+            <th style="width:12%">Paid By</th>
+            <th style="width:15%">Using</th>
+            <th class="r" style="width:15%">Amount (₹)</th>
             <th style="width:6%"></th>
           </tr>
         </thead>
@@ -703,7 +713,7 @@ function buildDayPanel(day) {
 async function addEntry(dayId, entry = null) {
   const e = entry || {
     id: Date.now() + '_' + Math.random().toString(36).slice(2, 8),
-    desc: '', cat: 'food', who: 'ss', amount: ''
+    desc: '', cat: 'food', who: '', paid_using: '', amount: ''
   };
   state.entries[dayId].push(e);
   renderEntries(dayId);
@@ -767,7 +777,8 @@ function logFuel(dayId) {
     id: Date.now() + '_fuel',
     desc,
     cat: 'fuel',
-    who: 'ss',
+    who: '',
+    paid_using: '',
     amount: cost
   });
 
@@ -1000,9 +1011,26 @@ function renderEntries(dayId) {
           oninput="updateEntry('${dayId}','${e.id}','desc',this.value)">
       </td>
       <td>
-        <select class="cat-select" onchange="updateEntry('${dayId}','${e.id}','cat',this.value)">
+        <select class="cat-select" style="width:100%" onchange="updateEntry('${dayId}','${e.id}','cat',this.value)">
           ${Object.entries(CATS).map(([k,v]) =>
             `<option value="${k}" ${e.cat===k?'selected':''}>${v.label}</option>`
+          ).join('')}
+        </select>
+      </td>
+      <td>
+        <select class="who-select" style="width:100%" onchange="updateEntry('${dayId}','${e.id}','who',this.value)">
+          <option value="" ${!e.who?'selected':''}>—</option>
+          ${Object.entries(WHO_OPTS).map(([k,v]) =>
+            `<option value="${k}" ${e.who===k?'selected':''}>${v.label}</option>`
+          ).join('')}
+          ${e.who === 'ss' ? '<option value="ss" selected>S&S</option>' : ''}
+        </select>
+      </td>
+      <td>
+        <select class="cat-select" style="width:100%" onchange="updateEntry('${dayId}','${e.id}','paid_using',this.value)">
+          <option value="" ${!e.paid_using?'selected':''}>—</option>
+          ${Object.entries(PAY_OPTS).map(([k,v]) =>
+            `<option value="${k}" ${e.paid_using===k?'selected':''}>${v.label}</option>`
           ).join('')}
         </select>
       </td>
@@ -1042,12 +1070,12 @@ function updateAll() {
   const g = calcGlobalTotals(state.entries);
 
   // summary bar
-  document.getElementById('sum-ss').textContent    = '₹'+fmtNum(g.ssTotal);
+  document.getElementById('sum-ss').textContent    = '₹'+fmtNum(g.grandTotal);
   document.getElementById('sum-total').textContent = '₹'+fmtNum(g.grandTotal);
   document.getElementById('sum-entries').textContent = g.count + ' entr' + (g.count===1?'y':'ies');
 
   // progress bar
-  const ssPct = Math.min(100, (g.ssTotal / SS_BUDGET) * 100);
+  const ssPct = Math.min(100, (g.grandTotal / SS_BUDGET) * 100);
   const ssBar = document.getElementById('budgetBar');
   ssBar.style.width = ssPct + '%';
   ssBar.className = 'btrack-bar' + (ssPct > 95 ? ' over' : '');
@@ -1072,17 +1100,27 @@ function renderOverview(g) {
     `).join('');
   }
 
-  // Spend summary
+  // Spend summary - Who and Method
   const whoEl = document.getElementById('whoBreakdown');
   if (whoEl) {
-    whoEl.innerHTML = `
+    const whoRows = Object.entries(g.byWho).filter(([k,v]) => v > 0 || (WHO_OPTS[k] && v >= 0)).map(([k, v]) => `
       <div class="ov-row">
-        <div class="ov-label"><span class="badge b-ss">S&amp;S Total</span></div>
-        <div class="ov-val" style="color:var(--ss)">₹${fmtNum(g.ssTotal)}</div>
+        <div class="ov-label"><span class="badge ${WHO_OPTS[k]?.badge || 'b-ss'}">${WHO_OPTS[k]?.label || k.toUpperCase()}</span></div>
+        <div class="ov-val">₹${fmtNum(v)}</div>
       </div>
+    `).join('');
+
+    const methodRows = Object.entries(g.byMethod).filter(([k,v]) => v > 0).map(([k, v]) => `
+      <div class="ov-row">
+        <div class="ov-label" style="font-size:0.7rem;color:var(--muted)">via ${PAY_OPTS[k]?.label || k || 'Unknown'}</div>
+        <div class="ov-val" style="font-size:0.7rem">₹${fmtNum(v)}</div>
+      </div>
+    `).join('');
+
+    whoEl.innerHTML = whoRows + `<div style="margin:0.5rem 0;border-top:1px dashed var(--border)"></div>` + methodRows + `
       <div class="ov-row" style="margin-top:0.3rem;padding-top:0.5rem;border-top:1px solid var(--border2)">
         <div class="ov-label">Budget Remaining</div>
-        <div class="ov-val" style="color:${g.ssTotal > SS_BUDGET ? 'var(--red)' : 'var(--green)'}">₹${fmtNum(SS_BUDGET - g.ssTotal)}</div>
+        <div class="ov-val" style="color:${g.grandTotal > SS_BUDGET ? 'var(--red)' : 'var(--green)'}">₹${fmtNum(SS_BUDGET - g.grandTotal)}</div>
       </div>
     `;
   }
@@ -1095,7 +1133,7 @@ function renderOverview(g) {
       <div class="ov-row">
         <div class="ov-label" style="flex-direction:column;align-items:flex-start;gap:0.1rem">
           <span>${escHtml(e.desc || '—')}</span>
-          <span style="font-size:0.65rem;color:var(--muted)">${e.dayTitle}</span>
+          <span style="font-size:0.65rem;color:var(--muted)">${e.dayTitle} ${e.who ? '· '+ (WHO_OPTS[e.who]?.label || e.who) : ''}</span>
         </div>
         <div class="ov-val" style="font-family:var(--mono)">₹${fmtNum(e.amtNum)}</div>
       </div>
@@ -1159,13 +1197,15 @@ function switchTab(id) {
 // EXPORT CSV
 // ─────────────────────────────────────────────
 function exportCSV() {
-  const rows = [['Day','Date','Phase','Description','Category','Amount']];
+  const rows = [['Day','Date','Phase','Description','Category','Paid By','Paid Using','Amount']];
   DAYS.forEach(day => {
     (state.entries[day.id] || []).forEach(e => {
       const amt = parseFloat(e.amount) || 0;
       rows.push([
         day.label, day.date, day.phase,
         e.desc||'', CATS[e.cat]?.label||e.cat,
+        WHO_OPTS[e.who]?.label||e.who||'',
+        PAY_OPTS[e.paid_using]?.label||e.paid_using||'',
         amt
       ]);
     });

@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS entries (
   day_id      TEXT    NOT NULL,
   description TEXT    NOT NULL DEFAULT '',
   category    TEXT    NOT NULL DEFAULT 'food',
-  who         TEXT    NOT NULL DEFAULT 'ss',
+  who         TEXT    NOT NULL DEFAULT '',
+  paid_using  TEXT    NOT NULL DEFAULT '',
   amount      REAL    NOT NULL DEFAULT 0,
   created_at  INTEGER NOT NULL DEFAULT (unixepoch())
 );

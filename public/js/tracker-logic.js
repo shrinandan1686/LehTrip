@@ -41,113 +41,120 @@ const CATS = {
 };
 
 const WHO_OPTS = {
-  ss: { label:'S&S', badge:'b-ss' },
+  shrinandan:  { label:'Shrinandan', badge:'b-sn' },
+  shubhashree: { label:'Shubhashree', badge:'b-sh' },
+};
+
+const PAY_OPTS = {
+  cc:   { label:'Credit Card' },
+  upi:  { label:'UPI' },
+  cash: { label:'Cash' },
 };
 
 const SS_BUDGET = 195577; // S&S total: Fuel+Stay+Food+Tolls+Sightseeing+CarPrep (excl. ₹15k emergency buffer)
 
 const PREP_EXPENSE_TEMPLATES = [
   // Checklist: Documents
-  { desc:'[Documents] Vehicle RC Book', cat:'misc', who:'ss' },
-  { desc:'[Documents] Vehicle Insurance', cat:'misc', who:'ss' },
-  { desc:'[Documents] Shrinandan Driving License', cat:'misc', who:'ss' },
-  { desc:'[Documents] Both Aadhar Cards (x6 copies each)', cat:'misc', who:'ss' },
-  { desc:'[Documents] Ladakh Environment Fee paid (lahdclehpermit.in)', cat:'misc', who:'ss' },
-  { desc:'[Documents] EDF receipt printed x2 (one per person)', cat:'misc', who:'ss' },
-  { desc:'[Documents] Travel Insurance for S&S (both)', cat:'misc', who:'ss' },
-  { desc:'[Documents] All hotel bookings confirmed and printed', cat:'misc', who:'ss' },
-  { desc:'[Documents] Emergency contacts list (both phones)', cat:'misc', who:'ss' },
+  { desc:'[Documents] Vehicle RC Book', cat:'misc', who:'' },
+  { desc:'[Documents] Vehicle Insurance', cat:'misc', who:'' },
+  { desc:'[Documents] Shrinandan Driving License', cat:'misc', who:'' },
+  { desc:'[Documents] Both Aadhar Cards (x6 copies each)', cat:'misc', who:'' },
+  { desc:'[Documents] Ladakh Environment Fee paid (lahdclehpermit.in)', cat:'misc', who:'' },
+  { desc:'[Documents] EDF receipt printed x2 (one per person)', cat:'misc', who:'' },
+  { desc:'[Documents] Travel Insurance for S&S (both)', cat:'misc', who:'' },
+  { desc:'[Documents] All hotel bookings confirmed and printed', cat:'misc', who:'' },
+  { desc:'[Documents] Emergency contacts list (both phones)', cat:'misc', who:'' },
 
   // Checklist: Medical kit
-  { desc:'[Medical] Diamox (acetazolamide) doctor prescription', cat:'misc', who:'ss' },
-  { desc:'[Medical] ORS sachets (x20 min)', cat:'misc', who:'ss' },
-  { desc:'[Medical] Ibuprofen / Paracetamol', cat:'misc', who:'ss' },
-  { desc:'[Medical] Antacids (Digene / Gelusil)', cat:'misc', who:'ss' },
-  { desc:'[Medical] Antiemetic (Domperidone)', cat:'misc', who:'ss' },
-  { desc:'[Medical] Antiseptic cream + bandages', cat:'misc', who:'ss' },
-  { desc:'[Medical] Sunscreen SPF 50+ (UV extreme at altitude)', cat:'misc', who:'ss' },
-  { desc:'[Medical] Lip balm with SPF', cat:'misc', who:'ss' },
-  { desc:'[Medical] Eye drops (dry eyes at altitude)', cat:'misc', who:'ss' },
-  { desc:'[Medical] Pulse oximeter (AMS early detection)', cat:'misc', who:'ss' },
+  { desc:'[Medical] Diamox (acetazolamide) doctor prescription', cat:'misc', who:'' },
+  { desc:'[Medical] ORS sachets (x20 min)', cat:'misc', who:'' },
+  { desc:'[Medical] Ibuprofen / Paracetamol', cat:'misc', who:'' },
+  { desc:'[Medical] Antacids (Digene / Gelusil)', cat:'misc', who:'' },
+  { desc:'[Medical] Antiemetic (Domperidone)', cat:'misc', who:'' },
+  { desc:'[Medical] Antiseptic cream + bandages', cat:'misc', who:'' },
+  { desc:'[Medical] Sunscreen SPF 50+ (UV extreme at altitude)', cat:'misc', who:'' },
+  { desc:'[Medical] Lip balm with SPF', cat:'misc', who:'' },
+  { desc:'[Medical] Eye drops (dry eyes at altitude)', cat:'misc', who:'' },
+  { desc:'[Medical] Pulse oximeter (AMS early detection)', cat:'misc', who:'' },
 
   // Checklist: Car prep
-  { desc:'[Car Prep] Full service at Mahindra service center (Chandigarh)', cat:'misc', who:'ss' },
-  { desc:'[Car Prep] Engine oil changed', cat:'misc', who:'ss' },
-  { desc:'[Car Prep] Brake pads checked', cat:'misc', who:'ss' },
-  { desc:'[Car Prep] All tyre pressure checked (incl. spare)', cat:'misc', who:'ss' },
-  { desc:'[Car Prep] Coolant level full', cat:'misc', who:'ss' },
-  { desc:'[Car Prep] 10L diesel jerry can packed', cat:'misc', who:'ss' },
-  { desc:'[Car Prep] Tow rope', cat:'misc', who:'ss' },
-  { desc:'[Car Prep] Jumper cables', cat:'misc', who:'ss' },
-  { desc:'[Car Prep] Puncture repair kit', cat:'misc', who:'ss' },
-  { desc:'[Car Prep] Windshield washer fluid (mountain dust)', cat:'misc', who:'ss' },
-  { desc:'[Car Prep] Phone mount for dashboard', cat:'misc', who:'ss' },
-  { desc:'[Car Prep] Power bank (x2 for S&S)', cat:'misc', who:'ss' },
+  { desc:'[Car Prep] Full service at Mahindra service center (Chandigarh)', cat:'misc', who:'' },
+  { desc:'[Car Prep] Engine oil changed', cat:'misc', who:'' },
+  { desc:'[Car Prep] Brake pads checked', cat:'misc', who:'' },
+  { desc:'[Car Prep] All tyre pressure checked (incl. spare)', cat:'misc', who:'' },
+  { desc:'[Car Prep] Coolant level full', cat:'misc', who:'' },
+  { desc:'[Car Prep] 10L diesel jerry can packed', cat:'misc', who:'' },
+  { desc:'[Car Prep] Tow rope', cat:'misc', who:'' },
+  { desc:'[Car Prep] Jumper cables', cat:'misc', who:'' },
+  { desc:'[Car Prep] Puncture repair kit', cat:'misc', who:'' },
+  { desc:'[Car Prep] Windshield washer fluid (mountain dust)', cat:'misc', who:'' },
+  { desc:'[Car Prep] Phone mount for dashboard', cat:'misc', who:'' },
+  { desc:'[Car Prep] Power bank (x2 for S&S)', cat:'misc', who:'' },
 
   // Checklist: Food supply
-  { desc:'[Food Supply] MTR/Haldiram instant food pouches (x20)', cat:'food', who:'ss' },
-  { desc:'[Food Supply] Maggi noodles (x20 packets)', cat:'food', who:'ss' },
-  { desc:'[Food Supply] Mixed dry fruits and nuts (2 kg)', cat:'food', who:'ss' },
-  { desc:'[Food Supply] Energy/protein bars (x30)', cat:'food', who:'ss' },
-  { desc:'[Food Supply] Glucose biscuits / Marie biscuits', cat:'food', who:'ss' },
-  { desc:'[Food Supply] Electrolyte powder / Glucon-D', cat:'food', who:'ss' },
-  { desc:'[Food Supply] Steel thermos flask x2', cat:'food', who:'ss' },
-  { desc:'[Food Supply] 2L water bottles per person (minimum)', cat:'food', who:'ss' },
-  { desc:'[Food Supply] Pickle sachets / chutney packets', cat:'food', who:'ss' },
+  { desc:'[Food Supply] MTR/Haldiram instant food pouches (x20)', cat:'food', who:'' },
+  { desc:'[Food Supply] Maggi noodles (x20 packets)', cat:'food', who:'' },
+  { desc:'[Food Supply] Mixed dry fruits and nuts (2 kg)', cat:'food', who:'' },
+  { desc:'[Food Supply] Energy/protein bars (x30)', cat:'food', who:'' },
+  { desc:'[Food Supply] Glucose biscuits / Marie biscuits', cat:'food', who:'' },
+  { desc:'[Food Supply] Electrolyte powder / Glucon-D', cat:'food', who:'' },
+  { desc:'[Food Supply] Steel thermos flask x2', cat:'food', who:'' },
+  { desc:'[Food Supply] 2L water bottles per person (minimum)', cat:'food', who:'' },
+  { desc:'[Food Supply] Pickle sachets / chutney packets', cat:'food', who:'' },
 
   // Checklist: Tech and connectivity
-  { desc:'[Tech] Download Google Maps offline: Entire route', cat:'misc', who:'ss' },
-  { desc:'[Tech] Download Maps.me offline (better for remote areas)', cat:'misc', who:'ss' },
-  { desc:'[Tech] Jio SIM (best coverage in J&K and Ladakh)', cat:'misc', who:'ss' },
-  { desc:'[Tech] BSNL SIM (fallback for remote areas)', cat:'misc', who:'ss' },
-  { desc:'[Tech] Car charger (dual USB + Type C)', cat:'misc', who:'ss' },
-  { desc:'[Tech] Power banks x2 (20,000 mAh each)', cat:'misc', who:'ss' },
-  { desc:'[Tech] WFH laptop + portable WiFi hotspot', cat:'misc', who:'ss' },
-  { desc:'[Tech] Walkie talkie (optional, useful at passes)', cat:'misc', who:'ss' },
+  { desc:'[Tech] Download Google Maps offline: Entire route', cat:'misc', who:'' },
+  { desc:'[Tech] Download Maps.me offline (better for remote areas)', cat:'misc', who:'' },
+  { desc:'[Tech] Jio SIM (best coverage in J&K and Ladakh)', cat:'misc', who:'' },
+  { desc:'[Tech] BSNL SIM (fallback for remote areas)', cat:'misc', who:'' },
+  { desc:'[Tech] Car charger (dual USB + Type C)', cat:'misc', who:'' },
+  { desc:'[Tech] Power banks x2 (20,000 mAh each)', cat:'misc', who:'' },
+  { desc:'[Tech] WFH laptop + portable WiFi hotspot', cat:'misc', who:'' },
+  { desc:'[Tech] Walkie talkie (optional, useful at passes)', cat:'misc', who:'' },
 
   // Packing: Clothing
-  { desc:'[Packing: Clothing] Thermal base layer (top + bottom x2)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Clothing] Fleece mid-layer jacket', cat:'misc', who:'ss' },
-  { desc:'[Packing: Clothing] Windproof/waterproof outer jacket', cat:'misc', who:'ss' },
-  { desc:'[Packing: Clothing] T-shirts (x4 light)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Clothing] Trek pants / cargo pants (x2)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Clothing] Warm socks (x5 pairs, wool preferred)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Clothing] Gloves (windproof)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Clothing] Woolen cap / beanie', cat:'misc', who:'ss' },
-  { desc:'[Packing: Clothing] Neck gaiter / balaclava', cat:'misc', who:'ss' },
-  { desc:'[Packing: Clothing] UV-protective sunglasses (must)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Clothing] Comfortable shoes / trail runners', cat:'misc', who:'ss' },
-  { desc:'[Packing: Clothing] Flip flops / sandals (for hotels)', cat:'misc', who:'ss' },
+  { desc:'[Packing: Clothing] Thermal base layer (top + bottom x2)', cat:'misc', who:'' },
+  { desc:'[Packing: Clothing] Fleece mid-layer jacket', cat:'misc', who:'' },
+  { desc:'[Packing: Clothing] Windproof/waterproof outer jacket', cat:'misc', who:'' },
+  { desc:'[Packing: Clothing] T-shirts (x4 light)', cat:'misc', who:'' },
+  { desc:'[Packing: Clothing] Trek pants / cargo pants (x2)', cat:'misc', who:'' },
+  { desc:'[Packing: Clothing] Warm socks (x5 pairs, wool preferred)', cat:'misc', who:'' },
+  { desc:'[Packing: Clothing] Gloves (windproof)', cat:'misc', who:'' },
+  { desc:'[Packing: Clothing] Woolen cap / beanie', cat:'misc', who:'' },
+  { desc:'[Packing: Clothing] Neck gaiter / balaclava', cat:'misc', who:'' },
+  { desc:'[Packing: Clothing] UV-protective sunglasses (must)', cat:'misc', who:'' },
+  { desc:'[Packing: Clothing] Comfortable shoes / trail runners', cat:'misc', who:'' },
+  { desc:'[Packing: Clothing] Flip flops / sandals (for hotels)', cat:'misc', who:'' },
 
   // Packing: Accessories and gear
-  { desc:'[Packing: Gear] Headlamp + spare batteries', cat:'misc', who:'ss' },
-  { desc:'[Packing: Gear] Day pack / small backpack', cat:'misc', who:'ss' },
-  { desc:'[Packing: Gear] Waterproof stuff sacks', cat:'misc', who:'ss' },
-  { desc:'[Packing: Gear] Travel towel (quick dry)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Gear] Toilet paper + wet wipes (xlots)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Gear] Hand sanitizer x4', cat:'misc', who:'ss' },
-  { desc:'[Packing: Gear] Swiss army knife / multi-tool', cat:'misc', who:'ss' },
-  { desc:'[Packing: Gear] Duct tape (fixes everything)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Gear] Ziplock bags (various sizes)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Gear] Torch / flashlight', cat:'misc', who:'ss' },
+  { desc:'[Packing: Gear] Headlamp + spare batteries', cat:'misc', who:'' },
+  { desc:'[Packing: Gear] Day pack / small backpack', cat:'misc', who:'' },
+  { desc:'[Packing: Gear] Waterproof stuff sacks', cat:'misc', who:'' },
+  { desc:'[Packing: Gear] Travel towel (quick dry)', cat:'misc', who:'' },
+  { desc:'[Packing: Gear] Toilet paper + wet wipes (xlots)', cat:'misc', who:'' },
+  { desc:'[Packing: Gear] Hand sanitizer x4', cat:'misc', who:'' },
+  { desc:'[Packing: Gear] Swiss army knife / multi-tool', cat:'misc', who:'' },
+  { desc:'[Packing: Gear] Duct tape (fixes everything)', cat:'misc', who:'' },
+  { desc:'[Packing: Gear] Ziplock bags (various sizes)', cat:'misc', who:'' },
+  { desc:'[Packing: Gear] Torch / flashlight', cat:'misc', who:'' },
 
   // Packing: Photography
-  { desc:'[Packing: Photography] Camera + extra batteries', cat:'misc', who:'ss' },
-  { desc:'[Packing: Photography] Extra memory cards (x4 min)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Photography] Tripod / flexible gorilla pod', cat:'misc', who:'ss' },
-  { desc:'[Packing: Photography] UV filter (extreme UV at altitude)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Photography] Lens cleaning kit', cat:'misc', who:'ss' },
-  { desc:'[Packing: Photography] Phone full storage cleared', cat:'misc', who:'ss' },
-  { desc:'[Packing: Photography] Drone (if experienced pilot)', cat:'misc', who:'ss' },
+  { desc:'[Packing: Photography] Camera + extra batteries', cat:'misc', who:'' },
+  { desc:'[Packing: Photography] Extra memory cards (x4 min)', cat:'misc', who:'' },
+  { desc:'[Packing: Photography] Tripod / flexible gorilla pod', cat:'misc', who:'' },
+  { desc:'[Packing: Photography] UV filter (extreme UV at altitude)', cat:'misc', who:'' },
+  { desc:'[Packing: Photography] Lens cleaning kit', cat:'misc', who:'' },
+  { desc:'[Packing: Photography] Phone full storage cleared', cat:'misc', who:'' },
+  { desc:'[Packing: Photography] Drone (if experienced pilot)', cat:'misc', who:'' },
 
   // Packing: Toiletries
-  { desc:'[Packing: Toiletries] Toothbrush + toothpaste', cat:'misc', who:'ss' },
-  { desc:'[Packing: Toiletries] Soap / body wash (travel size)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Toiletries] Shampoo (travel size)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Toiletries] Moisturizer (skin gets very dry at altitude)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Toiletries] Sunscreen SPF 50+ (large tube)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Toiletries] Lip balm with SPF (pack x3)', cat:'misc', who:'ss' },
-  { desc:'[Packing: Toiletries] Feminine hygiene supplies as needed', cat:'misc', who:'ss' },
+  { desc:'[Packing: Toiletries] Toothbrush + toothpaste', cat:'misc', who:'' },
+  { desc:'[Packing: Toiletries] Soap / body wash (travel size)', cat:'misc', who:'' },
+  { desc:'[Packing: Toiletries] Shampoo (travel size)', cat:'misc', who:'' },
+  { desc:'[Packing: Toiletries] Moisturizer (skin gets very dry at altitude)', cat:'misc', who:'' },
+  { desc:'[Packing: Toiletries] Sunscreen SPF 50+ (large tube)', cat:'misc', who:'' },
+  { desc:'[Packing: Toiletries] Lip balm with SPF (pack x3)', cat:'misc', who:'' },
+  { desc:'[Packing: Toiletries] Feminine hygiene supplies as needed', cat:'misc', who:'' },
 ];
 
 // ─────────────────────────────────────────────
@@ -161,14 +168,21 @@ function calcDayTotals(dayId, stateEntries) {
     const amt = parseFloat(e.amount) || 0;
     total += amt;
   });
-  return { ssTotal: Math.round(total), total: Math.round(total) };
+  return { total: Math.round(total) };
 }
 
 function calcGlobalTotals(stateEntries) {
   let grandTotal = 0;
   const byCat = {};
+  const byWho = {};
+  const byMethod = {};
   const allEntries = [];
+
   Object.keys(CATS).forEach(k => byCat[k] = 0);
+  Object.keys(WHO_OPTS).forEach(k => byWho[k] = 0);
+  Object.keys(PAY_OPTS).forEach(k => byMethod[k] = 0);
+  // Also handle 'ss' if it exists in data
+  byWho['ss'] = 0;
 
   DAYS.forEach(day => {
     (stateEntries[day.id] || []).forEach(e => {
@@ -176,14 +190,17 @@ function calcGlobalTotals(stateEntries) {
       if (!amt) return;
       grandTotal += amt;
       byCat[e.cat] = (byCat[e.cat] || 0) + amt;
+      byWho[e.who] = (byWho[e.who] || 0) + amt;
+      byMethod[e.paid_using] = (byMethod[e.paid_using] || 0) + amt;
       allEntries.push({...e, dayTitle: day.title, dayId: day.id, amtNum: amt});
     });
   });
 
   return {
-    ssTotal: Math.round(grandTotal),
     grandTotal: Math.round(grandTotal),
     byCat,
+    byWho,
+    byMethod,
     allEntries: allEntries.sort((a,b) => b.amtNum - a.amtNum),
     count: allEntries.length
   };
