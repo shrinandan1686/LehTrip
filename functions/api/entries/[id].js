@@ -7,11 +7,12 @@ export async function onRequestPut({ request, env, params }) {
     const { id } = params;
 
     await env.DB.prepare(
-      'UPDATE entries SET description=?, category=?, who=?, amount=? WHERE id=?'
+      'UPDATE entries SET description=?, category=?, who=?, paid_using=?, amount=? WHERE id=?'
     ).bind(
       entry.desc   || '',
       entry.cat    || 'food',
-      entry.who    || 'ss',
+      entry.who    || '',
+      entry.paid_using || '',
       parseFloat(entry.amount) || 0,
       id,
     ).run();

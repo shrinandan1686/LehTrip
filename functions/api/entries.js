@@ -9,7 +9,7 @@ export async function onRequestPost({ request, env }) {
     if (!payload.length) throw new Error('Missing entry payload');
 
     const stmt = env.DB.prepare(
-      'INSERT INTO entries (id, day_id, description, category, who, amount) VALUES (?, ?, ?, ?, ?, ?)'
+      'INSERT INTO entries (id, day_id, description, category, who, paid_using, amount) VALUES (?, ?, ?, ?, ?, ?, ?)'
     );
 
     if (payload.length === 1) {
@@ -19,7 +19,8 @@ export async function onRequestPost({ request, env }) {
         dayId,
         row.desc || '',
         row.cat || 'food',
-        row.who || 'ss',
+        row.who || '',
+        row.paid_using || '',
         parseFloat(row.amount) || 0,
       ).run();
     } else {
@@ -28,7 +29,8 @@ export async function onRequestPost({ request, env }) {
         dayId,
         row.desc || '',
         row.cat || 'food',
-        row.who || 'ss',
+        row.who || '',
+        row.paid_using || '',
         parseFloat(row.amount) || 0,
       ));
       await env.DB.batch(batch);
