@@ -23,12 +23,13 @@ const DAYS = [
   { id:'g9',  label:'G9',     title:'Hanle → Tso Moriri',            date:'Mon Jun 1',   phase:'group', budget:{ fuel:670,  food:800, stay:3500, act:0, misc:0 } },
   { id:'g10', label:'G10',    title:'Tso Moriri → Jispa',            date:'Tue Jun 2',   phase:'group', budget:{ fuel:3000, food:800, stay:3500, act:0, misc:0 } },
   { id:'g11', label:'G11',    title:'Jispa → Manali',                date:'Wed Jun 3',   phase:'group', budget:{ fuel:1580, food:1000,stay:4000, act:0, misc:0 } },
-  // Phase 4: Solo return (shifted by 1 day after updated Phase 3)
-  { id:'s1',  label:'P4-1',   title:'Manali Rest Day',               date:'Thu Jun 4',   phase:'wfh',   budget:{ fuel:0,    food:800, stay:2500, act:0, misc:0 } },
-  { id:'s2',  label:'P4-2',   title:'Manali WFH Base',               date:'Jun 5-12',    phase:'wfh',   budget:{ fuel:1000, food:8000,stay:22500,act:200, misc:0 } },
-  { id:'s3',  label:'P4-3',   title:'Manali → Chandigarh',           date:'Sat Jun 13',  phase:'solo',  budget:{ fuel:2449, food:600, stay:2000, act:0, misc:0 } },
-  { id:'s4',  label:'P4-4',   title:'Chandigarh → Nagpur',           date:'Sun Jun 14',  phase:'solo',  budget:{ fuel:8216, food:600, stay:2000, act:0, misc:0 } },
-  { id:'s5',  label:'P4-5',   title:'Nagpur → Bangalore',            date:'Mon Jun 15',  phase:'solo',  budget:{ fuel:6952, food:600, stay:0,    act:0, misc:0 } },
+  // Phase 4: Solo return
+  { id:'s1',  label:'P4-1',   title:'Manali WFH Base',               date:'Jun 4-9',     phase:'wfh',   budget:{ fuel:0,    food:5000,stay:12500,act:0, misc:0 } },
+  { id:'s2',  label:'P4-2',   title:'Manali → Chandigarh',           date:'Wed Jun 10',  phase:'solo',  budget:{ fuel:2449, food:600, stay:2000, act:0, misc:0 } },
+  { id:'s3',  label:'P4-3',   title:'Chandigarh → Jaipur',           date:'Thu Jun 11',  phase:'solo',  budget:{ fuel:3500, food:600, stay:2000, act:0, misc:0 } },
+  { id:'s4',  label:'P4-4',   title:'Jaipur → Ujjain',               date:'Fri Jun 12',  phase:'solo',  budget:{ fuel:4000, food:600, stay:2000, act:0, misc:0 } },
+  { id:'s5',  label:'P4-5',   title:'Ujjain → Solapur',              date:'Sat Jun 13',  phase:'solo',  budget:{ fuel:5000, food:600, stay:2000, act:0, misc:0 } },
+  { id:'s6',  label:'P4-6',   title:'Solapur → Bangalore 🏁',         date:'Sun Jun 14',  phase:'solo',  budget:{ fuel:4500, food:600, stay:0,    act:0, misc:0 } },
 ];
 
 const CATS = {

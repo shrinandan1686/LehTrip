@@ -1483,7 +1483,7 @@
   (function() {
     // Trip itinerary: id → {title, date, altitudeM}
     const TRIP_START = new Date('2026-05-15T04:00:00+05:30');
-    const TRIP_END   = new Date('2026-06-15T20:00:00+05:30');
+    const TRIP_END   = new Date('2026-06-14T20:00:00+05:30');
     const SS_TOTAL   = 195577;
 
     const DAY_MAP = [
@@ -1502,12 +1502,13 @@
       { from:'2026-05-31', to:'2026-05-31', title:'Hanle → Umling La (5,798m) → Hanle', alt:5798 },
       { from:'2026-06-01', to:'2026-06-01', title:'Hanle → Tso Moriri', alt:4522 },
       { from:'2026-06-02', to:'2026-06-02', title:'Tso Moriri → Jispa', alt:3200 },
-      { from:'2026-06-03', to:'2026-06-03', title:'Jispa → Manali', alt:2050 },
-      { from:'2026-06-04', to:'2026-06-04', title:'Manali Rest & Recover', alt:2050 },
-      { from:'2026-06-05', to:'2026-06-12', title:'WFH Base: Manali', alt:2050 },
-      { from:'2026-06-13', to:'2026-06-13', title:'Manali → Chandigarh', alt:321 },
-      { from:'2026-06-14', to:'2026-06-14', title:'Chandigarh → Nagpur', alt:310 },
-      { from:'2026-06-15', to:'2026-06-15', title:'Nagpur → Bangalore 🏁', alt:920 },
+      { from:'2026-06-03', to:'2026-06-03', title:'Jispa → Manali (Rest)', alt:2050 },
+      { from:'2026-06-04', to:'2026-06-09', title:'WFH Base: Manali', alt:2050 },
+      { from:'2026-06-10', to:'2026-06-10', title:'Manali → Chandigarh', alt:321 },
+      { from:'2026-06-11', to:'2026-06-11', title:'Chandigarh → Jaipur', alt:431 },
+      { from:'2026-06-12', to:'2026-06-12', title:'Jaipur → Ujjain', alt:492 },
+      { from:'2026-06-13', to:'2026-06-13', title:'Ujjain → Solapur', alt:481 },
+      { from:'2026-06-14', to:'2026-06-14', title:'Solapur → Bangalore 🏁', alt:920 },
     ];
 
     function todayIST() {
@@ -1962,128 +1963,152 @@
           <div class="day-num-circle">P4-1</div>
         </div>
         <div class="day-body">
-          <div class="day-date">Wednesday, June 3rd</div>
-          <div class="day-title">Manali — Rest & Recover</div>
+          <div class="day-date">Wednesday, June 3rd (Afternoon)</div>
+          <div class="day-title">Manali — Check-in & Rest</div>
           <div class="day-meta">
             <span class="day-tag tag-leave">🌿 Rest Day</span>
           </div>
           <ul class="day-stops">
-            <li>Arrived late last night after the long Hanle → Manali drive</li>
-            <li>Slow morning — sleep in, proper breakfast</li>
-            <li>Walk Old Manali, Manu Temple, Mall Road</li>
-            <li>Explore cafes for best WFH spots with reliable WiFi</li>
+            <li>Arrive in Manali from Jispa by 2 PM</li>
+            <li>Check into WFH base / Homestay</li>
+            <li>Afternoon: Rest and recover from the high-altitude circuit</li>
+            <li>Evening: Walk Old Manali or Mall Road</li>
           </ul>
           <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Manali WFH stay — Check-in June 3 · Checkout June 13 · 10 nights · 1
-            room · Confirm fast WiFi,
-            minimum 10 Mbps upload
+            ★ <strong>Needs Action:</strong> Book Manali WFH stay — Check-in June 3 · Checkout June 10 · 7 nights · 1 room · Confirm fast WiFi (10 Mbps upload)
           </div>
         </div>
       </div>
+
       <div class="day-card">
         <div class="day-num">
           <div class="day-num-circle">P4-2</div>
         </div>
         <div class="day-body">
-          <div class="day-date">June 5th – 12th (Fri → Fri)</div>
+          <div class="day-date">June 4th – June 9th (Thu → Tue)</div>
           <div class="day-title">WFH Base: Manali</div>
           <div class="day-meta">
-            <span class="day-tag tag-wfh">💻 WFH</span>
-            <span class="day-tag tag-explore">🏔️ 8 Days</span>
+            <span class="day-tag tag-wfh">💻 WFH Days</span>
+            <span class="day-tag tag-explore">🏔️ 6 Days</span>
           </div>
           <ul class="day-stops">
-            <li><strong>Weekdays (Jun 5, 8–12):</strong> Work from Manali — cafes, guesthouses, or resort with WiFi
-            </li>
-            <li><strong>Weekend (Jun 6–7):</strong> Explore nearby — Solang Valley, Rohtang (day trip), Hampta Pass
-              trek, Beas Kund, Naggar Castle (22 km), Kasol (75 km)</li>
-            <li>Veg food excellent here — plenty of South Indian options too</li>
-            <li>Stock up on dry fruits, Himachali apple jam, woolens before leaving</li>
+            <li>Full WFH mode from Manali homestay / cafes</li>
+            <li>Explore cafes in Old Manali (Drifters, Dylan's, etc.)</li>
+            <li>Weekend (Jun 6-7): Nearby exploration if energy allows</li>
           </ul>
-          <div class="day-tip" style="background:#eef6fc;color:#2c5282;border-color:#bee3f8;margin-top:0.8rem">
-            💡 <strong>Note:</strong> Manali is at 2,050m — very comfortable after weeks at altitude. Great base for a
-            working week with stunning views.
-          </div>
         </div>
       </div>
+
       <div class="day-card">
         <div class="day-num">
           <div class="day-num-circle">P4-3</div>
         </div>
         <div class="day-body">
-          <div class="day-date">Saturday, June 13th</div>
+          <div class="day-date">Wednesday, June 10th</div>
           <div class="day-title">Manali → Chandigarh</div>
           <div class="day-meta">
             <span class="day-tag tag-km">📍 ~310 km</span>
-            <span class="day-tag tag-drive">🚗 7–8 hrs</span>
-            <span class="day-tag" style="background:#e8f4f8;color:var(--glacier)">⏰ Depart 5:00 AM</span>
+            <span class="day-tag tag-drive">🚗 Afternoon Leave</span>
           </div>
           <ul class="day-stops">
-            <li><strong>5:00 AM:</strong> Depart Manali — down the Kullu Valley (NH3)</li>
-            <li><strong>7:00 AM:</strong> Kullu — quick breakfast stop</li>
-            <li><strong>9:00 AM:</strong> Bilaspur / Kiratpur — join NH44 expressway</li>
-            <li><strong>12:00 PM:</strong> Chandigarh — lunch, fuel up completely</li>
-            <li>Afternoon: rest, car check, confirm tyre pressures for long highway run</li>
+            <li>Work in the morning from Manali</li>
+            <li><strong>Afternoon:</strong> Start drive to Chandigarh (NH3)</li>
+            <li>Late evening arrival in Chandigarh & overnight stay</li>
           </ul>
           <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Chandigarh stay (return) — Check-in June 12 · Checkout June 13 · 1
-            night · 1 room
+            ★ <strong>Needs Action:</strong> Book Chandigarh stay — Check-in June 10 · Checkout June 11 · 1 night
           </div>
         </div>
       </div>
+
       <div class="day-card">
         <div class="day-num">
           <div class="day-num-circle">P4-4</div>
         </div>
         <div class="day-body">
-          <div class="day-date">Sunday, June 14th</div>
-          <div class="day-title">Chandigarh → Agra → Nagpur</div>
+          <div class="day-date">Thursday, June 11th</div>
+          <div class="day-title">Chandigarh → Jaipur</div>
           <div class="day-meta">
-            <span class="day-tag tag-km">📍 ~1,100 km</span>
-            <span class="day-tag tag-drive">🚗 13–14 hrs</span>
-            <span class="day-tag" style="background:#e8f4f8;color:var(--glacier)">⏰ Depart 4:00 AM</span>
+            <span class="day-tag tag-km">📍 ~460 km</span>
+            <span class="day-tag tag-drive">🚗 Afternoon Leave</span>
           </div>
           <ul class="day-stops">
-            <li><strong>4:00 AM:</strong> Depart Chandigarh — NH44 south, skip Delhi entirely</li>
-            <li><strong>7:30 AM:</strong> Agra bypass via Yamuna Expressway — no city entry needed</li>
-            <li><strong>10:00 AM:</strong> Gwalior area — breakfast / fuel</li>
-            <li><strong>1:00 PM:</strong> Bhopal bypass (NH46)</li>
-            <li><strong>6:00 PM:</strong> Nagpur — overnight stay</li>
+            <li>Morning in Chandigarh (WFH / Chilling)</li>
+            <li><strong>Afternoon:</strong> Drive to Jaipur via Trans-Haryana Expressway (NH152D)</li>
+            <li>Arrival in Jaipur late evening & dinner</li>
           </ul>
-          <div class="day-tip" style="background:#eef6fc;color:#2c5282;border-color:#bee3f8;margin-top:0.8rem">
-            💡 <strong>Note:</strong> Delhi completely avoided — Yamuna Expressway from Agra bypass keeps you on smooth
-            road the whole way south.
-          </div>
           <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Nagpur stay (return) — Check-in June 13 · Checkout June 14 · 1 night ·
-            1 room
+            ★ <strong>Needs Action:</strong> Book Jaipur stay — Check-in June 11 · Checkout June 12 · 1 night
           </div>
         </div>
       </div>
+
       <div class="day-card">
         <div class="day-num">
           <div class="day-num-circle">P4-5</div>
         </div>
         <div class="day-body">
-          <div class="day-date">Monday, June 15th</div>
-          <div class="day-title">Nagpur → Bangalore 🏁</div>
+          <div class="day-date">Friday, June 12th</div>
+          <div class="day-title">Jaipur → Ujjain (MP)</div>
           <div class="day-meta">
-            <span class="day-tag tag-km">📍 ~890 km</span>
-            <span class="day-tag tag-drive">🚗 12–13 hrs</span>
-            <span class="day-tag" style="background:#e8f4f8;color:var(--glacier)">⏰ Depart 4:00 AM</span>
+            <span class="day-tag tag-km">📍 ~520 km</span>
+            <span class="day-tag tag-drive">🚗 Afternoon Leave</span>
           </div>
           <ul class="day-stops">
-            <li><strong>4:00 AM:</strong> Depart Nagpur — NH44 south</li>
-            <li><strong>8:00 AM:</strong> Hyderabad bypass — fuel + breakfast</li>
-            <li><strong>12:00 PM:</strong> Kurnool area</li>
-            <li><strong>4:00 PM:</strong> Anantapur</li>
-            <li><strong>6:00–7:00 PM:</strong> 🏠 Bangalore — HOME. Sunday night. Office Monday June 15 ✅</li>
+            <li>Morning in Jaipur (Sightseeing / Work)</li>
+            <li><strong>Afternoon:</strong> Drive to Ujjain (via NH52)</li>
+            <li>Stay the night in Ujjain</li>
           </ul>
-          <div class="day-tip" style="background:#e8f8e8;color:#276749;border-color:#9ae6b4;margin-top:0.8rem">
-            🎉 <strong>Trip Complete!</strong> ~9,000 km. Every pass climbed. World's highest road done. Sunday night
-            home — Monday morning office ✅. What a trip.
+          <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
+            ★ <strong>Needs Action:</strong> Book Ujjain stay — Check-in June 12 · Checkout June 13 · 1 night
           </div>
         </div>
       </div>
+
+      <div class="day-card">
+        <div class="day-num">
+          <div class="day-num-circle">P4-6</div>
+        </div>
+        <div class="day-body">
+          <div class="day-date">Saturday, June 13th</div>
+          <div class="day-title">Ujjain → Solapur</div>
+          <div class="day-meta">
+            <span class="day-tag tag-km">📍 ~720 km</span>
+            <span class="day-tag tag-drive">🚗 Full Day Drive</span>
+          </div>
+          <ul class="day-stops">
+            <li>Early morning start from Ujjain</li>
+            <li>Drive across Madhya Pradesh and Maharashtra</li>
+            <li>Arrival in Solapur for the final night stay of the trip</li>
+          </ul>
+          <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
+            ★ <strong>Needs Action:</strong> Book Solapur stay — Check-in June 13 · Checkout June 14 · 1 night
+          </div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-num">
+          <div class="day-num-circle">P4-7</div>
+        </div>
+        <div class="day-body">
+          <div class="day-date">Sunday, June 14th</div>
+          <div class="day-title">Solapur → Bangalore 🏁</div>
+          <div class="day-meta">
+            <span class="day-tag tag-km">📍 ~600 km</span>
+            <span class="day-tag tag-drive">🚗 Target 7 PM Home</span>
+          </div>
+          <ul class="day-stops">
+            <li>Final leg of the Bangalore → LEH → Bangalore epic trip</li>
+            <li>NH65 and NH44 route back home</li>
+            <li>6:00–7:00 PM: 🏠 Bangalore — HOME. Trip Complete! ✅</li>
+          </ul>
+          <div class="day-tip" style="background:#e8f8e8;color:#276749;border-color:#9ae6b4;margin-top:0.8rem">
+            🎉 <strong>Epic Achievement Unlocked!</strong> ~9,000 km. Highest passes done. Sunday night home — ready for Monday morning routine. What a trip!
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
   </section>
 
