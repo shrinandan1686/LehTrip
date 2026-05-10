@@ -477,6 +477,7 @@ body {
     <button class="btn" onclick="exportCSV()">⬇ Export CSV</button>
     <button class="btn btn-danger" onclick="confirmReset()">⚠ Reset All</button>
     <a href="leh-budget.html" class="btn">📊 Budget Details</a>
+    <button class="btn" onclick="doLogout()" style="color:var(--muted)">Sign Out</button>
   </div>
 </div>
 
@@ -1614,6 +1615,28 @@ async function init() {
 }
 
 init();
+
+// ─────────────────────────────────────────────
+// AUTH
+// ─────────────────────────────────────────────
+async function doLogout() {
+  try {
+    await fetch('/api/logout', { method: 'POST' });
+  } catch (_) {}
+  window.location.href = '/login';
+}
+
+// Intercept 401 responses from any fetch and redirect to login.
+// Wraps the global fetch so all existing API calls benefit automatically.
+const _origFetch = window.fetch;
+window.fetch = async function (...args) {
+  const res = await _origFetch(...args);
+  if (res.status === 401) {
+    toast('Session expired — redirecting to login…', 3000);
+    setTimeout(() => { window.location.href = '/login?next=/tracker'; }, 1500);
+  }
+  return res;
+};
 </script>
 </body>
 </html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLR→LEH · Login</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0c0d10;
+  --surface: #14161c;
+  --surface2:#1c1e27;
+  --border:  rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --text:    #e2dfd8;
+  --muted:   #5a6270;
+  --muted2:  #8a93a0;
+  --ss:      #f97316;
+  --red:     #f87171;
+  --mono:    'DM Mono', monospace;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card {
+  width: 100%;
+  max-width: 380px;
+  padding: 2.5rem 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  margin: 1rem;
+}
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+}
+.logo span { color: var(--ss); }
+.sub {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  margin-bottom: 0.45rem;
+}
+input[type="password"] {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 1.25rem;
+  -webkit-text-security: disc;
+  letter-spacing: 0.15em;
+}
+input[type="password"]:focus { border-color: var(--ss); }
+button {
+  width: 100%;
+  background: var(--ss);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover { background: #ea6c0f; }
+button:disabled { background: var(--muted); cursor: not-allowed; }
+.error {
+  display: none;
+  background: rgba(248,113,113,0.08);
+  border: 1px solid rgba(248,113,113,0.3);
+  border-radius: 5px;
+  padding: 0.55rem 0.8rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--red);
+  margin-bottom: 1rem;
+}
+.back {
+  display: block;
+  text-align: center;
+  margin-top: 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+}
+.back:hover { color: var(--muted2); }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">BLR <span>→</span> LEH</div>
+  <div class="sub">Trip Tracker · Owner Access</div>
+
+  <label for="passphrase">Passphrase</label>
+  <input type="password" id="passphrase" placeholder="Enter passphrase" autofocus autocomplete="current-password">
+
+  <div class="error" id="errMsg"></div>
+
+  <button id="loginBtn" onclick="doLogin()">Enter</button>
+
+  <a href="/" class="back">← Back to itinerary</a>
+</div>
+
+<script>
+  // Read ?next= so we can redirect back after login
+  const nextPath = new URLSearchParams(location.search).get('next') || '/tracker';
+
+  async function doLogin() {
+    const passphrase = document.getElementById('passphrase').value.trim();
+    const btn  = document.getElementById('loginBtn');
+    const err  = document.getElementById('errMsg');
+    if (!passphrase) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Checking...';
+    err.style.display = 'none';
+
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ passphrase }),
+      });
+      if (res.ok) {
+        window.location.href = nextPath;
+      } else {
+        const { error } = await res.json();
+        err.textContent = error || 'Wrong passphrase';
+        err.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Enter';
+      }
+    } catch (_) {
+      err.textContent = 'Network error — please try again';
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Enter';
+    }
+  }
+
+  document.getElementById('passphrase').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+</script>
+</body>
+</html>
