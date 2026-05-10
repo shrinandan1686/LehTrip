@@ -3160,20 +3160,11 @@
         }
       </style>
 
-      <!-- Booking section: visible only when authenticated -->
-      <div class="auth-show" id="booking-section-wrap" style="display:none">
-        <div class="checklist-card" id="booking-section">
-          <div class="checklist-header"><span class="icon">🏨</span>★ Book These Now — In This Order</div>
-          <div class="checklist-body" id="booking-list">
-            <div style="color:#888;font-size:0.85rem;padding:1rem 0">Loading bookings…</div>
-          </div>
+      <div class="checklist-card" id="booking-section">
+        <div class="checklist-header"><span class="icon">🏨</span>★ Book These Now — In This Order</div>
+        <div class="checklist-body" id="booking-list">
+          <div style="color:#888;font-size:0.85rem;padding:1rem 0">Loading bookings…</div>
         </div>
-      </div>
-      <!-- Lock placeholder shown when not authenticated -->
-      <div class="auth-hide checklist-card" style="text-align:center;padding:2rem 1rem;color:#888;border:1px dashed #d0c9be;background:#faf7f2">
-        <div style="font-size:1.5rem;margin-bottom:0.5rem">🔒</div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;letter-spacing:0.08em;color:#aaa;margin-bottom:0.4rem">BOOKINGS — OWNER ACCESS</div>
-        <button onclick="AuthState.require(() => {})" style="font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:0.1em;padding:0.4rem 1.2rem;background:transparent;border:1px solid #c9941a;color:#c9941a;border-radius:3px;cursor:pointer;text-transform:uppercase">Login to View</button>
       </div>
 
       <!-- Edit Modal -->
@@ -4059,8 +4050,7 @@
       if (!noteId || card.querySelector('.itinerary-note-wrap')) return;
 
       const wrap = document.createElement('div');
-      wrap.className = 'itinerary-note-wrap auth-show';
-      wrap.style.display = 'none';
+      wrap.className = 'itinerary-note-wrap';
       wrap.style.marginTop = '0.9rem';
       wrap.style.padding = '0.8rem';
       wrap.style.background = '#f8f4ed';
@@ -4175,8 +4165,7 @@
       if (!Array.isArray(links)) links = [];
 
       const wrap = document.createElement('div');
-      wrap.className = 'map-links-wrap auth-show';
-      wrap.style.display = 'none';
+      wrap.className = 'map-links-wrap';
 
       const labelRow = document.createElement('div');
       labelRow.className = 'map-links-label';
