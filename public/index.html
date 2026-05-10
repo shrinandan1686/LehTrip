@@ -1447,13 +1447,13 @@
 
     <div style="width:1px;height:28px;background:rgba(255,255,255,0.1);flex-shrink:0"></div>
 
-    <div id="tss-location" style="display:flex;align-items:center;gap:0.5rem">
+    <a id="tss-location" href="tracker.html#today" style="display:flex;align-items:center;gap:0.5rem;text-decoration:none;cursor:pointer" title="Open tracker for today">
       <span style="color:var(--glacier);font-size:0.9rem">📍</span>
       <div>
-        <div style="color:rgba(255,255,255,0.45);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase">Today</div>
+        <div style="color:rgba(255,255,255,0.45);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase">Today · tap to track</div>
         <div style="color:var(--mist);font-size:0.78rem" id="tss-today">—</div>
       </div>
-    </div>
+    </a>
 
     <div style="width:1px;height:28px;background:rgba(255,255,255,0.1);flex-shrink:0"></div>
 
@@ -1596,6 +1596,38 @@
   })();
   </script>
 
+  <script>
+  // ── Booking status badges on "Needs Action" banners ──
+  (function() {
+    // Each "Needs Action" tip has a data-booking-id attribute.
+    // We fetch /api/bookings and flip the banner to green if booked.
+    async function applyBookingStatus() {
+      let bookings = [];
+      try {
+        const res = await fetch('/api/bookings');
+        if (res.ok) bookings = await res.json();
+      } catch(_) { return; }
+
+      const booked = new Set(bookings.filter(b => b.booked).map(b => b.id));
+
+      document.querySelectorAll('[data-booking-id]').forEach(el => {
+        const id = el.dataset.bookingId;
+        const badge = el.querySelector('.booking-status-badge');
+        if (!badge) return;
+        if (booked.has(id)) {
+          badge.textContent = '✓ Booked';
+          badge.style.background = '#e8f5e9';
+          badge.style.color = '#2e7d32';
+          badge.style.borderColor = '#a5d6a7';
+          el.style.borderColor = '#a5d6a7';
+          el.style.background = '#f1f8f1';
+        }
+      });
+    }
+    document.addEventListener('DOMContentLoaded', applyBookingStatus);
+  })();
+  </script>
+
   <!-- ITINERARY -->
   <section id="itinerary" class="fade-in">
     <div class="section-label">Day by Day</div>
@@ -1626,8 +1658,9 @@
             <li>Bangalore → NH44 North</li>
             <li>Nagpur overnight stay</li>
           </ul>
-          <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Nagpur stay — Check-in May 15 · Checkout May 16 · 1 night · 1 room
+          <div class="day-tip" data-booking-id="nagpur-may15" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem;display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem">
+            <span>★ <strong>Needs Action:</strong> Book Nagpur stay — Check-in May 15 · Checkout May 16 · 1 night · 1 room</span>
+            <span class="booking-status-badge" style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:0.06em;padding:0.15rem 0.5rem;border:1px solid var(--gold);border-radius:3px;white-space:nowrap;flex-shrink:0">Unbooked</span>
           </div>
         </div>
       </div>
@@ -1654,9 +1687,10 @@
             near NH48 work well. If you have energy: walk to Hawa Mahal (5 min from most hotels on this corridor) for 15
             minutes — it's lit at night and worth it.
           </div>
-          <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Jaipur stay — Check-in May 16 · Checkout May 17 · 1 night · 1 room ·
-            Near NH48/Ajmer Road for fast morning exit</div>
+          <div class="day-tip" data-booking-id="jaipur-may16" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem;display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem">
+            <span>★ <strong>Needs Action:</strong> Book Jaipur stay — Check-in May 16 · Checkout May 17 · 1 night · 1 room · Near NH48/Ajmer Road for fast morning exit</span>
+            <span class="booking-status-badge" style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:0.06em;padding:0.15rem 0.5rem;border:1px solid var(--gold);border-radius:3px;white-space:nowrap;flex-shrink:0">Unbooked</span>
+          </div>
         </div>
       </div>
       <div class="day-card">
@@ -1675,9 +1709,9 @@
             <li>Continue through Kalka and hill section to Shimla</li>
             <li>Arrive in Shimla and settle into WFH base</li>
           </ul>
-          <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Shimla WFH stay — Check-in May 17 · Checkout May 22 · 5 nights · 1
-            unit · Reliable WiFi required
+          <div class="day-tip" data-booking-id="shimla-may17" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem;display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem">
+            <span>★ <strong>Needs Action:</strong> Book Shimla WFH stay — Check-in May 17 · Checkout May 22 · 5 nights · 1 unit · Reliable WiFi required</span>
+            <span class="booking-status-badge" style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:0.06em;padding:0.15rem 0.5rem;border:1px solid var(--gold);border-radius:3px;white-space:nowrap;flex-shrink:0">Unbooked</span>
           </div>
         </div>
       </div>
@@ -1714,9 +1748,9 @@
             <li><strong>Sunday May 17 (arrival day):</strong> Long drive in — settle in, unpack, early night in Shimla.
             </li>
           </ul>
-          <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Shimla serviced stay — Check-in May 17 · Checkout May 22 · 5 nights ·
-            1 unit · Fast WiFi essential, confirm upload speed
+          <div class="day-tip" data-booking-id="shimla-may17" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem;display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem">
+            <span>★ <strong>Needs Action:</strong> Book Shimla serviced stay — Check-in May 17 · Checkout May 22 · 5 nights · 1 unit · Fast WiFi essential, confirm upload speed</span>
+            <span class="booking-status-badge" style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:0.06em;padding:0.15rem 0.5rem;border:1px solid var(--gold);border-radius:3px;white-space:nowrap;flex-shrink:0">Unbooked</span>
           </div>
         </div>
       </div>
@@ -1974,8 +2008,9 @@
             <li>Afternoon: Rest and recover from the high-altitude circuit</li>
             <li>Evening: Walk Old Manali or Mall Road</li>
           </ul>
-          <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Manali WFH stay — Check-in June 3 · Checkout June 10 · 7 nights · 1 room · Confirm fast WiFi (10 Mbps upload)
+          <div class="day-tip" data-booking-id="manali-jun3" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem;display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem">
+            <span>★ <strong>Needs Action:</strong> Book Manali WFH stay — Check-in June 3 · Checkout June 10 · 7 nights · 1 room · Confirm fast WiFi (10 Mbps upload)</span>
+            <span class="booking-status-badge" style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:0.06em;padding:0.15rem 0.5rem;border:1px solid var(--gold);border-radius:3px;white-space:nowrap;flex-shrink:0">Unbooked</span>
           </div>
         </div>
       </div>
@@ -2015,8 +2050,9 @@
             <li><strong>Afternoon:</strong> Start drive to Chandigarh (NH3)</li>
             <li>Late evening arrival in Chandigarh & overnight stay</li>
           </ul>
-          <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Chandigarh stay — Check-in June 10 · Checkout June 11 · 1 night
+          <div class="day-tip" data-booking-id="chandigarh-jun10" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem;display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem">
+            <span>★ <strong>Needs Action:</strong> Book Chandigarh stay — Check-in June 10 · Checkout June 11 · 1 night</span>
+            <span class="booking-status-badge" style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:0.06em;padding:0.15rem 0.5rem;border:1px solid var(--gold);border-radius:3px;white-space:nowrap;flex-shrink:0">Unbooked</span>
           </div>
         </div>
       </div>
@@ -2037,8 +2073,9 @@
             <li><strong>Afternoon:</strong> Drive to Jaipur via Trans-Haryana Expressway (NH152D)</li>
             <li>Arrival in Jaipur late evening & dinner</li>
           </ul>
-          <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Jaipur stay — Check-in June 11 · Checkout June 12 · 1 night
+          <div class="day-tip" data-booking-id="jaipur-jun11" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem;display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem">
+            <span>★ <strong>Needs Action:</strong> Book Jaipur stay — Check-in June 11 · Checkout June 12 · 1 night</span>
+            <span class="booking-status-badge" style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:0.06em;padding:0.15rem 0.5rem;border:1px solid var(--gold);border-radius:3px;white-space:nowrap;flex-shrink:0">Unbooked</span>
           </div>
         </div>
       </div>
@@ -2059,8 +2096,9 @@
             <li><strong>Afternoon:</strong> Drive to Ujjain (via NH52)</li>
             <li>Stay the night in Ujjain</li>
           </ul>
-          <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Ujjain stay — Check-in June 12 · Checkout June 13 · 1 night
+          <div class="day-tip" data-booking-id="ujjain-jun12" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem;display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem">
+            <span>★ <strong>Needs Action:</strong> Book Ujjain stay — Check-in June 12 · Checkout June 13 · 1 night</span>
+            <span class="booking-status-badge" style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:0.06em;padding:0.15rem 0.5rem;border:1px solid var(--gold);border-radius:3px;white-space:nowrap;flex-shrink:0">Unbooked</span>
           </div>
         </div>
       </div>
@@ -2081,8 +2119,9 @@
             <li>Drive across Madhya Pradesh and Maharashtra</li>
             <li>Arrival in Solapur for the final night stay of the trip</li>
           </ul>
-          <div class="day-tip" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem">
-            ★ <strong>Needs Action:</strong> Book Solapur stay — Check-in June 13 · Checkout June 14 · 1 night
+          <div class="day-tip" data-booking-id="solapur-jun13" style="background:#fef3e2;color:var(--gold);border-color:var(--gold);margin-top:0.8rem;display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem">
+            <span>★ <strong>Needs Action:</strong> Book Solapur stay — Check-in June 13 · Checkout June 14 · 1 night</span>
+            <span class="booking-status-badge" style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:0.06em;padding:0.15rem 0.5rem;border:1px solid var(--gold);border-radius:3px;white-space:nowrap;flex-shrink:0">Unbooked</span>
           </div>
         </div>
       </div>

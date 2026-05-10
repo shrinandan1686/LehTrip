@@ -8,31 +8,34 @@ export async function onRequestPost({ request, env }) {
     if (!dayId) throw new Error('Missing dayId');
     if (!payload.length) throw new Error('Missing entry payload');
 
+    const VALID_CATS = ['fuel','food','stay','act','toll','misc'];
+    const VALID_WHO  = ['shrinandan','shubhashree','ss',''];
+    const VALID_PAY  = ['cc','upi','cash',''];
+
+    function sanitiseRow(row) {
+      const amount = Math.max(0, parseFloat(row.amount) || 0);
+      return {
+        id:        String(row.id),
+        desc:      String(row.desc || '').slice(0, 500),
+        cat:       VALID_CATS.includes(row.cat) ? row.cat : 'misc',
+        who:       VALID_WHO.includes(row.who)  ? row.who : '',
+        paid_using:VALID_PAY.includes(row.paid_using) ? row.paid_using : '',
+        amount,
+      };
+    }
+
     const stmt = env.DB.prepare(
       'INSERT INTO entries (id, day_id, description, category, who, paid_using, amount) VALUES (?, ?, ?, ?, ?, ?, ?)'
     );
 
     if (payload.length === 1) {
-      const row = payload[0];
-      await stmt.bind(
-        String(row.id),
-        dayId,
-        row.desc || '',
-        row.cat || 'food',
-        row.who || '',
-        row.paid_using || '',
-        parseFloat(row.amount) || 0,
-      ).run();
+      const row = sanitiseRow(payload[0]);
+      await stmt.bind(row.id, dayId, row.desc, row.cat, row.who, row.paid_using, row.amount).run();
     } else {
-      const batch = payload.map(row => stmt.bind(
-        String(row.id),
-        dayId,
-        row.desc || '',
-        row.cat || 'food',
-        row.who || '',
-        row.paid_using || '',
-        parseFloat(row.amount) || 0,
-      ));
+      const batch = payload.map(raw => {
+        const row = sanitiseRow(raw);
+        return stmt.bind(row.id, dayId, row.desc, row.cat, row.who, row.paid_using, row.amount);
+      });
       await env.DB.batch(batch);
     }
 

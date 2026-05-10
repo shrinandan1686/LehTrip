@@ -3,18 +3,6 @@
 
 export async function onRequestGet({ env }) {
   try {
-    // Ensure table exists
-    await env.DB.prepare(`
-      CREATE TABLE IF NOT EXISTS bookings (
-        id TEXT PRIMARY KEY,
-        booked INTEGER NOT NULL DEFAULT 0,
-        hotel_name TEXT NOT NULL DEFAULT '',
-        map_url TEXT NOT NULL DEFAULT '',
-        confirmation TEXT NOT NULL DEFAULT '',
-        notes TEXT NOT NULL DEFAULT '',
-        updated_at INTEGER NOT NULL DEFAULT (unixepoch())
-      )
-    `).run();
     const { results } = await env.DB.prepare('SELECT * FROM bookings').all();
     return Response.json(results || []);
   } catch (err) {

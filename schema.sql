@@ -35,3 +35,12 @@ CREATE TABLE IF NOT EXISTS bookings (
   notes          TEXT    NOT NULL DEFAULT '',
   updated_at     INTEGER NOT NULL DEFAULT (unixepoch())
 );
+
+CREATE TABLE IF NOT EXISTS wellness (
+  day_id     TEXT    PRIMARY KEY,
+  spo2       TEXT    NOT NULL DEFAULT '',
+  water      TEXT    NOT NULL DEFAULT '',
+  headache   INTEGER NOT NULL DEFAULT 0,
+  diamox     INTEGER NOT NULL DEFAULT 0,
+  updated_at INTEGER NOT NULL DEFAULT (unixepoch())
+);

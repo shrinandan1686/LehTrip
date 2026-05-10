@@ -52,7 +52,8 @@ const PAY_OPTS = {
   cash: { label:'Cash' },
 };
 
-const SS_BUDGET = 195577; // S&S total: Fuel+Stay+Food+Tolls+Sightseeing+CarPrep (excl. ₹15k emergency buffer)
+const SS_BUDGET   = 195577; // S&S total: Fuel+Stay+Food+Tolls+Sightseeing+CarPrep (excl. ₹15k emergency buffer)
+const FUEL_BUDGET = 56627;  // fuel budget — diesel ₹92/L, 12.5 kmpl hwy, 9.5 kmpl mtn
 
 const PREP_EXPENSE_TEMPLATES = [
   // Checklist: Documents
@@ -222,5 +223,5 @@ function escHtml(s) {
 
 // Export for commonJS/Module testing environments if needed
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { DAYS, CATS, WHO_OPTS, SS_BUDGET, PREP_EXPENSE_TEMPLATES, calcDayTotals, calcGlobalTotals, fmtNum };
+  module.exports = { DAYS, CATS, WHO_OPTS, PAY_OPTS, SS_BUDGET, FUEL_BUDGET, PREP_EXPENSE_TEMPLATES, calcDayTotals, calcGlobalTotals, fmtNum };
 }

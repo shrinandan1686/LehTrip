@@ -465,6 +465,10 @@ body {
   <button class="tab active" onclick="switchTab('overview')">📊 Overview</button>
   <!-- Day tabs injected by JS -->
 </div>
+<div style="padding:0.4rem 1.5rem;background:var(--surface);border-bottom:1px solid var(--border);display:flex;gap:0.5rem;align-items:center">
+  <button id="jumpTodayBtn" class="btn btn-primary" style="font-size:0.65rem;padding:0.3rem 0.75rem" onclick="jumpToToday()">↓ Today</button>
+  <span id="jumpTodayLabel" style="font-family:var(--mono);font-size:0.65rem;color:var(--muted)"></span>
+</div>
 
 <!-- MAIN -->
 <div class="main">
@@ -476,6 +480,9 @@ body {
       <div class="vs-title">Actual vs Budgeted</div>
       <!-- rendered by JS -->
     </div>
+
+    <!-- BUDGET PACING -->
+    <div id="pacingBar" style="margin-bottom:1rem"></div>
 
     <div class="overview-grid">
       <div class="ov-card">
@@ -491,6 +498,10 @@ body {
       <div class="ov-card">
         <div class="ov-card-head">Top Expenses</div>
         <div class="ov-card-body" id="topExpenses"></div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-card-head">Settlement</div>
+        <div class="ov-card-body" id="settlementCard"></div>
       </div>
     </div>
 
@@ -510,8 +521,29 @@ body {
 let state = { entries: {}, notes: {} };
 DAYS.forEach(d => { state.entries[d.id] = []; state.notes[d.id] = ''; });
 
+const STATE_CACHE_KEY = 'leh_tracker_cache';
+let _apiFetchSucceeded = false;
+
+function persistStateLocally() {
+  try { localStorage.setItem(STATE_CACHE_KEY, JSON.stringify(state)); } catch(_) {}
+}
+
+function loadStateFromCache() {
+  try {
+    const raw = localStorage.getItem(STATE_CACHE_KEY);
+    if (!raw) return false;
+    const cached = JSON.parse(raw);
+    DAYS.forEach(d => {
+      state.entries[d.id] = cached.entries?.[d.id] || [];
+      state.notes[d.id]   = cached.notes?.[d.id]   ?? '';
+    });
+    return true;
+  } catch(_) { return false; }
+}
+
 async function ensurePrepPrefill() {
   const prepDayId = 'p0';
+  if (!_apiFetchSucceeded) return; // never auto-insert when working offline
   const hasPrepDay = DAYS.some(d => d.id === prepDayId);
   if (!hasPrepDay) return;
   if ((state.entries[prepDayId] || []).length > 0) return;
@@ -534,6 +566,7 @@ async function ensurePrepPrefill() {
       body: JSON.stringify({ dayId: prepDayId, entries: prefilled }),
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
+    persistStateLocally();
     toast('Day 0 prep list prefilled');
   } catch (err) {
     console.error('Failed to prefill prep entries:', err);
@@ -550,9 +583,12 @@ async function fetchState() {
       state.entries[d.id] = data.entries?.[d.id] || [];
       state.notes[d.id]   = data.notes?.[d.id]   ?? '';
     });
+    _apiFetchSucceeded = true;
+    persistStateLocally();
   } catch (err) {
     console.error('Could not load from API:', err);
-    toast('Could not reach server — showing empty state', 4000);
+    const loaded = loadStateFromCache();
+    toast(loaded ? 'Offline — showing cached data from last sync' : 'Could not reach server — showing empty state', 4000);
   }
 }
 
@@ -717,6 +753,7 @@ async function addEntry(dayId, entry = null) {
     desc: '', cat: 'food', who: '', paid_using: '', amount: ''
   };
   state.entries[dayId].push(e);
+  persistStateLocally();
   renderEntries(dayId);
   updateAll();
 
@@ -735,6 +772,7 @@ async function addEntry(dayId, entry = null) {
 
 async function removeEntry(dayId, entryId) {
   state.entries[dayId] = state.entries[dayId].filter(e => e.id != entryId);
+  persistStateLocally();
   renderEntries(dayId);
   updateAll();
 
@@ -746,15 +784,9 @@ async function removeEntry(dayId, entryId) {
   }
 }
 
-function patchAmountCells(dayId, entryId) {
-  // no-op: amount column is the only numeric cell now
-}
-
 // ─────────────────────────────────────────────
 // FUEL LOG
 // ─────────────────────────────────────────────
-const FUEL_BUDGET = 56627; // total fuel budget for S&S
-
 function logFuel(dayId) {
   const litresEl = document.getElementById('flog-litres-' + dayId);
   const rateEl   = document.getElementById('flog-rate-'   + dayId);
@@ -832,16 +864,58 @@ document.addEventListener('input', e => {
 });
 
 // ─────────────────────────────────────────────
-// WELLNESS LOG (localStorage)
+// WELLNESS LOG (D1-backed, localStorage fallback)
 // ─────────────────────────────────────────────
 
 const WELLNESS_KEY = 'leh_wellness';
+let _wellnessState = {}; // keyed by dayId, populated from API
 
 function _getWellnessStore() {
   try { return JSON.parse(localStorage.getItem(WELLNESS_KEY) || '{}'); } catch(_) { return {}; }
 }
 function _setWellnessStore(store) {
   try { localStorage.setItem(WELLNESS_KEY, JSON.stringify(store)); } catch(_) {}
+}
+
+async function fetchWellness() {
+  try {
+    const res = await fetch('/api/wellness');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const rows = await res.json();
+    _wellnessState = {};
+    rows.forEach(r => {
+      _wellnessState[r.day_id] = {
+        spo2:     r.spo2    || '',
+        water:    r.water   || '',
+        headache: r.headache || 0,
+        diamox:   !!r.diamox,
+      };
+      // keep localStorage in sync as offline fallback
+      const store = _getWellnessStore();
+      store[r.day_id] = { ..._wellnessState[r.day_id], ts: Date.now() };
+      _setWellnessStore(store);
+    });
+  } catch(err) {
+    console.error('Could not load wellness from API:', err);
+    // fall back to localStorage
+    _wellnessState = _getWellnessStore();
+  }
+}
+
+const _wellnessTimers = {};
+function _syncWellnessToApi(dayId, data) {
+  clearTimeout(_wellnessTimers[dayId]);
+  _wellnessTimers[dayId] = setTimeout(async () => {
+    try {
+      await fetch(`/api/wellness/${dayId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+    } catch(err) {
+      console.error('Wellness sync failed:', err);
+    }
+  }, 800);
 }
 
 function toggleWellness(dayId) {
@@ -883,8 +957,11 @@ function wellnessChanged(dayId) {
   const diamox  = diamoxEl  ? diamoxEl.checked        : false;
   const headache= headEl    ? parseInt(headEl.dataset.val || '0') : 0;
 
-  store[dayId] = { spo2, water, diamox, headache, ts: Date.now() };
+  const record = { spo2, water, diamox, headache };
+  store[dayId] = { ...record, ts: Date.now() };
   _setWellnessStore(store);
+  _wellnessState[dayId] = record;
+  _syncWellnessToApi(dayId, record);
 
   // AMS alert
   const alertEl = document.getElementById('well-alert-'   + dayId);
@@ -918,7 +995,8 @@ function updateWellnessSummary(dayId, data) {
 }
 
 function loadAllWellness() {
-  const store = _getWellnessStore();
+  // _wellnessState is already populated from API (or localStorage fallback) by fetchWellness()
+  const store = _wellnessState;
   DAYS.forEach(day => {
     const data = store[day.id];
     if (!data) return;
@@ -953,6 +1031,7 @@ function updateEntry(dayId, entryId, field, value) {
   // Debounce API call (600ms)
   clearTimeout(_updateTimers[entryId]);
   _updateTimers[entryId] = setTimeout(async () => {
+    persistStateLocally();
     try {
       const res = await fetch(`/api/entries/${entryId}`, {
         method: 'PUT',
@@ -971,7 +1050,6 @@ function commitAmount(dayId, entryId, value) {
   const e = state.entries[dayId].find(e => e.id == entryId);
   if (!e) return;
   e.amount = parseFloat(value) || '';
-  patchAmountCells(dayId, entryId);
   renderDayTotals(dayId);
   updateAll();
 }
@@ -983,6 +1061,7 @@ function saveNote(dayId, val) {
   // Debounce API call (800ms) — notes fire on every keystroke
   clearTimeout(_noteTimers[dayId]);
   _noteTimers[dayId] = setTimeout(async () => {
+    persistStateLocally();
     try {
       const res = await fetch(`/api/notes/${dayId}`, {
         method: 'PUT',
@@ -1143,6 +1222,121 @@ function renderOverview(g) {
 
   // vs budget
   renderVsBudget(g);
+  renderPacing(g);
+  renderSettlement(g);
+}
+
+function renderPacing(g) {
+  const el = document.getElementById('pacingBar');
+  if (!el) return;
+
+  const TRIP_START = new Date('2026-05-15T04:00:00+05:30');
+  const TRIP_END   = new Date('2026-06-14T20:00:00+05:30');
+  const now        = new Date();
+
+  if (now < TRIP_START) {
+    const days = Math.ceil((TRIP_START - now) / 86400000);
+    el.innerHTML = `<div class="vs-budget" style="display:flex;align-items:center;gap:0.8rem;padding:0.8rem 1rem">
+      <span style="font-family:var(--mono);font-size:0.7rem;color:var(--muted)">⏳ Trip starts in ${days} day${days===1?'':'s'} — no pacing data yet</span>
+    </div>`;
+    return;
+  }
+  if (now > TRIP_END) {
+    el.innerHTML = '';
+    return;
+  }
+
+  const totalMs     = TRIP_END - TRIP_START;
+  const elapsedMs   = now - TRIP_START;
+  const pctElapsed  = Math.min(1, elapsedMs / totalMs);
+  const dayNum      = Math.floor(elapsedMs / 86400000) + 1;
+  const expected    = Math.round(SS_BUDGET * pctElapsed);
+  const actual      = g.grandTotal;
+  const delta       = actual - expected;
+  const over        = delta > 0;
+  const deltaColor  = over ? 'var(--red)' : 'var(--green)';
+  const deltaLabel  = over
+    ? `₹${fmtNum(delta)} over pace`
+    : `₹${fmtNum(Math.abs(delta))} under pace`;
+
+  el.innerHTML = `
+    <div class="vs-budget">
+      <div class="vs-title">Budget Pacing
+        <span style="font-size:0.68rem;font-family:var(--mono);color:var(--muted);font-weight:400;margin-left:0.5rem">Day ${dayNum} of 31</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        <div style="flex:1;min-width:160px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:0.65rem;color:var(--muted);margin-bottom:4px">
+            <span>Expected by today</span><span>₹${fmtNum(expected)}</span>
+          </div>
+          <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin-bottom:4px">
+            <div style="height:100%;border-radius:3px;background:rgba(255,255,255,0.15);width:${(pctElapsed*100).toFixed(1)}%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:0.65rem;color:var(--muted);margin-bottom:4px">
+            <span>Actual spent</span><span style="color:var(--ss)">₹${fmtNum(actual)}</span>
+          </div>
+          <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden">
+            <div style="height:100%;border-radius:3px;background:${over?'var(--red)':'var(--ss)'};width:${Math.min(100,(actual/SS_BUDGET*100)).toFixed(1)}%"></div>
+          </div>
+        </div>
+        <div style="text-align:right;white-space:nowrap">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:${deltaColor}">${deltaLabel}</div>
+          <div style="font-family:var(--mono);font-size:0.62rem;color:var(--muted);margin-top:0.2rem">
+            ₹${fmtNum(SS_BUDGET - actual)} remaining · ${((1-pctElapsed)*100).toFixed(0)}% trip left
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderSettlement(g) {
+  const el = document.getElementById('settlementCard');
+  if (!el) return;
+
+  const sn = g.byWho['shrinandan'] || 0;
+  const sh = g.byWho['shubhashree'] || 0;
+  const assigned = sn + sh;
+
+  if (assigned === 0) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:0.8rem;padding:0.5rem 0">No assigned expenses yet — use the Paid By field to track who paid what.</div>';
+    return;
+  }
+
+  const fairShare = assigned / 2;
+  const delta     = sn - sh; // positive → Shubhashree owes Shrinandan
+  const owes      = Math.abs(delta) / 2;
+  const creditor  = delta > 0 ? 'Shrinandan' : 'Shubhashree';
+  const debtor    = delta > 0 ? 'Shubhashree' : 'Shrinandan';
+  const unassigned = g.grandTotal - assigned;
+
+  el.innerHTML = `
+    <div class="ov-row">
+      <div class="ov-label"><span class="badge b-sn">Shrinandan</span> paid</div>
+      <div class="ov-val">₹${fmtNum(sn)}</div>
+    </div>
+    <div class="ov-row">
+      <div class="ov-label"><span class="badge b-sh">Shubhashree</span> paid</div>
+      <div class="ov-val">₹${fmtNum(sh)}</div>
+    </div>
+    ${unassigned > 0 ? `<div class="ov-row">
+      <div class="ov-label" style="font-size:0.7rem;color:var(--muted)">Unassigned</div>
+      <div class="ov-val" style="font-size:0.7rem;color:var(--muted)">₹${fmtNum(unassigned)}</div>
+    </div>` : ''}
+    <div style="margin:0.6rem 0;border-top:1px solid var(--border2);padding-top:0.6rem">
+      <div style="font-family:var(--mono);font-size:0.6rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem">Fair share (assigned only)</div>
+      <div style="font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;color:var(--text)">
+        Each owes ₹${fmtNum(fairShare)}
+      </div>
+    </div>
+    ${Math.round(owes) > 0 ? `
+    <div style="background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.2);border-radius:6px;padding:0.6rem 0.8rem;margin-top:0.4rem">
+      <div style="font-family:var(--mono);font-size:0.62rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.2rem">Settlement</div>
+      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--ss)">
+        ${debtor} → ${creditor}
+      </div>
+      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;color:var(--ss)">₹${fmtNum(owes)}</div>
+    </div>` : `<div style="color:var(--green);font-family:var(--mono);font-size:0.75rem;margin-top:0.4rem">✓ Perfectly split</div>`}
+  `;
 }
 
 function renderVsBudget(g) {
@@ -1191,7 +1385,48 @@ function switchTab(id) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById('panel-' + id)?.classList.add('active');
   document.getElementById('tab-' + id)?.classList.add('active');
+  document.getElementById('tab-' + id)?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
   currentTab = id;
+}
+
+function _todayDayId() {
+  const todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
+  // Map calendar date → DAYS entry by matching against date field patterns
+  const DATE_MAP = {
+    '2026-05-15': 'd1', '2026-05-16': 'd2', '2026-05-17': 'd3',
+    '2026-05-18': 'd4', '2026-05-19': 'd4', '2026-05-20': 'd4',
+    '2026-05-21': 'd4', '2026-05-22': 'd4', '2026-05-23': 'd4',
+    '2026-05-24': 'g1', '2026-05-25': 'g2', '2026-05-26': 'g3',
+    '2026-05-27': 'g4', '2026-05-28': 'g5', '2026-05-29': 'g6',
+    '2026-05-30': 'g7', '2026-05-31': 'g8', '2026-06-01': 'g9',
+    '2026-06-02': 'g10','2026-06-03': 'g11',
+    '2026-06-04': 's1', '2026-06-05': 's1', '2026-06-06': 's1',
+    '2026-06-07': 's1', '2026-06-08': 's1', '2026-06-09': 's1',
+    '2026-06-10': 's2', '2026-06-11': 's3', '2026-06-12': 's4',
+    '2026-06-13': 's5', '2026-06-14': 's6',
+  };
+  return DATE_MAP[todayStr] || null;
+}
+
+function jumpToToday() {
+  const dayId = _todayDayId();
+  if (!dayId) {
+    toast('Trip not in progress today');
+    return;
+  }
+  switchTab(dayId);
+}
+
+function updateJumpTodayLabel() {
+  const labelEl = document.getElementById('jumpTodayLabel');
+  if (!labelEl) return;
+  const dayId = _todayDayId();
+  if (!dayId) {
+    labelEl.textContent = 'Trip not active';
+    return;
+  }
+  const day = DAYS.find(d => d.id === dayId);
+  labelEl.textContent = day ? day.title : '';
 }
 
 // ─────────────────────────────────────────────
@@ -1247,7 +1482,7 @@ function toast(msg, dur=2500) {
 // ─────────────────────────────────────────────
 async function init() {
   buildUI();
-  await fetchState();
+  await Promise.all([fetchState(), fetchWellness()]);
   await ensurePrepPrefill();
   // Render all entry tables with fetched data
   DAYS.forEach(d => renderEntries(d.id));
@@ -1258,9 +1493,15 @@ async function init() {
   });
   // Update fuel log headers with existing fuel entries
   DAYS.forEach(d => updateFuelDayCost(d.id));
-  // Restore wellness log data from localStorage
+  // Restore wellness log data from API (or localStorage fallback)
   loadAllWellness();
+  updateJumpTodayLabel();
   updateAll();
+  // Auto-jump to today's tab if page was opened from the status strip
+  if (window.location.hash === '#today') {
+    const todayId = _todayDayId();
+    if (todayId) switchTab(todayId);
+  }
 }
 
 init();
