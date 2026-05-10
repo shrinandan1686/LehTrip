@@ -422,6 +422,49 @@ body {
   color:var(--muted2); padding:0.2rem 0.5rem;
   background:var(--surface2); border-radius:3px;
 }
+
+/* ── LOG FIELD INPUT (fuel & wellness) ── */
+.log-input {
+  width:100%; text-align:left;
+  font-family:var(--mono); font-size:0.82rem;
+  background:transparent; color:var(--text);
+  border:1px solid var(--border2); border-radius:4px;
+  padding:0.4rem 0.5rem; outline:none;
+}
+.log-input:focus { border-color:var(--ss); }
+.log-input::placeholder { color:var(--muted); }
+
+/* ── FUEL LOG ── */
+.flog-wrap { margin-top:1.2rem; background:var(--surface2); border:1px solid var(--border2); border-radius:8px; overflow:hidden; }
+.flog-head { display:flex; align-items:center; justify-content:space-between; padding:0.6rem 1rem; background:rgba(251,146,60,0.08); border-bottom:1px solid rgba(251,146,60,0.15); }
+.flog-title { font-family:'Syne',sans-serif; font-weight:700; font-size:0.78rem; color:var(--fuel-c); letter-spacing:0.05em; text-transform:uppercase; }
+.flog-cost { font-family:var(--mono); font-size:0.72rem; color:var(--muted2); }
+.flog-body { padding:0.7rem 1rem; }
+.flog-grid { display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:0.5rem; align-items:end; margin-bottom:0.5rem; }
+.flog-label { font-family:var(--mono); font-size:0.58rem; letter-spacing:0.1em; color:var(--muted); text-transform:uppercase; margin-bottom:0.25rem; }
+.flog-btn { padding:0.4rem 0.9rem; background:var(--fuel-c); color:#fff; border:none; border-radius:4px; font-family:var(--mono); font-size:0.65rem; cursor:pointer; white-space:nowrap; height:32px; margin-top:auto; }
+.flog-preview { font-family:var(--mono); font-size:0.68rem; color:var(--muted); min-height:16px; }
+
+/* ── WELLNESS LOG ── */
+.well-wrap { margin-top:1rem; background:var(--surface2); border:1px solid var(--border2); border-radius:8px; overflow:hidden; }
+.well-head { display:flex; align-items:center; justify-content:space-between; padding:0.55rem 1rem; background:rgba(34,197,94,0.06); border-bottom:1px solid rgba(34,197,94,0.12); cursor:pointer; }
+.well-title { font-family:'Syne',sans-serif; font-weight:700; font-size:0.78rem; color:#22c55e; letter-spacing:0.05em; text-transform:uppercase; }
+.well-head-right { display:flex; align-items:center; gap:0.6rem; }
+.well-summary { font-family:var(--mono); font-size:0.68rem; color:var(--muted); }
+.well-toggle { font-size:0.7rem; color:var(--muted); }
+.well-body { display:none; padding:0.8rem 1rem; }
+.well-alert { display:none; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.4); border-radius:5px; padding:0.45rem 0.75rem; margin-bottom:0.7rem; color:#f87171; font-size:0.73rem; letter-spacing:0.04em; }
+.well-field-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.7rem; margin-bottom:0.7rem; }
+.well-field-label { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.1em; color:var(--muted); text-transform:uppercase; margin-bottom:0.25rem; }
+.well-section { margin-bottom:0.7rem; }
+.well-section-label { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.1em; color:var(--muted); text-transform:uppercase; margin-bottom:0.4rem; }
+.well-headache-row { display:flex; gap:0.4rem; }
+.well-headache-btn { flex:1; padding:0.4rem 0; border:1px solid var(--border2); border-radius:4px; background:var(--surface); cursor:pointer; font-family:var(--mono); font-size:0.7rem; color:var(--muted); transition:all 0.15s; }
+.well-headache-scale { display:flex; justify-content:space-between; font-size:0.58rem; color:var(--muted); margin-top:0.2rem; }
+.well-diamox-row { display:flex; align-items:center; justify-content:space-between; }
+.well-diamox-label { display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-family:var(--mono); font-size:0.72rem; color:var(--muted); }
+.well-check { width:16px; height:16px; cursor:pointer; accent-color:#22c55e; }
+.well-save-status { font-size:0.65rem; color:#22c55e; font-family:var(--mono); }
 </style>
 </head>
 <body>
@@ -541,6 +584,74 @@ function loadStateFromCache() {
   } catch(_) { return false; }
 }
 
+// ─────────────────────────────────────────────
+// OFFLINE WRITE QUEUE
+// Queues failed API writes to localStorage and drains them when back online.
+// Each op has a dedup `key` — re-queueing the same key replaces the previous one
+// so only the latest state for a given entity is ever replayed.
+// ─────────────────────────────────────────────
+const WRITE_QUEUE_KEY = 'leh_write_queue';
+
+function _getQueue() {
+  try { return JSON.parse(localStorage.getItem(WRITE_QUEUE_KEY) || '[]'); } catch(_) { return []; }
+}
+function _saveQueue(q) {
+  try { localStorage.setItem(WRITE_QUEUE_KEY, JSON.stringify(q)); } catch(_) {}
+}
+
+function _enqueue(op) {
+  let q = _getQueue();
+  if (op.key) q = q.filter(item => item.key !== op.key);
+  q.push(op);
+  _saveQueue(q);
+}
+
+async function _executeQueuedOp(op) {
+  switch (op.type) {
+    case 'addEntry':
+      await fetch('/api/entries', { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ dayId: op.dayId, entry: op.entry }) });
+      break;
+    case 'removeEntry':
+      await fetch(`/api/entries/${op.entryId}`, { method:'DELETE' });
+      break;
+    case 'updateEntry':
+      await fetch(`/api/entries/${op.entryId}`, { method:'PUT', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ entry: op.entry }) });
+      break;
+    case 'saveNote':
+      await fetch(`/api/notes/${op.dayId}`, { method:'PUT', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ content: op.content }) });
+      break;
+    case 'wellness':
+      await fetch(`/api/wellness/${op.dayId}`, { method:'PUT', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(op.data) });
+      break;
+  }
+}
+
+async function _drainQueue() {
+  const q = _getQueue();
+  if (!q.length) return;
+  _saveQueue([]); // optimistic clear; re-queue anything that fails below
+  const failed = [];
+  for (const op of q) {
+    try { await _executeQueuedOp(op); }
+    catch(_) { failed.push(op); }
+  }
+  if (failed.length) {
+    _saveQueue(failed);
+    toast(`${failed.length} change(s) still pending — will retry when online`);
+  } else {
+    toast(`Synced ${q.length} offline change(s) ✓`);
+  }
+}
+
+window.addEventListener('online', () => {
+  toast('Back online — syncing...');
+  _drainQueue();
+});
+
 async function ensurePrepPrefill() {
   const prepDayId = 'p0';
   if (!_apiFetchSucceeded) return; // never auto-insert when working offline
@@ -585,6 +696,7 @@ async function fetchState() {
     });
     _apiFetchSucceeded = true;
     persistStateLocally();
+    _drainQueue(); // replay any writes that failed during a previous offline session
   } catch (err) {
     console.error('Could not load from API:', err);
     const loaded = loadStateFromCache();
@@ -660,80 +772,73 @@ function buildDayPanel(day) {
 
     ${showFuel ? `
     <!-- FUEL LOG -->
-    <div class="fuel-log-wrap" style="margin-top:1.2rem;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;overflow:hidden">
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:0.6rem 1rem;background:rgba(251,146,60,0.08);border-bottom:1px solid rgba(251,146,60,0.15)">
-        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.78rem;color:var(--fuel-c);letter-spacing:0.05em;text-transform:uppercase">⛽ Fuel Log</div>
-        <div id="fuel-day-cost-${day.id}" style="font-family:var(--mono);font-size:0.72rem;color:var(--muted2)">—</div>
+    <div class="flog-wrap">
+      <div class="flog-head">
+        <div class="flog-title">⛽ Fuel Log</div>
+        <div id="fuel-day-cost-${day.id}" class="flog-cost">—</div>
       </div>
-      <div style="padding:0.7rem 1rem">
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:0.5rem;align-items:end;margin-bottom:0.5rem">
+      <div class="flog-body">
+        <div class="flog-grid">
           <div>
-            <div style="font-family:var(--mono);font-size:0.58rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:0.25rem">Litres</div>
-            <input id="flog-litres-${day.id}" class="amount-input" type="text" inputmode="decimal" placeholder="e.g. 32.5" style="width:100%;text-align:left;border:1px solid var(--border2);border-radius:4px;padding:0.4rem 0.5rem">
+            <div class="flog-label">Litres</div>
+            <input id="flog-litres-${day.id}" class="log-input" type="text" inputmode="decimal" placeholder="e.g. 32.5">
           </div>
           <div>
-            <div style="font-family:var(--mono);font-size:0.58rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:0.25rem">₹/Litre</div>
-            <input id="flog-rate-${day.id}" class="amount-input" type="text" inputmode="decimal" placeholder="e.g. 89" style="width:100%;text-align:left;border:1px solid var(--border2);border-radius:4px;padding:0.4rem 0.5rem">
+            <div class="flog-label">₹/Litre</div>
+            <input id="flog-rate-${day.id}" class="log-input" type="text" inputmode="decimal" placeholder="e.g. 89">
           </div>
           <div>
-            <div style="font-family:var(--mono);font-size:0.58rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:0.25rem">Odometer (km)</div>
-            <input id="flog-odo-${day.id}" class="amount-input" type="text" inputmode="decimal" placeholder="e.g. 14,230" style="width:100%;text-align:left;border:1px solid var(--border2);border-radius:4px;padding:0.4rem 0.5rem">
+            <div class="flog-label">Odometer (km)</div>
+            <input id="flog-odo-${day.id}" class="log-input" type="text" inputmode="decimal" placeholder="e.g. 14,230">
           </div>
-          <button onclick="logFuel('${day.id}')" style="padding:0.4rem 0.9rem;background:var(--fuel-c);color:#fff;border:none;border-radius:4px;font-family:var(--mono);font-size:0.65rem;cursor:pointer;white-space:nowrap;height:32px;margin-top:auto">Log</button>
+          <button onclick="logFuel('${day.id}')" class="flog-btn">Log</button>
         </div>
-        <div id="flog-preview-${day.id}" style="font-family:var(--mono);font-size:0.68rem;color:var(--muted);min-height:16px"></div>
+        <div id="flog-preview-${day.id}" class="flog-preview"></div>
       </div>
     </div>
     ` : ''}
 
     <!-- WELLNESS LOG -->
-    <div class="wellness-wrap" style="margin-top:1rem;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;overflow:hidden">
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:0.55rem 1rem;background:rgba(34,197,94,0.06);border-bottom:1px solid rgba(34,197,94,0.12);cursor:pointer"
-           onclick="toggleWellness('${day.id}')">
-        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.78rem;color:#22c55e;letter-spacing:0.05em;text-transform:uppercase">
-          🫁 Wellness Log
-        </div>
-        <div style="display:flex;align-items:center;gap:0.6rem">
-          <div id="well-summary-${day.id}" style="font-family:var(--mono);font-size:0.68rem;color:var(--muted)"></div>
-          <div id="well-toggle-${day.id}" style="font-size:0.7rem;color:var(--muted)">▼</div>
+    <div class="well-wrap">
+      <div class="well-head" onclick="toggleWellness('${day.id}')">
+        <div class="well-title">🫁 Wellness Log</div>
+        <div class="well-head-right">
+          <div id="well-summary-${day.id}" class="well-summary"></div>
+          <div id="well-toggle-${day.id}" class="well-toggle">▼</div>
         </div>
       </div>
-      <div id="well-body-${day.id}" style="display:none;padding:0.8rem 1rem">
-        <div id="well-alert-${day.id}" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.4);border-radius:5px;padding:0.45rem 0.75rem;margin-bottom:0.7rem;color:#f87171;font-size:0.73rem;letter-spacing:0.04em">
+      <div id="well-body-${day.id}" class="well-body">
+        <div id="well-alert-${day.id}" class="well-alert">
           ⚠️ SpO2 below 90% — Rest immediately. Drink water. Descend if symptoms worsen.
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:0.7rem">
+        <div class="well-field-grid">
           <div>
-            <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:0.25rem">SpO2 % (pulse ox)</div>
-            <input id="well-spo2-${day.id}" class="amount-input" type="text" inputmode="decimal" placeholder="e.g. 94"
-              style="width:100%;text-align:left;border:1px solid var(--border2);border-radius:4px;padding:0.4rem 0.5rem"
+            <div class="well-field-label">SpO2 % (pulse ox)</div>
+            <input id="well-spo2-${day.id}" class="log-input" type="text" inputmode="decimal" placeholder="e.g. 94"
               oninput="wellnessChanged('${day.id}')">
           </div>
           <div>
-            <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:0.25rem">Water (litres)</div>
-            <input id="well-water-${day.id}" class="amount-input" type="text" inputmode="decimal" placeholder="e.g. 3"
-              style="width:100%;text-align:left;border:1px solid var(--border2);border-radius:4px;padding:0.4rem 0.5rem"
+            <div class="well-field-label">Water (litres)</div>
+            <input id="well-water-${day.id}" class="log-input" type="text" inputmode="decimal" placeholder="e.g. 3"
               oninput="wellnessChanged('${day.id}')">
           </div>
         </div>
-        <div style="margin-bottom:0.7rem">
-          <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem">Headache Severity</div>
-          <div style="display:flex;gap:0.4rem" id="well-headache-row-${day.id}">
+        <div class="well-section">
+          <div class="well-section-label">Headache Severity</div>
+          <div class="well-headache-row" id="well-headache-row-${day.id}">
             ${[1,2,3,4,5].map(n => `
-              <button id="well-h${n}-${day.id}" onclick="setHeadache('${day.id}', ${n})"
-                style="flex:1;padding:0.4rem 0;border:1px solid var(--border2);border-radius:4px;background:var(--surface);cursor:pointer;font-family:var(--mono);font-size:0.7rem;color:var(--muted);transition:all 0.15s"
+              <button id="well-h${n}-${day.id}" class="well-headache-btn" onclick="setHeadache('${day.id}', ${n})"
                 title="${n === 1 ? 'None' : n === 2 ? 'Mild' : n === 3 ? 'Moderate' : n === 4 ? 'Severe' : 'Excruciating'}"
               >${n}</button>`).join('')}
           </div>
-          <div style="display:flex;justify-content:space-between;font-size:0.58rem;color:var(--muted);margin-top:0.2rem"><span>None</span><span>Excruciating</span></div>
+          <div class="well-headache-scale"><span>None</span><span>Excruciating</span></div>
         </div>
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-family:var(--mono);font-size:0.72rem;color:var(--muted)">
-            <input type="checkbox" id="well-diamox-${day.id}" onchange="wellnessChanged('${day.id}')"
-              style="width:16px;height:16px;cursor:pointer;accent-color:#22c55e">
+        <div class="well-diamox-row">
+          <label class="well-diamox-label">
+            <input type="checkbox" id="well-diamox-${day.id}" class="well-check" onchange="wellnessChanged('${day.id}')">
             Diamox taken today
           </label>
-          <div id="well-save-status-${day.id}" style="font-size:0.65rem;color:#22c55e;font-family:var(--mono)"></div>
+          <div id="well-save-status-${day.id}" class="well-save-status"></div>
         </div>
       </div>
     </div>
@@ -765,8 +870,8 @@ async function addEntry(dayId, entry = null) {
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
   } catch (err) {
-    console.error('Failed to save entry:', err);
-    toast('Entry saved locally only — sync failed');
+    _enqueue({ type:'addEntry', key:`add_${e.id}`, dayId, entry: e });
+    toast('Saved locally — will sync when back online');
   }
 }
 
@@ -780,7 +885,11 @@ async function removeEntry(dayId, entryId) {
     const res = await fetch(`/api/entries/${entryId}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
   } catch (err) {
-    console.error('Failed to delete entry:', err);
+    // Cancel any pending add for this entry (add+delete = no-op)
+    let q = _getQueue();
+    q = q.filter(item => !(item.type === 'addEntry' && String(item.entry?.id) === String(entryId)));
+    _saveQueue(q);
+    _enqueue({ type:'removeEntry', key:`del_${entryId}`, entryId });
   }
 }
 
@@ -913,7 +1022,7 @@ function _syncWellnessToApi(dayId, data) {
         body: JSON.stringify(data),
       });
     } catch(err) {
-      console.error('Wellness sync failed:', err);
+      _enqueue({ type:'wellness', key:`well_${dayId}`, dayId, data });
     }
   }, 800);
 }
@@ -922,7 +1031,7 @@ function toggleWellness(dayId) {
   const body   = document.getElementById('well-body-' + dayId);
   const toggle = document.getElementById('well-toggle-' + dayId);
   if (!body) return;
-  const isOpen = body.style.display !== 'none';
+  const isOpen = window.getComputedStyle(body).display !== 'none';
   body.style.display = isOpen ? 'none' : 'block';
   if (toggle) toggle.textContent = isOpen ? '▼' : '▲';
 }
@@ -1040,7 +1149,7 @@ function updateEntry(dayId, entryId, field, value) {
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
     } catch (err) {
-      console.error('Failed to update entry:', err);
+      _enqueue({ type:'updateEntry', key:`upd_${entryId}`, entryId, entry: {...e} });
     }
   }, 600);
 }
@@ -1070,7 +1179,7 @@ function saveNote(dayId, val) {
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
     } catch (err) {
-      console.error('Failed to save note:', err);
+      _enqueue({ type:'saveNote', key:`note_${dayId}`, dayId, content: val });
     }
   }, 800);
 }
