@@ -469,6 +469,20 @@ body {
 </head>
 <body>
 
+<!-- AUTH LOCK OVERLAY — removed after session confirmed -->
+<div id="tracker-lock" style="
+  position:fixed;inset:0;z-index:9999;
+  background:#0d1117;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;
+">
+  <div style="text-align:center;color:#e2dfd8">
+    <div style="font-size:2rem;margin-bottom:1rem">🔒</div>
+    <div style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:#5a6270">Owner Access Required</div>
+    <div style="margin-top:0.8rem;font-size:0.72rem;color:#3a4250" id="tracker-lock-msg">Checking session…</div>
+  </div>
+</div>
+
 <!-- TOP BAR -->
 <div class="topbar">
   <a href="index.html" class="topbar-back">← Itinerary</a>
@@ -477,7 +491,7 @@ body {
     <button class="btn" onclick="exportCSV()">⬇ Export CSV</button>
     <button class="btn btn-danger" onclick="confirmReset()">⚠ Reset All</button>
     <a href="leh-budget.html" class="btn">📊 Budget Details</a>
-    <button class="btn" onclick="doLogout()" style="color:var(--muted)">Sign Out</button>
+    <button class="btn" onclick="AuthState.logout()" style="color:var(--muted)">Sign Out</button>
   </div>
 </div>
 
@@ -557,6 +571,7 @@ body {
 
 <div class="toast" id="toast"></div>
 
+<script src="/js/auth.js"></script>
 <script src="js/tracker-logic.js"></script>
 <script>
 // ─────────────────────────────────────────────
@@ -1590,28 +1605,36 @@ function toast(msg, dur=2500) {
 // ─────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────
-async function init() {
+async function unlockTracker() {
+  const lock = document.getElementById('tracker-lock');
+  if (lock) lock.remove();
   buildUI();
   await Promise.all([fetchState(), fetchWellness()]);
   await ensurePrepPrefill();
-  // Render all entry tables with fetched data
   DAYS.forEach(d => renderEntries(d.id));
-  // Populate notes textareas (built before fetch, so fill them now)
   DAYS.forEach(d => {
     const ta = document.getElementById('notes-' + d.id);
     if (ta) ta.value = state.notes[d.id] || '';
   });
-  // Update fuel log headers with existing fuel entries
   DAYS.forEach(d => updateFuelDayCost(d.id));
-  // Restore wellness log data from API (or localStorage fallback)
   loadAllWellness();
   updateJumpTodayLabel();
   updateAll();
-  // Auto-jump to today's tab if page was opened from the status strip
   if (window.location.hash === '#today') {
     const todayId = _todayDayId();
     if (todayId) switchTab(todayId);
   }
+}
+
+async function init() {
+  const authed = await AuthState.init();
+  if (!authed) {
+    const msg = document.getElementById('tracker-lock-msg');
+    if (msg) msg.textContent = 'Enter your passphrase to continue.';
+    AuthState.require(unlockTracker);
+    return;
+  }
+  unlockTracker();
 }
 
 init();
@@ -1619,21 +1642,14 @@ init();
 // ─────────────────────────────────────────────
 // AUTH
 // ─────────────────────────────────────────────
-async function doLogout() {
-  try {
-    await fetch('/api/logout', { method: 'POST' });
-  } catch (_) {}
-  window.location.href = '/login';
-}
 
-// Intercept 401 responses from any fetch and redirect to login.
-// Wraps the global fetch so all existing API calls benefit automatically.
+// Intercept 401 responses — show auth modal instead of redirecting.
 const _origFetch = window.fetch;
 window.fetch = async function (...args) {
   const res = await _origFetch(...args);
   if (res.status === 401) {
-    toast('Session expired — redirecting to login…', 3000);
-    setTimeout(() => { window.location.href = '/login?next=/tracker'; }, 1500);
+    toast('Session expired — please log in again', 3000);
+    AuthState.require(() => {});
   }
   return res;
 };

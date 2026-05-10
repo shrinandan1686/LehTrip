@@ -2,12 +2,13 @@
 // Optimized Strategy: Network-First for main pages to avoid .html vs extensionless issues
 // and Cache-First for assets.
 
-const CACHE_NAME = 'leh-trip-v4';
+const CACHE_NAME = 'leh-trip-v5';
 const STATIC_ASSETS = [
   '/index.html',
   '/login.html',
   '/tracker.html',
   '/leh-budget.html',
+  '/js/auth.js',
   '/js/tracker-logic.js',
   '/manifest.json',
   '/icon-192.png',
