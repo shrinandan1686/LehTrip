@@ -153,6 +153,7 @@ window.AuthState = (() => {
         _authed = true;
         closeModal();
         applyState();
+        window.dispatchEvent(new CustomEvent('leh:authchanged'));
         const cb = _pending;
         _pending = null;
         if (typeof cb === 'function') cb();

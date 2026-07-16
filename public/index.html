@@ -1569,23 +1569,35 @@
         iconEl.textContent  = '🏁';
         labelEl.textContent = 'Trip complete! BLR → LEH → BLR ✅';
         todayEl.textContent = 'Back in Bangalore';
-        const spent = await fetchSpent();
-        budgetEl.textContent = spent > 0 ? fmtINR(spent) + ' spent' : fmtINR(SS_TOTAL) + ' budgeted';
+        const authed = window.AuthState && AuthState.isAuth;
+        if (authed) {
+          const spent = await fetchSpent();
+          budgetEl.textContent = spent > 0 ? fmtINR(spent) + ' spent' : fmtINR(SS_TOTAL) + ' budgeted';
+        } else {
+          budgetEl.textContent = '🔒 Login to view';
+        }
         amsWrap.style.display = 'none';
       } else {
         // During trip
         const tripDay = Math.floor((now - TRIP_START) / 86400000) + 1;
         const entry = getDayEntry(todayStr);
-        const spent = await fetchSpent();
-        const remaining = SS_TOTAL - spent;
+        const authed = window.AuthState && AuthState.isAuth;
 
         iconEl.textContent  = '🚗';
         labelEl.textContent = `Day ${tripDay} of 31 — On The Road`;
         todayEl.textContent = entry ? entry.title : 'En route';
-        budgetEl.textContent = remaining >= 0
-          ? fmtINR(remaining) + ' remaining'
-          : '⚠️ Over by ' + fmtINR(Math.abs(remaining));
-        budgetEl.style.color = remaining < 0 ? 'var(--danger)' : 'var(--gold)';
+
+        if (authed) {
+          const spent = await fetchSpent();
+          const remaining = SS_TOTAL - spent;
+          budgetEl.textContent = remaining >= 0
+            ? fmtINR(remaining) + ' remaining'
+            : '⚠️ Over by ' + fmtINR(Math.abs(remaining));
+          budgetEl.style.color = remaining < 0 ? 'var(--danger)' : 'var(--gold)';
+        } else {
+          budgetEl.textContent = '🔒 Login to view';
+          budgetEl.style.color = 'var(--gold)';
+        }
 
         // AMS warning above 3000m
         const alt = entry ? entry.alt : 0;
@@ -1594,6 +1606,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', renderStrip);
+    window._refreshTripStatus = renderStrip;
   })();
   </script>
 
@@ -3242,6 +3255,7 @@
             const list = document.getElementById('booking-list');
             const total = BOOKINGS_DEF.length;
             const booked = BOOKINGS_DEF.filter(b => bookingState[b.id]?.booked).length;
+            const authed = window.AuthState && AuthState.isAuth;
             list.innerHTML = BOOKINGS_DEF.map(b => {
               const s = bookingState[b.id] || {};
               const ok = !!s.booked;
@@ -3259,11 +3273,12 @@
                   <div class="bk-label" style="font-size:0.9rem;font-weight:700;color:${ok ? '#16a34a' : '#1a2744'};font-family:'Barlow Condensed',sans-serif;margin-bottom:0.15rem">${b.label}</div>
                   <div style="font-size:0.76rem;color:#b45309;margin-bottom:0.3rem;font-weight:600">📅 ${b.dates}</div>
                   <div style="font-size:0.73rem;color:#64748b;margin-bottom:0.5rem">${b.note}</div>
-                  ${s.hotel_name ? `<div style="font-size:0.76rem;color:#374151;margin-bottom:0.25rem">🏨 <strong style="color:#1a2744">${s.hotel_name}</strong>${s.confirmation ? ` · <span style="color:#2563eb">Conf: ${s.confirmation}</span>` : ''}</div>` : ''}
-                  ${s.notes ? `<div style="font-size:0.73rem;color:#64748b;font-style:italic;margin-bottom:0.3rem">&ldquo;${s.notes}&rdquo;</div>` : ''}
+                  ${authed && s.hotel_name ? `<div style="font-size:0.76rem;color:#374151;margin-bottom:0.25rem">🏨 <strong style="color:#1a2744">${s.hotel_name}</strong>${s.confirmation ? ` · <span style="color:#2563eb">Conf: ${s.confirmation}</span>` : ''}</div>` : ''}
+                  ${authed && s.notes ? `<div style="font-size:0.73rem;color:#64748b;font-style:italic;margin-bottom:0.3rem">&ldquo;${s.notes}&rdquo;</div>` : ''}
+                  ${!authed ? `<div style="font-size:0.72rem;color:#94a3b8;margin-bottom:0.3rem">🔒 Login to view booking details</div>` : ''}
                   <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.45rem">
                     <button onclick="window._bkEdit('${b.id}')" style="padding:3px 10px;font-size:0.7rem;font-family:'Barlow Condensed',sans-serif;background:white;border:1px solid #d1dbe8;color:#555;border-radius:5px;cursor:pointer">✏️ Edit</button>
-                    ${s.map_url ? `<a href="${s.map_url}" target="_blank" title="Open in Google Maps" style="padding:3px 10px;font-size:0.7rem;font-family:'Barlow Condensed',sans-serif;background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.25);color:#2563eb;border-radius:5px;text-decoration:none">🗺️ Maps</a>` : ''}
+                    ${authed && s.map_url ? `<a href="${s.map_url}" target="_blank" title="Open in Google Maps" style="padding:3px 10px;font-size:0.7rem;font-family:'Barlow Condensed',sans-serif;background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.25);color:#2563eb;border-radius:5px;text-decoration:none">🗺️ Maps</a>` : ''}
                   </div>
                 </div>
               </div>
@@ -3351,6 +3366,7 @@
             if (e.target === this) closeBookingModal();
           });
 
+          window._refreshBookings = renderBookings;
           loadBookings();
         })();
       </script>
@@ -3971,6 +3987,12 @@
     // Checkbox event hijacking for Save
     document.addEventListener('change', e => {
       if (e.target && e.target.type === 'checkbox') {
+        if (!(window.AuthState && AuthState.isAuth)) {
+          e.target.checked = !e.target.checked; // revert — not persisted while logged out
+          updateProgress(e.target);
+          AuthState.require(() => {});
+          return;
+        }
         saveChecklistState(e.target.id, e.target.checked);
       }
     });
@@ -4015,9 +4037,13 @@
       } catch (e) { console.error('Checklist sync error', e) }
     }
 
-    document.addEventListener('DOMContentLoaded', loadChecklists);
+    // Real checklist state only loads after login — anonymous visitors see the blank template.
+    window._refreshChecklist = loadChecklists;
 
     // Itinerary day notes (persisted in D1 via /api/notes/:dayId)
+    const _dayNoteRefs = {};
+    const _dayMapLinkRefs = {};
+
     function getItineraryNoteId(card) {
       const phase = card.closest('.phase-content')?.id || '';
       const raw = card.querySelector('.day-num-circle')?.textContent || '';
@@ -4153,6 +4179,7 @@
       wrap.appendChild(ta);
       wrap.appendChild(actions);
       card.querySelector('.day-body')?.appendChild(wrap);
+      _dayNoteRefs[noteId] = ta;
     }
 
     // ── Map Links ──────────────────────────────────────────────────────────────
@@ -4318,29 +4345,43 @@
 
       renderCards();
       card.querySelector('.day-body')?.appendChild(wrap);
+      _dayMapLinkRefs[noteId] = {
+        setLinks(newLinks) { links = Array.isArray(newLinks) ? newLinks : []; renderCards(); }
+      };
     }
 
-    async function initItineraryDayNotes() {
-      let notes = {};
-      try {
-        const res = await fetch('/api/tracker');
-        if (res.ok) {
-          const data = await res.json();
-          notes = data?.notes || {};
-        }
-      } catch (e) {
-        console.error('Could not load itinerary notes:', e);
-      }
-
+    // Builds the notes/map-links UI shell for every day, empty until login.
+    function initItineraryDayNotes() {
       document.querySelectorAll('#itinerary .phase-content .day-card').forEach(card => {
         const noteId = getItineraryNoteId(card);
         if (!noteId) return;
-        createDayNoteUI(card, noteId, notes[noteId] || '');
-        createDayMapLinksUI(card, noteId, notes['maplinks_' + noteId] || '[]');
+        createDayNoteUI(card, noteId, '');
+        createDayMapLinksUI(card, noteId, '[]');
       });
     }
 
+    // Fills the already-built shell with real content — only called once authed.
+    async function refreshItineraryDayNotes() {
+      try {
+        const res = await fetch('/api/tracker');
+        if (!res.ok) return;
+        const data = await res.json();
+        const notes = data?.notes || {};
+        Object.keys(_dayNoteRefs).forEach(noteId => {
+          _dayNoteRefs[noteId].value = notes[noteId] || '';
+        });
+        Object.keys(_dayMapLinkRefs).forEach(noteId => {
+          let links = [];
+          try { links = JSON.parse(notes['maplinks_' + noteId] || '[]'); } catch (e) { links = []; }
+          _dayMapLinkRefs[noteId].setLinks(links);
+        });
+      } catch (e) {
+        console.error('Could not load itinerary notes:', e);
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', initItineraryDayNotes);
+    window._refreshDayNotesAndLinks = refreshItineraryDayNotes;
 
     // Packing list check
     document.querySelectorAll('.packing-item input').forEach(cb => {
@@ -4390,7 +4431,19 @@
   </script>
   <script src="/js/auth.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => AuthState.init());
+    // Reveals real (non-static) trip data once a session is confirmed — the plan itself
+    // (itinerary, budget estimates, tips, permits) is static HTML and always visible.
+    function unlockPlan() {
+      if (window._refreshTripStatus) window._refreshTripStatus();
+      if (window._refreshBookings) window._refreshBookings();
+      if (window._refreshChecklist) window._refreshChecklist();
+      if (window._refreshDayNotesAndLinks) window._refreshDayNotesAndLinks();
+    }
+    document.addEventListener('DOMContentLoaded', async () => {
+      const authed = await AuthState.init();
+      if (authed) unlockPlan();
+    });
+    window.addEventListener('leh:authchanged', unlockPlan);
   </script>
 </body>
 

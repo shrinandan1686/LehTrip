@@ -3,6 +3,7 @@
 
 # Cloudflare Wrangler
 .wrangler/
+.dev.vars
 
 # Analysis / Tooling
 .claude/

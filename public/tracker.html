@@ -469,29 +469,15 @@ body {
 </head>
 <body>
 
-<!-- AUTH LOCK OVERLAY — removed after session confirmed -->
-<div id="tracker-lock" style="
-  position:fixed;inset:0;z-index:9999;
-  background:#0d1117;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'DM Mono',monospace;
-">
-  <div style="text-align:center;color:#e2dfd8">
-    <div style="font-size:2rem;margin-bottom:1rem">🔒</div>
-    <div style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:#5a6270">Owner Access Required</div>
-    <div style="margin-top:0.8rem;font-size:0.72rem;color:#3a4250" id="tracker-lock-msg">Checking session…</div>
-  </div>
-</div>
-
 <!-- TOP BAR -->
 <div class="topbar">
   <a href="index.html" class="topbar-back">← Itinerary</a>
   <div class="topbar-title">BLR <span>→</span> LEH Expense Tracker</div>
   <div class="topbar-actions">
     <button class="btn" onclick="exportCSV()">⬇ Export CSV</button>
-    <button class="btn btn-danger" onclick="confirmReset()">⚠ Reset All</button>
+    <button class="btn btn-danger" data-needs-auth onclick="confirmReset()">⚠ Reset All</button>
     <a href="leh-budget.html" class="btn">📊 Budget Details</a>
-    <button class="btn" onclick="AuthState.logout()" style="color:var(--muted)">Sign Out</button>
+    <button class="btn" data-auth-btn style="color:var(--muted)"></button>
   </div>
 </div>
 
@@ -783,7 +769,7 @@ function buildDayPanel(day) {
         </thead>
         <tbody id="entries-${day.id}"></tbody>
       </table>
-      <button class="add-row-btn" onclick="addEntry('${day.id}')">+ Add Expense</button>
+      <button class="add-row-btn" data-needs-auth onclick="addEntry('${day.id}')">+ Add Expense</button>
     </div>
 
     ${showFuel ? `
@@ -807,7 +793,7 @@ function buildDayPanel(day) {
             <div class="flog-label">Odometer (km)</div>
             <input id="flog-odo-${day.id}" class="log-input" type="text" inputmode="decimal" placeholder="e.g. 14,230">
           </div>
-          <button onclick="logFuel('${day.id}')" class="flog-btn">Log</button>
+          <button data-needs-auth onclick="logFuel('${day.id}')" class="flog-btn">Log</button>
         </div>
         <div id="flog-preview-${day.id}" class="flog-preview"></div>
       </div>
@@ -843,7 +829,7 @@ function buildDayPanel(day) {
           <div class="well-section-label">Headache Severity</div>
           <div class="well-headache-row" id="well-headache-row-${day.id}">
             ${[1,2,3,4,5].map(n => `
-              <button id="well-h${n}-${day.id}" class="well-headache-btn" onclick="setHeadache('${day.id}', ${n})"
+              <button id="well-h${n}-${day.id}" class="well-headache-btn" data-needs-auth onclick="setHeadache('${day.id}', ${n})"
                 title="${n === 1 ? 'None' : n === 2 ? 'Mild' : n === 3 ? 'Moderate' : n === 4 ? 'Severe' : 'Excruciating'}"
               >${n}</button>`).join('')}
           </div>
@@ -851,7 +837,7 @@ function buildDayPanel(day) {
         </div>
         <div class="well-diamox-row">
           <label class="well-diamox-label">
-            <input type="checkbox" id="well-diamox-${day.id}" class="well-check" onchange="wellnessChanged('${day.id}')">
+            <input type="checkbox" id="well-diamox-${day.id}" class="well-check" data-needs-auth onchange="wellnessChanged('${day.id}')">
             Diamox taken today
           </label>
           <div id="well-save-status-${day.id}" class="well-save-status"></div>
@@ -1605,10 +1591,17 @@ function toast(msg, dur=2500) {
 // ─────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────
-async function unlockTracker() {
-  const lock = document.getElementById('tracker-lock');
-  if (lock) lock.remove();
+// Shell — static scaffolding, no data. Always built, whether or not the visitor is authed.
+function buildShell() {
   buildUI();
+  updateJumpTodayLabel();
+}
+
+// Real data — only loaded once a session is confirmed (initial load, or after login).
+let _dataLoaded = false;
+async function loadRealData() {
+  if (_dataLoaded) return; // avoid double-fetching if triggered twice
+  _dataLoaded = true;
   await Promise.all([fetchState(), fetchWellness()]);
   await ensurePrepPrefill();
   DAYS.forEach(d => renderEntries(d.id));
@@ -1618,7 +1611,6 @@ async function unlockTracker() {
   });
   DAYS.forEach(d => updateFuelDayCost(d.id));
   loadAllWellness();
-  updateJumpTodayLabel();
   updateAll();
   if (window.location.hash === '#today') {
     const todayId = _todayDayId();
@@ -1627,15 +1619,12 @@ async function unlockTracker() {
 }
 
 async function init() {
+  buildShell();
   const authed = await AuthState.init();
-  if (!authed) {
-    const msg = document.getElementById('tracker-lock-msg');
-    if (msg) msg.textContent = 'Enter your passphrase to continue.';
-    AuthState.require(unlockTracker);
-    return;
-  }
-  unlockTracker();
+  if (authed) loadRealData();
 }
+
+window.addEventListener('leh:authchanged', loadRealData);
 
 init();
 
