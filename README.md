@@ -1,5 +1,7 @@
 # Leh Trip Itinerary & Budget Planner
 
+**Live demo:** https://leh.travelerstab.com/
+
 A Cloudflare Pages app (static frontend + Pages Functions API) backed by a Cloudflare D1
 database. Includes a trip itinerary, budget/expense tracker, checklist, wellness log, and a
 passphrase-gated login for personal data.
@@ -45,6 +47,21 @@ variables** for production. Never commit real values.
 | ---------------- | ------------------------------------ |
 | `AUTH_PASS`      | Passphrase that gates login          |
 | `SESSION_SECRET` | Key used to sign session cookies     |
+
+### Getting / resetting the login passphrase
+
+`AUTH_PASS` is a value **you choose** — it's the passphrase entered on the login page of the
+live site. It is already configured in Cloudflare for the deployed app.
+
+- **To retrieve it:** Cloudflare stores it encrypted and **cannot show it back** to you.
+  Look it up wherever you saved it (e.g. a password manager). Secret env vars are write-only
+  in the dashboard.
+- **To reset it (if forgotten):**
+  1. Cloudflare dashboard → **Workers & Pages** → the **leh** Pages project
+  2. **Settings → Variables and Secrets**
+  3. Edit `AUTH_PASS`, set a new value, and **Save**
+  4. Redeploy (`npm run deploy`) or trigger a new deployment so the change takes effect
+  5. Put the same value in your local `.dev.vars`
 
 ## Deploy
 
