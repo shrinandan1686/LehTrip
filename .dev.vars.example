@@ -1,0 +1,13 @@
+# Local dev secrets for `wrangler pages dev` (Cloudflare Pages Functions).
+#
+# Setup: copy this file to `.dev.vars` and fill in real values.
+#   cp .dev.vars.example .dev.vars
+#
+# `.dev.vars` is gitignored and must NEVER be committed.
+# In production these are set in: Cloudflare Pages -> Settings -> Environment variables.
+
+# Passphrase that gates login (choose your own).
+AUTH_PASS=change-me
+
+# Secret key used to sign session cookies (use a long random string, e.g. `openssl rand -base64 32`).
+SESSION_SECRET=change-me-to-a-long-random-string

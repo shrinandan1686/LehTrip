@@ -5,6 +5,9 @@
 .wrangler/
 .dev.vars
 
+# Local secrets / recovery notes (back up in Drive, never commit)
+leh-recovery-notes.txt
+
 # Analysis / Tooling
 .claude/
 graphify-out/
